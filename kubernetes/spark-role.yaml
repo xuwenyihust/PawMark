@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role  # Use ClusterRole if you need cluster-wide access
+metadata:
+  namespace: default
+  name: spark-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["create", "get", "list", "watch", "delete"]
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["create", "get", "delete"]
