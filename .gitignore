@@ -161,4 +161,4 @@ cython_debug/
 
 practice
 
-kubernetes/volumes/
+minikube/volumes/

@@ -3,6 +3,8 @@
 # Set the path to your spark-submit binary if not in PATH
 # SPARK_SUBMIT="/path/to/spark/bin/spark-submit"
 
+APP_NAME="spark-pi"
+
 # Define your Spark application's main class
 MAIN_CLASS="org.apache.spark.examples.SparkPi"
 
@@ -19,7 +21,7 @@ K8S_NAMESPACE="default"
 SERVICE_ACCOUNT="spark"
 DOCKER_IMAGE="apache/spark:3.5.0"
 # FILE_UPLOAD_PATH="/mnt/spark-uploads"
-FILE_UPLOAD_PATH="$HOME/Coding/Spark-on-Kubernetes/kubernetes/volumes/spark-uploads"
+FILE_UPLOAD_PATH="$PROJECT_HOME/minikube/volumes/spark-uploads"
 FILE_UPLOAD_PVC="spark-upload-pvc"
 
 
@@ -33,12 +35,14 @@ spark-submit \
     --num-executors 1 \
     --executor-cores 1 \
     --executor-memory 1g \
-    --name my-spark-job \
+    --name $APP_NAME \
     --conf spark.kubernetes.container.image=$DOCKER_IMAGE \
     --conf spark.kubernetes.namespace=$K8S_NAMESPACE \
     --conf spark.kubernetes.authenticate.driver.serviceAccountName=$SERVICE_ACCOUNT \
     --conf spark.kubernetes.authenticate.executor.serviceAccountName=$SERVICE_ACCOUNT \
     --conf spark.kubernetes.file.upload.path=file://$FILE_UPLOAD_PATH \
+    --conf spark.kubernetes.driver.label.app=spark \
+    --conf spark.kubernetes.driver.label.component=driver \
     --conf spark.kubernetes.driver.volumes.persistentVolumeClaim.spark-upload-pvc.options.claimName=$FILE_UPLOAD_PVC \
     --conf spark.kubernetes.driver.volumes.persistentVolumeClaim.spark-upload-pvc.mount.path=$FILE_UPLOAD_PATH \
     --conf spark.kubernetes.driver.volumes.persistentVolumeClaim.spark-upload-pvc.mount.readOnly=false \
