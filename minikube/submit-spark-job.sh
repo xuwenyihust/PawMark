@@ -8,7 +8,7 @@ APP_NAME="spark-pi"
 # Define your Spark application's main class
 MAIN_CLASS="org.apache.spark.examples.SparkPi"
 
-11APP_JAR="$HOME/Coding/spark-3.5.0-bin-hadoop3/examples/jars/spark-examples_2.12-3.5.0.jar"
+APP_JAR="$HOME/Coding/spark-3.5.0-bin-hadoop3/examples/jars/spark-examples_2.12-3.5.0.jar"
 
 # Set other Spark configurations and application arguments
 APP_ARGS="1000"
