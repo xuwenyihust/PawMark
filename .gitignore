@@ -161,7 +161,6 @@ cython_debug/
 
 practice
 
-minikube/volumes/
-gcp/volumes/
+*/*/volumes/
 
-gcp/env.sh
+*/env.sh
