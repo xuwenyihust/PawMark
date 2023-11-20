@@ -1,0 +1,9 @@
+{{- if .Values.serviceAccount.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding  # Use ClusterRoleBinding for a ClusterRole
+metadata:
+  name: {{ include "data-platform.roleBinding.spark" . }}
+  namespace: {{ include "data-platform.roleBinding.spark" . }}
+subjects: {{ include "data-platform.roleBinding.spark" . }}
+roleRef: {{ include "data-platform.roleBinding.spark" . }}
+{{- end }}
