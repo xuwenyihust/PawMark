@@ -2,6 +2,17 @@
 source bin/env.sh
 source bin/connect_gke.sh
 
+# Install Helm chart
+# Check if the release is already installed
+if helm list -n $NAMESPACE | grep -q $RELEASE_NAME; then
+    echo "Release '$RELEASE_NAME' already installed."
+else
+    echo "Release '$RELEASE_NAME' not found. Installing..."
+
+    # Install the chart
+    helm install $RELEASE_NAME $CHART_NAME -n $NAMESPACE
+fi
+
 # Create a namespace for Spark
 NAMESPACE="spark-dev"
 

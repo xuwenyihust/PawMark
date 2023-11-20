@@ -1,8 +1,15 @@
-{{- if .Values.serviceAccount.create -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role  # Use ClusterRole if you need cluster-wide access
 metadata:
-  namespace: {{ include "data-platform.role.spark" . }}
-  name: {{ include "data-platform.role.spark" . }}
-rules: {{ include "data-platform.role.spark" . }}
-{{- end }}
+  namespace: spark-dev
+  name: spark-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["create", "get", "list", "watch", "delete"]
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["create", "get", "delete"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["create", "get", "delete"]
