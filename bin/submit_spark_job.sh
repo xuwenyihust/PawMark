@@ -36,7 +36,6 @@ spark-submit \
     --conf spark.kubernetes.authenticate.executor.serviceAccountName=$SERVICE_ACCOUNT \
     --conf spark.kubernetes.file.upload.path=$FILE_UPLOAD_PATH \
     --conf spark.kubernetes.driver.label.app=spark \
-    --conf spark.kubernetes.driver.label.component=driver \
     local://$APP_JAR \
     $APP_ARGS
 
