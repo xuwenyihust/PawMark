@@ -13,8 +13,20 @@ fi
 
 gcloud config set project $GKE_PROJECT_ID
 
-# Get credentials for GKE cluster
-echo "Getting credentials for GKE cluster..."
+# Check if the cluster already exists
+if gcloud container clusters describe $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --project $GKE_PROJECT_ID > /dev/null 2>&1; then
+    echo "Cluster $GKE_CLUSTER_NAME already exists."
+else
+    echo "Creating cluster $GKE_CLUSTER_NAME..."
+    gcloud container clusters create $GKE_CLUSTER_NAME \
+     --zone $GKE_CLUSTER_ZONE \
+     --project $GKE_PROJECT_ID \
+     --num-nodes $GKE_CLUSTER_NUM_NODES \
+     --machine-type $GKE_CLUSTER_MACHINE_TYPE
+fi
+
+# Connect to the cluster
+echo "Getting credentials for cluster $GKE_CLUSTER_NAME..."
 gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --project $GKE_PROJECT_ID
 
 # Now kubectl is configured to use your GKE cluster

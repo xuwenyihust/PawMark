@@ -1,17 +1,33 @@
-#!/bin/bash
-source bin/env.sh
-source bin/connect_gke.sh
+# Authenticate with Google Cloud
+echo "Authenticating with Google Cloud..."
 
-# Install Helm chart
-source bin/install_helm_chart.sh
+# Check if already logged in
+CURRENT_ACCOUNT=$(gcloud config get-value account)
 
-kubectl get namespace "$NAMESPACE" > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "Creating namespace: $NAMESPACE"
-    kubectl create namespace "$NAMESPACE"
+if [ -z "$CURRENT_ACCOUNT" ]; then
+    echo "No active account, authenticating with Google Cloud..."
+    gcloud auth login
 else
-    echo "Namespace $NAMESPACE already exists"
+    echo "Already logged in as $CURRENT_ACCOUNT"
 fi
 
-# Submit spark applications
-source bin/submit_spark_job.sh
+gcloud config set project $GKE_PROJECT_ID
+
+# Check if the cluster already exists
+if gcloud container clusters describe $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --project $GKE_PROJECT_ID > /dev/null 2>&1; then
+    echo "Cluster $GKE_CLUSTER_NAME already exists."
+else
+    echo "Creating cluster $GKE_CLUSTER_NAME..."
+    gcloud container clusters create $GKE_CLUSTER_NAME \
+     --zone $GKE_CLUSTER_ZONE \
+     --project $GKE_PROJECT_ID \
+     --num-nodes $GKE_CLUSTER_NUM_NODES \
+     --machine-type $GKE_CLUSTER_MACHINE_TYPE
+fi
+
+# Connect to the cluster
+echo "Getting credentials for cluster $GKE_CLUSTER_NAME..."
+gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --project $GKE_PROJECT_ID
+
+# Now kubectl is configured to use your GKE cluster
+echo "Connected to GKE cluster: $GKE_CLUSTER_NAME"
