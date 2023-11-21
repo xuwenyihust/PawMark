@@ -31,3 +31,7 @@ gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_
 
 # Now kubectl is configured to use your GKE cluster
 echo "Connected to GKE cluster: $GKE_CLUSTER_NAME"
+
+# Get GKE endpoint info
+export KUBERNETES_API_SERVER_HOST=$(gcloud container clusters describe $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --format='value(endpoint)')
+echo "Kubernetes API server host: $KUBERNETES_API_SERVER_HOST"
