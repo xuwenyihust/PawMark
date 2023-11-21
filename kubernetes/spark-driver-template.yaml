@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spark-driver-template  # This is a template name
+spec:
+  containers:
+  - name: spark-kubernetes-driver
+    image: apache/spark:3.5.0
+    resources:
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+      requests:
+        cpu: "1"
+        memory: "512Mi"
+
+  - name: spark-ui-service
+    image: wenyixu101/kubectl:0.0.2  # Use an image with kubectl
+    env:
+      - name: DRIVER_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+    command: ["/bin/sh"]
+    args: 
+      - '-c'
+      - |
+        echo 'Create Spark UI service!'
+        ls -l ./
+
+        kubectl apply -f spark-ui-service.yaml
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "1"
+        memory: "256Mi"

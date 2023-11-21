@@ -4,11 +4,13 @@
 # SPARK_SUBMIT="/path/to/spark/bin/spark-submit"
 
 APP_NAME="spark-pi"
+PROJECT_HOME=$(pwd)
 
 # Define your Spark application's main class
 MAIN_CLASS="org.apache.spark.examples.SparkPi"
 
 APP_JAR="/opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar"
+DRIVER_TEMPLATE="$PROJECT_HOME/kubernetes/spark-driver-template.yaml"
 
 # Set other Spark configurations and application arguments
 APP_ARGS="1000"
@@ -30,6 +32,7 @@ spark-submit \
     --executor-cores 1 \
     --executor-memory 1g \
     --name $APP_NAME \
+    --conf spark.kubernetes.driver.podTemplateFile=$DRIVER_TEMPLATE \
     --conf spark.kubernetes.container.image=$DOCKER_IMAGE \
     --conf spark.kubernetes.namespace=$K8S_NAMESPACE \
     --conf spark.kubernetes.authenticate.driver.serviceAccountName=$SERVICE_ACCOUNT \

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-ui-service
+  namespace: spark-dev
+spec:
+  type: LoadBalancer  # Use NodePort if LoadBalancer is not required
+  ports:
+    - port: 4040
+      targetPort: 4040
+      name: spark-ui
+  selector:
+    app: spark
+    spark-role: driver
