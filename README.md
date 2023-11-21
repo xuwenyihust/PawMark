@@ -1,6 +1,6 @@
-# Spark-on-Kubernetes
+# Data Platform
 ## Overview
-A demo of running Spark on Kubernetes WITHOUT Spark operators.
+A big data platform for data processing and machine learning based on Kubernetes and Spark.
 
 ## Architecture
 
