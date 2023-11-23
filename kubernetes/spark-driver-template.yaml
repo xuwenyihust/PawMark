@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: spark-driver-template  # This is a template name
 spec:
+  shareProcessNamespace: true
   containers:
   - name: spark-kubernetes-driver
     image: apache/spark:3.5.0
@@ -15,7 +16,7 @@ spec:
         memory: "512Mi"
 
   - name: spark-ui-service
-    image: wenyixu101/kubectl:0.0.2  # Use an image with kubectl
+    image: wenyixu101/kubectl:0.0.3  # Use an image with kubectl
     env:
       - name: DRIVER_POD_NAME
         valueFrom:
@@ -26,9 +27,26 @@ spec:
       - '-c'
       - |
         echo 'Create Spark UI service!'
-        ls -l ./
 
         kubectl apply -f spark-ui-service.yaml
+
+        sleep 15
+
+        # Loop to keep checking if the driver is still running
+        while true; do
+          if ! pgrep -x "java"; then
+            echo "Driver process completed. Deleting the Spark UI service."
+            kubectl delete svc spark-ui-service-name  # Replace with your service name
+            break
+          fi
+          # Wait for some time before checking again
+          echo "Waiting for the driver pod to complete..."
+          sleep 10
+        done
+    securityContext:
+      capabilities:
+        add:
+        - SYS_PTRACE
     resources:
       limits:
         cpu: "1"

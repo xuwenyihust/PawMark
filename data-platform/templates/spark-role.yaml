@@ -13,3 +13,6 @@ rules:
 - apiGroups: [""]
   resources: ["configmaps"]
   verbs: ["create", "get", "delete"]
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["list", "get"]
