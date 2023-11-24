@@ -1,7 +1,7 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example</groupId>
-  <artifactId>WordCount</artifactId>
+  <artifactId>word-count</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
@@ -10,6 +10,8 @@
       <scala.version>2.12.18</scala.version>
       <scala.compat.version>2.12</scala.compat.version>
       <spark.version>3.5.0</spark.version>
+      <dockerfile.maven.plugin.version>1.4.13</dockerfile.maven.plugin.version>
+      <docker.image.prefix>wenyixu101</docker.image.prefix>
   </properties>
 
   <dependencies>
@@ -63,6 +65,29 @@
                       <phase>package</phase>
                       <goals>
                           <goal>single</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+
+          <plugin>
+              <groupId>com.spotify</groupId>
+              <artifactId>dockerfile-maven-plugin</artifactId>
+              <version>${dockerfile.maven.plugin.version}</version>
+              <configuration>
+                  <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                  <tag>${project.version}</tag>
+                  <buildArgs>
+                      <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                  </buildArgs>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>default</id>
+                      <phase>deploy</phase>
+                      <goals>
+                          <goal>build</goal>
+                          <goal>push</goal>
                       </goals>
                   </execution>
               </executions>

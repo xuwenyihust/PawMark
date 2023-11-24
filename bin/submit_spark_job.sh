@@ -17,7 +17,8 @@ APP_ARGS="1000"
 
 K8S_NAMESPACE="spark-dev"
 SERVICE_ACCOUNT="spark"
-DOCKER_IMAGE="apache/spark:${SPARK_VERSION}"
+# DOCKER_IMAGE="apache/spark:${SPARK_VERSION}"
+DOCKER_IMAGE="wenyixu101/word-count:1.0-SNAPSHOT"
 
 FILE_UPLOAD_PATH="/tmp/spark-uploads"
 
