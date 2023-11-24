@@ -31,21 +31,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: examples/word-count/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest
+      - name: Docker Build
+        run: |
+          cd examples/word-count
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest .
 
-      # - name: Docker Build
-      #   run: |
-      #     cd examples/word-count
-      #     docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest .
-
-      # - name: Docker Push
-      #   run: |
-      #     cd examples/word-count
-      #     docker tag word-count:latest ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest
-      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest
+      - name: Docker Push
+        run: |
+          cd examples/word-count
+          docker tag word-count:latest ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest
