@@ -35,6 +35,7 @@ jobs:
         run: |
           cd examples/word-count
           ls -la
+          ls -la target
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest .
 
       - name: Docker Push
