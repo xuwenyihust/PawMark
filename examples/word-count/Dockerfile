@@ -5,7 +5,7 @@ FROM apache/spark:3.5.0
 WORKDIR /opt/spark-apps
 
 # Copy the JAR file into the container at /opt/spark-apps
-ARG JAR_FILE=target/WordCount-1.0-SNAPSHOT-jar-with-dependencies.jar
+ARG JAR_FILE=target/word-count-1.0-SNAPSHOT-jar-with-dependencies.jar
 COPY ${JAR_FILE} app.jar
 
 # Set the default command for the container to run your Spark application
