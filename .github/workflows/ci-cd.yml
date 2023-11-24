@@ -31,15 +31,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Docker Build
+      - name: Docker Build & Push
         run: |
           cd examples/word-count
-          ls -la
-          ls -la target
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest .
-
-      - name: Docker Push
-        run: |
-          cd examples/word-count
-          docker tag word-count:latest ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:latest
