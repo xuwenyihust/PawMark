@@ -9,7 +9,7 @@ PROJECT_HOME=$(pwd)
 # Define your Spark application's main class
 MAIN_CLASS="org.apache.spark.examples.SparkPi"
 
-APP_JAR="/opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar"
+APP_JAR="/opt/spark/examples/jars/spark-examples_${SCALA_VERSION}-${SPARK_VERSION}.jar"
 DRIVER_TEMPLATE="$PROJECT_HOME/kubernetes/spark-driver-template.yaml"
 
 # Set other Spark configurations and application arguments
@@ -17,7 +17,7 @@ APP_ARGS="1000"
 
 K8S_NAMESPACE="spark-dev"
 SERVICE_ACCOUNT="spark"
-DOCKER_IMAGE="apache/spark:3.5.0"
+DOCKER_IMAGE="apache/spark:${SPARK_VERSION}"
 
 FILE_UPLOAD_PATH="/tmp/spark-uploads"
 
