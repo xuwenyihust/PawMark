@@ -6,7 +6,7 @@ spec:
   shareProcessNamespace: true
   containers:
   - name: spark-kubernetes-driver
-    image: apache/spark:3.5.0
+    image: wenyixu101/word-count:test-3
     resources:
       limits:
         cpu: "1"

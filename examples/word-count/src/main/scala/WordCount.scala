@@ -1,4 +1,5 @@
 import org.apache.spark.sql.SparkSession
+import java.lang.Thread.sleep
 
 object WordCount {
   def main(args: Array[String]) {
@@ -22,6 +23,8 @@ object WordCount {
 
     // Collect and print word counts
     wordCounts.collect().foreach(println)
+
+    sleep(120000)  // Wait 60 seconds for the Spark job to finish
 
     // Stop the SparkSession
     spark.stop()
