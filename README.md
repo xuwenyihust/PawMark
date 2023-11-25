@@ -1,6 +1,8 @@
 # Data Platform
 
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/ci-cd.yml?logo=github&link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Factions%2Fworkflows%2Fci-cd.yml)
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/ci-cd.yml?logo=github&link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Factions%2Fworkflows%2Fci-cd.yml)](https://github.com/xuwenyihust/Data-Platform/actions/workflows/ci-cd.yml)<space><space>
+[![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)<space><space>
+
 
 ## Overview
 A big data platform for data processing and machine learning based on Kubernetes and Spark.
