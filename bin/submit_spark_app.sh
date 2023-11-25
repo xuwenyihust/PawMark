@@ -88,6 +88,8 @@ if [ $parse_status -ne 0 ]; then
     echo "An error occurred in arg_check"
 # elif
 
+else
+
 fi
 
 
