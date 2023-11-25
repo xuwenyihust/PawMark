@@ -1,6 +1,7 @@
 # Data Platform
 
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/ci-cd.yml)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/ci-cd.yml?logo=github&link=https%3A%2F%2Fimg.shields.io%2Fgithub%2Factions%2Fworkflow%2Fstatus%2Fxuwenyihust%2FData-Platform%2Fci-cd.yml)
+
 
 
 ## Overview
