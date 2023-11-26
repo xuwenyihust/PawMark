@@ -28,6 +28,10 @@ Update the configuration in `bin/env.yaml` accordingly.
 source bin/setup.sh
 ```
 
+### Prepare Spark Application Docker Image
+- Could prepare your own docker image
+- Or use the examples in `[examples/](examples/)`
+
 ### Deploy Spark Application on Kubernetes
 ```bash
 source bin/submit_spark_app.sh --image APP_IMAGE --name APP_NAME --main MAIN_CLASS --jar JAR_FILE --args APP_ARGS
