@@ -24,10 +24,13 @@ jobs:
         run: |
           cd examples/word-count
           mvn clean package
+
           version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           timestamp=$(date +"%Y%m%d%H%M%S")
           version_with_timestamp="${version}-${timestamp}"
           echo "Version with timestamp: $version_with_timestamp"
+
+          echo "VERSION_WITH_TIMESTAMP=$version_with_timestamp" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -38,5 +41,5 @@ jobs:
       - name: Docker Build & Push
         run: |
           cd examples/word-count
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:version_with_timestamp .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:version_with_timestamp
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP
