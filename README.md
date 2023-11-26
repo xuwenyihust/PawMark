@@ -1,7 +1,7 @@
 # Data Platform
 
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/build-examples.yml?logo=github&label=build-examples)
-](https://github.com/xuwenyihust/Data-Platform/actions/workflows/build-examples.yml)<space><space>
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/build-deploy-examples.yml?logo=github&label=build-&-deploy-examples)
+](https://github.com/xuwenyihust/Data-Platform/actions/workflows/build-deploy-examples.yml)<space><space>
 [![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)<space><space>
 
 

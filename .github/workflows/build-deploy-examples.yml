@@ -1,4 +1,4 @@
-name: Build Examples
+name: Build & Deploy Examples
 
 # Controls when the workflow will run
 on:
@@ -12,6 +12,15 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      deploy-example:
+        type: choice
+        description: Example to Deploy
+        options: 
+        - None
+        - WordCount
+      message:
+        required: true
 
 jobs:
   build-examples:
@@ -47,4 +56,13 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP --build-arg VERSION=$VERSION .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP
 
+  deploy-examples:
+    needs: build-examples
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.deploy-example != 'None' }}
+
+    steps:
+      - name: Deploy to GKE
+        run: |
+          echo "Deploy ${{ github.event.inputs.deploy-example }} to GKE!"
       
