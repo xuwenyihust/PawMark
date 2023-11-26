@@ -19,8 +19,6 @@ on:
         options: 
         - None
         - WordCount
-      message:
-        required: true
 
 jobs:
   build-examples:
