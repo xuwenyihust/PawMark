@@ -30,6 +30,7 @@ jobs:
           version_with_timestamp="${version}-${timestamp}"
           echo "Version with timestamp: $version_with_timestamp"
 
+          echo "VERSION=$version" >> $GITHUB_ENV
           echo "VERSION_WITH_TIMESTAMP=$version_with_timestamp" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
@@ -41,5 +42,5 @@ jobs:
       - name: Docker Build & Push
         run: |
           cd examples/word-count
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP --build-arg VERSION=$VERSION .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP

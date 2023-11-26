@@ -1,7 +1,8 @@
 # Use the official Apache Spark base image
 FROM apache/spark:3.5.0
 
-ARG JAR_FILE=target/word-count-1.0-SNAPSHOT-jar-with-dependencies.jar
+ARG VERSION
+ARG JAR_FILE=target/word-count-${VERSION}-jar-with-dependencies.jar
 
 ADD ${JAR_FILE} /opt/spark/app.jar
 
