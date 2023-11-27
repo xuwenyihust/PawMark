@@ -128,6 +128,9 @@ submit() {
         --conf spark.kubernetes.authenticate.executor.serviceAccountName=$SERVICE_ACCOUNT \
         --conf spark.kubernetes.file.upload.path=$FILE_UPLOAD_PATH \
         --conf spark.kubernetes.driver.label.app=spark \
+        --conf "spark.hadoop.fs.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem" \
+        --conf "spark.hadoop.fs.AbstractFileSystem.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS" \
+        --conf "spark.hadoop.fs.gs.auth.service.account.enable=true" \
         local://$APP_JAR \
         $APP_ARGS
 }

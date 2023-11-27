@@ -1,6 +1,6 @@
 #!/bin/bash
 source bin/env.sh
-source bin/connect_gke.sh
+source bin/connect_gcp.sh
 
 # Install Helm chart
 source bin/install_helm_chart.sh

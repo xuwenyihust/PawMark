@@ -10,6 +10,7 @@
       <scala.version>2.12.18</scala.version>
       <scala.compat.version>2.12</scala.compat.version>
       <spark.version>3.5.0</spark.version>
+      <gcs.connector.version>hadoop3-2.2.0</gcs.connector.version>
   </properties>
 
   <dependencies>
@@ -24,6 +25,19 @@
           <artifactId>spark-sql_${scala.compat.version}</artifactId>
           <version>${spark.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.google.cloud.bigdataoss</groupId>
+        <artifactId>gcs-connector</artifactId>
+        <version>${gcs.connector.version}</version>
+        <scope>runtime</scope>
+        <exclusions>
+            <exclusion>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+
   </dependencies>
 
   <build>

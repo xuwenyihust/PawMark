@@ -6,7 +6,7 @@ spec:
   shareProcessNamespace: true
   containers:
   - name: spark-kubernetes-driver
-    image: wenyixu101/word-count:1.0-SNAPSHOT-20231126034931
+    image: wenyixu101/word-count:1.0-SNAPSHOT-20231126205524
     resources:
       limits:
         cpu: "1"
@@ -36,7 +36,7 @@ spec:
         while true; do
           if ! pgrep -x "java"; then
             echo "Driver process completed. Deleting the Spark UI service."
-            kubectl delete svc spark-ui-service-name  # Replace with your service name
+            kubectl delete svc spark-ui-service -n spark-dev
             break
           fi
           # Wait for some time before checking again

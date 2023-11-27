@@ -24,6 +24,9 @@ object WordCount {
     // Collect and print word counts
     wordCounts.collect().foreach(println)
 
+    val dfWithoutSchema = spark.createDataFrame(wordCounts)
+    dfWithoutSchema.write.format("csv").save("gs://data-platform-bucket-20231126/wordcount/output")
+
     sleep(120000)  // Wait 60 seconds for the Spark job to finish
 
     // Stop the SparkSession

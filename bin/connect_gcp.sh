@@ -35,3 +35,11 @@ echo "Connected to GKE cluster: $GKE_CLUSTER_NAME"
 # Get GKE endpoint info
 export KUBERNETES_API_SERVER_HOST=$(gcloud container clusters describe $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --format='value(endpoint)')
 echo "Kubernetes API server host: $KUBERNETES_API_SERVER_HOST"
+
+# Check if the bucket already exists
+if gsutil ls -b "gs://$BUCKET_NAME" >/dev/null 2>&1; then
+    echo "Bucket gs://$BUCKET_NAME already exists."
+else
+    echo "Bucket gs://$BUCKET_NAME does not exist. Creating the bucket."
+    gsutil mb -l $BUCKET_LOCATION -c $BUCKET_STORAGE_CLASS "gs://$BUCKET_NAME"
+fi
