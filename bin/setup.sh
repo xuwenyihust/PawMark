@@ -8,10 +8,10 @@ source bin/install_helm_chart.sh
 # Setup cluster security
 source bin/setup_security.sh
 
-kubectl get namespace "$NAMESPACE" > /dev/null 2>&1
+kubectl get namespace "$GKE_NAMESPACE" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "Creating namespace: $NAMESPACE"
-    kubectl create namespace "$NAMESPACE"
+    echo "Creating namespace: $GKE_NAMESPACE"
+    kubectl create namespace "$GKE_NAMESPACE"
 else
-    echo "Namespace $NAMESPACE already exists"
+    echo "Namespace $GKE_NAMESPACE already exists"
 fi

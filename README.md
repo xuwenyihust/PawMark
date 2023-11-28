@@ -31,7 +31,7 @@ source bin/setup.sh
 
 ### Prepare Spark Application Docker Image
 - Could prepare your own docker image
-- Or use the examples in `[examples/](examples/)`
+- Or use the examples in [`examples/`](examples/)
 
 ### Deploy Spark Application on Kubernetes
 ```bash

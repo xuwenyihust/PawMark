@@ -1,5 +1,5 @@
 # Check if the GKE cluster exists
-if gcloud container clusters list --project $GKE_PROJECT_ID --zone $GKE_CLUSTER_ZONE --filter="name=$GKE_CLUSTER_NAME" | grep -q $GKE_CLUSTER_NAME; then
+if gcloud container clusters list --project $GCP_PROJECT_ID --zone $GKE_CLUSTER_ZONE --filter="name=$GKE_CLUSTER_NAME" | grep -q $GKE_CLUSTER_NAME; then
     echo "Cluster $GKE_CLUSTER_NAME exists. Deleting the cluster."
     
     # Delete the cluster

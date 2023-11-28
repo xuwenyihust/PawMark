@@ -86,10 +86,8 @@ submit() {
     PROJECT_HOME=$(pwd)
 
     # Define your Spark application's main class
-    # MAIN_CLASS="org.apache.spark.examples.SparkPi"
     MAIN_CLASS=$main
 
-    # APP_JAR="/opt/spark/examples/jars/spark-examples_${SCALA_VERSION}-${SPARK_VERSION}.jar"
     APP_JAR=$jar
     DRIVER_TEMPLATE="$PROJECT_HOME/kubernetes/spark-driver-template.yaml"
     CONTAINER_NAME="spark-kubernetes-driver"
@@ -121,9 +119,9 @@ submit() {
         --name $APP_NAME \
         --conf spark.kubernetes.driver.podTemplateFile=$DRIVER_TEMPLATE \
         --conf spark.kubernetes.container.image=$DOCKER_IMAGE \
-        --conf spark.kubernetes.namespace=$NAMESPACE \
-        --conf spark.kubernetes.authenticate.driver.serviceAccountName=$KSA_NAME \
-        --conf spark.kubernetes.authenticate.executor.serviceAccountName=$KSA_NAME \
+        --conf spark.kubernetes.namespace=$GKE_NAMESPACE \
+        --conf spark.kubernetes.authenticate.driver.serviceAccountName=$GKE_SA_NAME \
+        --conf spark.kubernetes.authenticate.executor.serviceAccountName=$GKE_SA_NAME \
         --conf spark.kubernetes.file.upload.path=$FILE_UPLOAD_PATH \
         --conf spark.kubernetes.driver.label.app=spark \
         --conf "spark.hadoop.fs.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem" \
