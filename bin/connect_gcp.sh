@@ -22,7 +22,8 @@ else
      --zone $GKE_CLUSTER_ZONE \
      --project $GKE_PROJECT_ID \
      --num-nodes $GKE_CLUSTER_NUM_NODES \
-     --machine-type $GKE_CLUSTER_MACHINE_TYPE
+     --machine-type $GKE_CLUSTER_MACHINE_TYPE \
+     --workload-pool=$GKE_PROJECT_ID.svc.id.goog
 fi
 
 # Connect to the cluster

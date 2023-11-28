@@ -97,8 +97,6 @@ submit() {
     # Set other Spark configurations and application arguments
     APP_ARGS=$args
 
-    K8S_NAMESPACE="spark-dev"
-    SERVICE_ACCOUNT="spark"
     # DOCKER_IMAGE="apache/spark:${SPARK_VERSION}"
     DOCKER_IMAGE=$image
     # Export the variable so that it can be used in the awk command below
@@ -123,9 +121,9 @@ submit() {
         --name $APP_NAME \
         --conf spark.kubernetes.driver.podTemplateFile=$DRIVER_TEMPLATE \
         --conf spark.kubernetes.container.image=$DOCKER_IMAGE \
-        --conf spark.kubernetes.namespace=$K8S_NAMESPACE \
-        --conf spark.kubernetes.authenticate.driver.serviceAccountName=$SERVICE_ACCOUNT \
-        --conf spark.kubernetes.authenticate.executor.serviceAccountName=$SERVICE_ACCOUNT \
+        --conf spark.kubernetes.namespace=$NAMESPACE \
+        --conf spark.kubernetes.authenticate.driver.serviceAccountName=$KSA_NAME \
+        --conf spark.kubernetes.authenticate.executor.serviceAccountName=$KSA_NAME \
         --conf spark.kubernetes.file.upload.path=$FILE_UPLOAD_PATH \
         --conf spark.kubernetes.driver.label.app=spark \
         --conf "spark.hadoop.fs.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem" \

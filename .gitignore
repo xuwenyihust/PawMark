@@ -167,3 +167,7 @@ practice
 
 my-start.sh
 *.tgz
+
+dependency-reduced-pom.xml
+
+spark-sa-key.json
