@@ -4,6 +4,7 @@ import java.lang.Thread.sleep
 object WordCount {
   def main(args: Array[String]) {
     // String to perform word count on
+    val outputPath = args(0)
     val inputString = "Hello Spark. Hello world. Spark is fun."
 
     // Create SparkSession
@@ -24,19 +25,14 @@ object WordCount {
     // Collect and print word counts
     wordCounts.collect().foreach(println)
 
-    println(22)
-
     val dfWithoutSchema = spark.createDataFrame(wordCounts)
     dfWithoutSchema
       .write
       .format("csv")
-      .option("path", "gs://data-platform-bucket-20231126/wordcount/output")
+      .option("path", outputPath)
       .save()
 
-    sleep(120000)  // Wait 60 seconds for the Spark job to finish
-
-    println(33)
-
+    sleep(10000)  
     // Stop the SparkSession
     spark.stop()
   }

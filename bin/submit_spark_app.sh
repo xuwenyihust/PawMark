@@ -107,6 +107,7 @@ submit() {
     cat $DRIVER_TEMPLATE
 
     # The command to submit the Spark job
+    # --conf spark.kubernetes.driver.podTemplateFile=$DRIVER_TEMPLATE \
     spark-submit \
         --class $MAIN_CLASS \
         --master k8s://$KUBERNETES_API_SERVER_HOST:$KUBERNETES_API_SERVER_PORT \
@@ -117,7 +118,7 @@ submit() {
         --executor-cores 1 \
         --executor-memory 1g \
         --name $APP_NAME \
-        --conf spark.kubernetes.driver.podTemplateFile=$DRIVER_TEMPLATE \
+        --conf spark.kubernetes.driver.image=$DOCKER_IMAGE \
         --conf spark.kubernetes.container.image=$DOCKER_IMAGE \
         --conf spark.kubernetes.namespace=$GKE_NAMESPACE \
         --conf spark.kubernetes.authenticate.driver.serviceAccountName=$GKE_SA_NAME \
