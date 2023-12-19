@@ -1,0 +1,6 @@
+Hello world, this is a sample text file for Spark word count.
+This file contains multiple words, some of which are repeated.
+Repeated words are useful for testing the word count functionality.
+The word 'word' is an example of a repeated word in this file.
+Spark is a powerful tool for processing large amounts of data.
+This is the end of the sample text file.

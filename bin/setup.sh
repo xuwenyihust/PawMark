@@ -1,6 +1,7 @@
 #!/bin/bash
 source bin/env.sh
 source bin/connect_gcp.sh
+source bin/upload_sample_dataset.sh
 
 # Install Helm chart
 source bin/install_helm_chart.sh

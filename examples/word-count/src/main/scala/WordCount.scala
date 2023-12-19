@@ -3,9 +3,8 @@ import java.lang.Thread.sleep
 
 object WordCount {
   def main(args: Array[String]) {
-    // String to perform word count on
-    val outputPath = args(0)
-    val inputString = "Hello Spark. Hello world. Spark is fun."
+    val inputPath = args(0)
+    val outputPath = args(1)
 
     // Create SparkSession
     val spark = SparkSession
@@ -13,20 +12,17 @@ object WordCount {
       .appName("Word Count")
       .getOrCreate()
 
-    // Parallelize the string into an RDD
-    val textRdd = spark.sparkContext.parallelize(Seq(inputString))
+    import spark.implicits._
+
+    val textFile = spark.read.text(inputPath).as[String]
 
     // Split each line into words
-    val words = textRdd.flatMap(line => line.split("\\W+"))  // Split on non-word characters
+    val words = textFile.flatMap(line => line.split("\\W+"))  // Split on non-word characters
 
     // Count each word
-    val wordCounts = words.map(word => (word, 1)).reduceByKey(_ + _)
+    val wordCounts = words.groupBy("value").count()
 
-    // Collect and print word counts
-    wordCounts.collect().foreach(println)
-
-    val dfWithoutSchema = spark.createDataFrame(wordCounts)
-    dfWithoutSchema
+    wordCounts
       .write
       .format("csv")
       .option("path", outputPath)

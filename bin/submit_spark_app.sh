@@ -5,7 +5,8 @@ image=""
 name=""
 main=""
 jar=""
-args=""
+input=""
+output=""
 
 arg_check() {
     local LONGOPTS=image:,name:,main:,jar:,args:
@@ -40,8 +41,12 @@ arg_check() {
                 jar="$2"
                 shift 2
                 ;;
-            --args)
-                args="$2"
+            --input)
+                input="$2"
+                shift 2
+                ;;
+            --output)
+                output="$2"
                 shift 2
                 ;;
             --)
@@ -78,7 +83,8 @@ arg_check() {
     echo "name: $name"
     echo "main: $main"   
     echo "jar: $jar"
-    echo "args: $args"
+    echo "input: $input"
+    echo "output: $output"
 }
 
 submit() {
@@ -91,9 +97,6 @@ submit() {
     APP_JAR=$jar
     DRIVER_TEMPLATE="$PROJECT_HOME/kubernetes/spark-driver-template.yaml"
     CONTAINER_NAME="spark-kubernetes-driver"
-
-    # Set other Spark configurations and application arguments
-    APP_ARGS=$args
 
     # DOCKER_IMAGE="apache/spark:${SPARK_VERSION}"
     DOCKER_IMAGE=$image
@@ -129,7 +132,8 @@ submit() {
         --conf "spark.hadoop.fs.AbstractFileSystem.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS" \
         --conf "spark.hadoop.fs.gs.auth.service.account.enable=true" \
         local://$APP_JAR \
-        $APP_ARGS
+        $input \
+        $output
 }
 
 arg_check "$@"
