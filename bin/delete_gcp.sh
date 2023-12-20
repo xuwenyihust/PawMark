@@ -3,7 +3,7 @@ if gcloud container clusters list --project $GCP_PROJECT_ID --zone $GKE_CLUSTER_
     echo "Cluster $GKE_CLUSTER_NAME exists. Deleting the cluster."
     
     # Delete the cluster
-    gcloud container clusters delete $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --project $GKE_PROJECT_ID
+    gcloud container clusters delete $GKE_CLUSTER_NAME --zone $GKE_CLUSTER_ZONE --project $GCP_PROJECT_ID
 else
     echo "Cluster $GKE_CLUSTER_NAME does not exist or you don't have permission to access it."
 fi
