@@ -1,8 +1,12 @@
-# Data Platform
-
-[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/build-deploy-examples.yml?logo=github&label=build%20%26%20deploy%20examples)
-](https://github.com/xuwenyihust/Data-Platform/actions/workflows/build-deploy-examples.yml) [![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)
-
+<h1 align="center">Data Platform: For Big Data & AI</h2>
+<p align="center">
+    <a href="https://github.com/xuwenyihust/Data-Platform/actions/workflows/build-deploy-examples.yml">
+        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/build-deploy-examples.yml?logo=github&label=build%20%26%20deploy%20examples">
+    </a>
+    <a href="https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE">
+        <img alt="GitHub License" src="https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE">
+    </a>
+</p>
 
 ## Overview
 A big data platform for data processing and machine learning based on Kubernetes and Spark.
@@ -36,7 +40,7 @@ source bin/setup.sh
 
 ### Deploy Spark Application on Kubernetes
 ```bash
-source bin/submit_spark_app.sh --image APP_IMAGE --name APP_NAME --main MAIN_CLASS --jar JAR_FILE --args APP_ARGS
+source bin/submit_spark_app.sh --image APP_IMAGE --name APP_NAME --main MAIN_CLASS --jar JAR_FILE
 ```
 
 ## License
