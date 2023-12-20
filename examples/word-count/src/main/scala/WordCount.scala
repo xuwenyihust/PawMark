@@ -28,7 +28,7 @@ object WordCount {
       .option("path", outputPath)
       .save()
 
-    sleep(10000)  
+    // sleep(1000)  
     // Stop the SparkSession
     spark.stop()
   }
