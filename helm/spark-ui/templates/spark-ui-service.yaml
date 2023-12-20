@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: spark-ui-service
+  name: {{ .Values.serviceName }}
   namespace: spark-dev
 spec:
   type: LoadBalancer  # Use NodePort if LoadBalancer is not required
@@ -12,3 +12,4 @@ spec:
   selector:
     app: spark
     spark-role: driver
+    name: {{ .Values.appName }}

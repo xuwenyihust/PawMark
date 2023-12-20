@@ -6,7 +6,7 @@ spec:
   shareProcessNamespace: true
   containers:
   - name: spark-kubernetes-driver
-    image: wenyixu101/word-count:1.0-SNAPSHOT-20231128135758
+    image: wenyixu101/word-count:1.0-SNAPSHOT-20231219212716
     resources:
       limits:
         cpu: "1"
@@ -15,42 +15,42 @@ spec:
         cpu: "1"
         memory: "512Mi"
 
-  # - name: spark-ui-service
-  #   image: wenyixu101/kubectl:0.0.3  # Use an image with kubectl
-  #   env:
-  #     - name: DRIVER_POD_NAME
-  #       valueFrom:
-  #         fieldRef:
-  #           fieldPath: metadata.name
-  #   command: ["/bin/sh"]
-  #   args: 
-  #     - '-c'
-  #     - |
-  #       echo 'Create Spark UI service!'
+  - name: spark-ui-service
+    image: wenyixu101/kubectl:0.0.3  # Use an image with kubectl
+    env:
+      - name: DRIVER_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+    command: ["/bin/sh"]
+    args: 
+      - '-c'
+      - |
+        echo 'Create Spark UI service!'
 
-  #       kubectl apply -f spark-ui-service.yaml
+        kubectl apply -f spark-ui-service.yaml
 
-  #       sleep 15
+        sleep 15
 
-  #       # Loop to keep checking if the driver is still running
-  #       while true; do
-  #         if ! pgrep -x "java"; then
-  #           echo "Driver process completed. Deleting the Spark UI service."
-  #           kubectl delete svc spark-ui-service -n spark-dev
-  #           break
-  #         fi
-  #         # Wait for some time before checking again
-  #         echo "Waiting for the driver pod to complete..."
-  #         sleep 10
-  #       done
-  #   securityContext:
-  #     capabilities:
-  #       add:
-  #       - SYS_PTRACE
-  #   resources:
-  #     limits:
-  #       cpu: "1"
-  #       memory: "512Mi"
-  #     requests:
-  #       cpu: "1"
-  #       memory: "256Mi"
+        # Loop to keep checking if the driver is still running
+        while true; do
+          if ! pgrep -x "java"; then
+            echo "Driver process completed. Deleting the Spark UI service."
+            kubectl delete svc spark-ui-service -n spark-dev
+            break
+          fi
+          # Wait for some time before checking again
+          echo "Waiting for the driver pod to complete..."
+          sleep 10
+        done
+    securityContext:
+      capabilities:
+        add:
+        - SYS_PTRACE
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "1"
+        memory: "256Mi"
