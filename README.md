@@ -11,6 +11,8 @@ A big data platform for data processing and machine learning based on Kubernetes
 ## Setup
 ### Prerequisites
 - GCP account
+  - Kubernetes Engine
+  - Cloud Storage
 - gcloud SDK
 - kubectl
 - helm
