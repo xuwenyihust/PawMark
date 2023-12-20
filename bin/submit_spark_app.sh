@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Initialize variables
+version=""
 image=""
 name=""
 main=""
@@ -9,7 +10,7 @@ input=""
 output=""
 
 arg_check() {
-    local LONGOPTS=image:,name:,main:,jar:,args:
+    local LONGOPTS=version:,image:,name:,main:,jar:,input:,output:
     # Parse the arguments
     PARSED=$(getopt --longoptions=$LONGOPTS -- "$@")
     if [ $? -ne 0 ]; then
@@ -25,6 +26,10 @@ arg_check() {
     # Extract the arguments
     while true; do
         case "$1" in
+            --version)
+                version="$2"
+                shift 2
+                ;;
             --image)
                 image="$2"
                 shift 2
@@ -59,6 +64,11 @@ arg_check() {
     done
 
     # Check if required arguments were provided
+    if [ -z "$version" ]; then
+        echo "Error: Argument for --version is required"
+        return 1
+    fi
+
     if [ -z "$image" ]; then
         echo "Error: Argument for --image is required"
         return 1
@@ -79,12 +89,40 @@ arg_check() {
         return 1
     fi
 
+    echo "version: $version"
     echo "image: $image"
     echo "name: $name"
     echo "main: $main"   
     echo "jar: $jar"
     echo "input: $input"
     echo "output: $output"
+}
+
+start_ui() {    
+    APP_NAME=$name
+    # Check if the release exists
+    if helm list -n $GKE_NAMESPACE | grep -q $RELEASE_SPARK_UI_NAME; then
+        echo "Upgrading release '$RELEASE_SPARK_UI_NAME'..."
+
+        # Upgrade the Helm release
+        helm upgrade $RELEASE_SPARK_UI_NAME $CHART_SPARK_UI_NAME \
+            --set serviceName=spark-ui-service-$version \
+            --set appName=$APP_NAME \
+            --namespace $GKE_NAMESPACE \
+            --version $CHART_SPARK_UI_VERSION \
+            --install  # The --install flag ensures it installs if not present
+
+        echo "Upgrade completed."
+    else
+        echo "Release '$RELEASE_SPARK_UI_NAME' not found. Installing..."
+        # Install the Helm chart as a new release
+        helm install $RELEASE_SPARK_UI_NAME $CHART_SPARK_UI_NAME \
+            --set serviceName=spark-ui-service-$version \
+            --set appName=$APP_NAME \
+            --namespace $GKE_NAMESPACE \
+            --version $CHART_SPARK_UI_VERSION \
+            --create-namespace  # Creates the namespace if it doesn't exist
+    fi
 }
 
 submit() {
@@ -105,9 +143,9 @@ submit() {
 
     FILE_UPLOAD_PATH="/tmp/spark-uploads"
 
-    echo "Replacing the image for spark-kubernetes-driver container...\n"
-    awk '/- name: spark-kubernetes-driver/{flag=1} flag && /image:/{sub(/image:.*/, "image: " ENVIRON["DOCKER_IMAGE"]); flag=0} 1' $DRIVER_TEMPLATE > tmpfile && mv tmpfile $DRIVER_TEMPLATE
-    cat $DRIVER_TEMPLATE
+    # echo "Replacing the image for spark-kubernetes-driver container...\n"
+    # awk '/- name: spark-kubernetes-driver/{flag=1} flag && /image:/{sub(/image:.*/, "image: " ENVIRON["DOCKER_IMAGE"]); flag=0} 1' $DRIVER_TEMPLATE > tmpfile && mv tmpfile $DRIVER_TEMPLATE
+    # cat $DRIVER_TEMPLATE
 
     # The command to submit the Spark job
     # --conf spark.kubernetes.driver.podTemplateFile=$DRIVER_TEMPLATE \
@@ -128,6 +166,7 @@ submit() {
         --conf spark.kubernetes.authenticate.executor.serviceAccountName=$GKE_SA_NAME \
         --conf spark.kubernetes.file.upload.path=$FILE_UPLOAD_PATH \
         --conf spark.kubernetes.driver.label.app=spark \
+        --conf spark.kubernetes.driver.label.name=$APP_NAME \
         --conf "spark.hadoop.fs.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem" \
         --conf "spark.hadoop.fs.AbstractFileSystem.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS" \
         --conf "spark.hadoop.fs.gs.auth.service.account.enable=true" \
@@ -139,10 +178,10 @@ submit() {
 arg_check "$@"
 parse_status=$?
 
+start_ui "$@"
+
 if [ $parse_status -ne 0 ]; then
     echo "An error occurred in arg_check"
-# elif
-
 else
     echo "Submitting Spark application..."
     submit "$@"
