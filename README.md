@@ -5,10 +5,6 @@
     </a>
     <a href="https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE">
         <img alt="GitHub License" src="https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE">
-    </a>
-        <a href="">
-        <img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/xuwenyihust/Data-Platform">
-    </a>
 </p>
 
 ## Overview
