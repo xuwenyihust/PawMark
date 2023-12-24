@@ -42,6 +42,9 @@ source bin/setup.sh
 - Could prepare your own docker image
 - Or use the examples in [`examples/`](examples/)
 
+### Prepare Input Data (If Needed)
+- GCS directory: `gs://<BUCKET_NAME>/application/`
+
 ### Deploy Spark Application on Kubernetes
 ```bash
 source bin/submit_spark_app.sh --image APP_IMAGE --name APP_NAME --main MAIN_CLASS --jar JAR_FILE
