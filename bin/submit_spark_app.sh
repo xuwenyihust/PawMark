@@ -143,12 +143,7 @@ submit() {
 
     FILE_UPLOAD_PATH="/tmp/spark-uploads"
 
-    # echo "Replacing the image for spark-kubernetes-driver container...\n"
-    # awk '/- name: spark-kubernetes-driver/{flag=1} flag && /image:/{sub(/image:.*/, "image: " ENVIRON["DOCKER_IMAGE"]); flag=0} 1' $DRIVER_TEMPLATE > tmpfile && mv tmpfile $DRIVER_TEMPLATE
-    # cat $DRIVER_TEMPLATE
-
     # The command to submit the Spark job
-    # --conf spark.kubernetes.driver.podTemplateFile=$DRIVER_TEMPLATE \
     spark-submit \
         --class $MAIN_CLASS \
         --master k8s://$KUBERNETES_API_SERVER_HOST:$KUBERNETES_API_SERVER_PORT \
@@ -167,6 +162,9 @@ submit() {
         --conf spark.kubernetes.file.upload.path=$FILE_UPLOAD_PATH \
         --conf spark.kubernetes.driver.label.app=spark \
         --conf spark.kubernetes.driver.label.name=$APP_NAME \
+        --conf "spark.eventLog.enabled=true" \
+        --conf "spark.eventLog.dir=gs://$BUCKET_NAME/event-logs/" \
+        --conf "spark.history.fs.logDirectory=gs://$BUCKET_NAME/event-logs/" \
         --conf "spark.hadoop.fs.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem" \
         --conf "spark.hadoop.fs.AbstractFileSystem.gs.impl=com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS" \
         --conf "spark.hadoop.fs.gs.auth.service.account.enable=true" \

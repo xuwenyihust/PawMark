@@ -10,6 +10,11 @@
 ## Overview
 A big data platform for data processing and machine learning based on Kubernetes and Spark.
 
+## Supported Versions
+- Spark: 3.5.0
+- Scala: 2.12
+- GCS Connector: hadoop3-2.2.0
+
 ## Setup
 ### Prerequisites
 - GCP account
