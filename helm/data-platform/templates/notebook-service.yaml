@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: notebook
+spec:
+  selector:
+    app: notebook
+  ports:
+  - port: 80
+    targetPort: 8888
+  type: LoadBalancer
