@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notebook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notebook
+  template:
+    metadata:
+      labels:
+        app: notebook
+    spec:
+      containers:
+      - name: notebook
+        image: jupyter/all-spark-notebook:x86_64-spark-3.5.0
+        ports:
+        - containerPort: 8888
+        env:
+        - name: JUPYTER_ENABLE_LAB
+          value: "no"
+        - name: NOTEBOOK_ARGS
+          value: "--NotebookApp.token='' --NotebookApp.password='' --NotebookApp.disable_check_xsrf=True"
