@@ -1,9 +1,11 @@
 from google.cloud import storage
+import os
 
 def gcs_save_hook(os_path, model, contents_manager, **kwargs):
     """Save hook function for uploading notebook to GCS."""
     gcs_client = storage.Client()
-    bucket = gcs_client.bucket('data-platform-bucket-20231126')
+    bucket_name = os.environ.get("BUCKET_NAME", "default-bucket-name")
+    bucket = gcs_client.bucket(bucket_name)
 
     # Remove the 'home/jovyan' prefix from the os_path
     gcs_path = os_path
