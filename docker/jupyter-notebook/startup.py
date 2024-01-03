@@ -1,5 +1,22 @@
 import os
+from google.cloud import storage
+import subprocess
 from pyspark.sql import SparkSession
+
+# Initialize the GCS client
+storage_client = storage.Client()
+
+# Get the GCS bucket
+bucket_name = os.environ.get("BUCKET_NAME", "default-bucket-name")
+bucket = storage_client.bucket(bucket_name)
+
+# Ensure the local directory exists
+local_notebook_dir = "/home/jovyan/"
+os.makedirs(local_notebook_dir, exist_ok=True)
+
+# Sync from GCS to local
+subprocess.run(["gsutil", "-m", "rsync", "-r", f"gs://{bucket_name}/notebooks", local_notebook_dir])
+
 
 kubernetes_host = os.environ.get('KUBERNETES_SERVICE_HOST')
 kubernetes_port = os.environ.get('KUBERNETES_SERVICE_PORT')
