@@ -15,7 +15,7 @@ spec:
       serviceAccountName: spark
       containers:
       - name: notebook
-        image: wenyixu101/all-spark-notebook:spark-3.5.0_8
+        image: wenyixu101/all-spark-notebook:spark-3.5.0_11
         imagePullPolicy: Always
         command: ["/bin/bash", "-c", "start-notebook.sh"]
         ports:

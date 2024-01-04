@@ -2,15 +2,15 @@ FROM jupyter/all-spark-notebook:spark-3.5.0
 
 USER root
 
-# # Install necessary packages for Google Cloud SDK
+# Install necessary packages for Google Cloud SDK
 RUN apt-get update -y && \
     apt-get install -y curl gcc python3-dev apt-transport-https lsb-release gnupg && \
     rm -rf /var/lib/apt/lists/*
 
-# # Add Google Cloud SDK to the sources list
+# Add Google Cloud SDK to the sources list
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
-# # Import Google's public key
+# Import Google's public key
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 
 # Install Google Cloud SDK
@@ -20,6 +20,10 @@ RUN apt-get update -y && \
 
 # Install the Google Cloud Storage Python library
 RUN pip install --upgrade google-cloud-storage
+
+# GCS connector
+RUN wget -P /usr/local/spark/jars/ \
+    https://repo1.maven.org/maven2/com/google/cloud/bigdataoss/gcs-connector/hadoop3-2.2.6/gcs-connector-hadoop3-2.2.6-shaded.jar
 
 # Create a new directory for the IPython profile
 RUN mkdir -p /home/jovyan/.custom_ipython_profile/profile_default/startup/ && \
