@@ -37,6 +37,12 @@ spark = SparkSession.builder \
     .config("spark.kubernetes.container.image", "wenyixu101/spark:3.5.0-python3.11") \
     .config("spark.kubernetes.authenticate.driver.serviceAccountName", "spark") \
     .config("spark.kubernetes.authenticate.executor.serviceAccountName", "spark") \
+    .config("spark.eventLog.enabled", "true") \
+    .config("spark.eventLog.dir", f"gs://{bucket_name}/event-logs/") \
+    .config("spark.history.fs.logDirectory", f"gs://{bucket_name}/event-logs/") \
+    .config("spark.hadoop.fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem") \
+    .config("spark.hadoop.fs.AbstractFileSystem.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS") \
+    .config("spark.hadoop.fs.gs.auth.service.account.enable", "true") \
     .getOrCreate()
 
 print("Spark session created on startup")
