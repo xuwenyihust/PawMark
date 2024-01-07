@@ -19,7 +19,8 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Install the Google Cloud Storage Python library
-RUN pip install --upgrade google-cloud-storage
+RUN pip install --upgrade google-cloud-storage \
+    kubernetes
 
 # GCS connector
 RUN wget -P /usr/local/spark/jars/ \

@@ -13,6 +13,7 @@ A big data platform for data processing and machine learning based on Kubernetes
 ## Supported Versions
 - Spark: 3.5.0
 - Scala: 2.12
+- Python: 3.11
 - GCS Connector: hadoop3-2.2.0
 
 ## Setup
