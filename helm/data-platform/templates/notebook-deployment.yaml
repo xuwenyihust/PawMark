@@ -15,11 +15,24 @@ spec:
       serviceAccountName: spark
       containers:
       - name: notebook
-        image: wenyixu101/all-spark-notebook:spark-3.5.0_11
+        image: wenyixu101/all-spark-notebook:spark-3.5.0_25
         imagePullPolicy: Always
         command: ["/bin/bash", "-c", "start-notebook.sh"]
         ports:
         - containerPort: 8888
+          name: notebook
+        # Spark UI
+        - containerPort: 4040
+        - containerPort: 4041
+        - containerPort: 4042
+        - containerPort: 4043
+        - containerPort: 4044
+        - containerPort: 4045
+        - containerPort: 4046
+        - containerPort: 4047
+        - containerPort: 4048
+        - containerPort: 4049
+        - containerPort: 4050
         env:
         - name: JUPYTER_ENABLE_LAB
           value: "no"

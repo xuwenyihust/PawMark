@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: notebook-spark-ui
+spec:
+    type: LoadBalancer
+    selector:
+      app: notebook
+    ports:
+    - name: spark-ui-4040
+      port: 4040
+      targetPort: 4040
+    - name: spark-ui-4041
+      port: 4041
+      targetPort: 4041
+    - name: spark-ui-4042
+      port: 4042
+      targetPort: 4042
+    - name: spark-ui-4043
+      port: 4043
+      targetPort: 4043
+    - name: spark-ui-4044
+      port: 4044
+      targetPort: 4044
+    - name: spark-ui-4045
+      port: 4045
+      targetPort: 4045
+    - name: spark-ui-4046
+      port: 4046
+      targetPort: 4046
+    - name: spark-ui-4047
+      port: 4047
+      targetPort: 4047
+    - name: spark-ui-4048
+      port: 4048
+      targetPort: 4048
+    - name: spark-ui-4049
+      port: 4049
+      targetPort: 4049
+    - name: spark-ui-4050
+      port: 4050
+      targetPort: 4050
