@@ -1,13 +1,19 @@
 <h1 align="center">DataPulse: Platform For Big Data & AI</h2>
 <p align="center">
     <a href="https://github.com/xuwenyihust/DataPulse/actions/workflows/build-examples.yml">
-        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/DataPulse/build-examples.yml?logo=github&label=build%20%20examples">
+        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/DataPulse/build-examples.yml?logo=github&label=Build%20%20Examples">
     </a>
     <a href="https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker.yml">
-      <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/DataPulse/build-docker.yml?logo=github&label=build%20docker">
+      <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/DataPulse/build-docker.yml?logo=github&label=Build%20Docker">
+    </a>
+    <a href="https://github.com/xuwenyihust/DataPulse/releases">
+      <img alt="GitHub Release" src="https://img.shields.io/github/v/release/xuwenyihust/DataPulse?include_prereleases&label=Release">
+    </a>
+    <a>
+      <img alt="Static Badge" src="https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark">
     </a>
     <a href="https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE">
-        <img alt="GitHub License" src="https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE">
+        <img alt="GitHub License" src="https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE&label=License">
     </a>
 </p>
 
@@ -22,7 +28,7 @@
   - History Server
 
 ## Supported Versions
-- Spark: 3.5.0
+- Apache Spark: 3.5.0
 - Scala: 2.12
 - Python: 3.11
 - GCS Connector: hadoop3-2.2.0
