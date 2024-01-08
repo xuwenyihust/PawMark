@@ -7,8 +7,20 @@
         <img alt="GitHub License" src="https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE">
 </p>
 
+> ⚠️ Currently in Development: Expect breaking changes and bugs!
+
 ## Overview
 A big data platform for data processing and machine learning based on Kubernetes and Spark.
+
+## Features
+- Spark Application Deployment
+    - Jar Application Submission
+    - PySpark Application Submission
+    - Jupyter Notebook
+        - Customized Integration with PySpark
+- Monitoring
+  - Spark UI
+  - History Server
 
 ## Supported Versions
 - Spark: 3.5.0

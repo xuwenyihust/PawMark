@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: spark-history-server
-        image: wenyixu101/spark-history-server:3.5.0
+        image: wenyixu101/spark-history-server:latest
         command: ["/bin/sh", "-c"]
         args: ["/opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer"]
         env:
