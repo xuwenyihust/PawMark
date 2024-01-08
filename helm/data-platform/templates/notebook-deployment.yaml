@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notebook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notebook
+  template:
+    metadata:
+      labels:
+        app: notebook
+    spec:
+      serviceAccountName: spark
+      containers:
+      - name: notebook
+        image: wenyixu101/all-spark-notebook:latest
+        imagePullPolicy: Always
+        command: ["/bin/bash", "-c", "start-notebook.sh"]
+        ports:
+        - containerPort: 8888
+          name: notebook
+        # Spark UI
+        - containerPort: 4040
+        - containerPort: 4041
+        - containerPort: 4042
+        - containerPort: 4043
+        - containerPort: 4044
+        - containerPort: 4045
+        - containerPort: 4046
+        - containerPort: 4047
+        - containerPort: 4048
+        - containerPort: 4049
+        - containerPort: 4050
+        env:
+        - name: JUPYTER_ENABLE_LAB
+          value: "no"
+        - name: NOTEBOOK_ARGS
+          value: "--NotebookApp.token='' --NotebookApp.password='' --NotebookApp.disable_check_xsrf=True"

@@ -44,3 +44,11 @@ else
     echo "Bucket gs://$BUCKET_NAME does not exist. Creating the bucket."
     gsutil mb -l $BUCKET_LOCATION -c $BUCKET_STORAGE_CLASS "gs://$BUCKET_NAME"
 fi
+
+# Create event-logs folder
+if gsutil ls -b "gs://$BUCKET_NAME/event-logs" >/dev/null 2>&1; then
+    echo "Bucket gs://$BUCKET_NAME/event-logs already exists."
+else
+    echo "Folder gs://$BUCKET_NAME/event-logs does not exist. Creating the folder."
+    gsutil cp -r ./resources/event-logs gs://$BUCKET_NAME/event-logs
+fi

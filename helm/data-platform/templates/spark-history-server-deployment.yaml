@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-history-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-history-server
+  template:
+    metadata:
+      labels:
+        app: spark-history-server
+    spec:
+      containers:
+      - name: spark-history-server
+        image: wenyixu101/spark-history-server:latest
+        command: ["/bin/sh", "-c"]
+        args: ["/opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer"]
+        env:
+        - name: SPARK_HISTORY_OPTS
+          value: "-Dspark.history.fs.logDirectory=gs://{{ .Values.bucket.name }}/event-logs/ -Dspark.eventLog.enabled=true"
+        ports:
+        - containerPort: 18080
+      serviceAccountName: spark
