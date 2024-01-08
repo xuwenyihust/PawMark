@@ -16,6 +16,10 @@
         <img alt="GitHub License" src="https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE&label=License">
     </a>
 </p>
+<p align="center">
+  <a href="https://github.com/xuwenyihust/DataPulse/wiki">Documentation</a> 
+</p>
+
 
 ## Features
 - Spark Application Deployment
