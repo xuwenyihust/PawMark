@@ -50,6 +50,11 @@ ENV JUPYTER_CONFIG_DIR /home/jovyan/.jupyter/
 # Add the JUPYTER_CONFIG_DIR to the PYTHONPATH
 ENV PYTHONPATH "${PYTHONPATH}:${JUPYTER_CONFIG_DIR}"
 
+ENV HOME_DIR="/home/jovyan"
 ENV BUCKET_NAME="data-platform-bucket-20231126"
+ENV NAMESPACE="spark-dev"
+ENV SERVICE_ACCOUNT="spark"
+ENV EXECUTOR_IMAGE="wenyixu101/spark:3.5.0-python3.11"
+ENV WEBUI_SERVICE_NAME="notebook-spark-ui"
 
 
