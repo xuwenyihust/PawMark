@@ -9,9 +9,6 @@
 
 > ⚠️ Currently in Development: Expect breaking changes and bugs!
 
-## Overview
-A big data platform for data processing and machine learning based on Kubernetes and Spark.
-
 ## Features
 - Spark Application Deployment
     - Jar Application Submission
@@ -28,8 +25,7 @@ A big data platform for data processing and machine learning based on Kubernetes
 - Python: 3.11
 - GCS Connector: hadoop3-2.2.0
 
-## Setup
-### Prerequisites
+## Prerequisites
 - GCP account
   - Kubernetes Engine
   - Cloud Storage
@@ -39,6 +35,7 @@ A big data platform for data processing and machine learning based on Kubernetes
 - docker
 - python3
 
+## Quickstart
 ### Configuration
 ```bash
 cp bin/env_template.yaml bin/env.yaml
