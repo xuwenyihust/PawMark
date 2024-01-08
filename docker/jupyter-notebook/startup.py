@@ -6,8 +6,6 @@ from IPython import get_ipython
 from IPython.display import *
 from kubernetes import client, config
 
-print("Running startup script startup.py")
-
 # Initialize the GCS client
 storage_client = storage.Client()
 
@@ -16,7 +14,7 @@ bucket_name = os.environ.get("BUCKET_NAME", "default-bucket-name")
 bucket = storage_client.bucket(bucket_name)
 
 # Ensure the local directory exists
-local_notebook_dir = "/home/jovyan/"
+local_notebook_dir = os.environ.get("HOME_DIR", "/home/jovyan")
 os.makedirs(local_notebook_dir, exist_ok=True)
 
 # Sync from GCS to local
@@ -30,6 +28,9 @@ kubernetes_url = f"k8s://https://{kubernetes_host}:{kubernetes_port}"
 
 app_name = os.environ.get("APP_NAME", "PySpark Example")
 driver_host = "notebook-cluster-ip.spark-dev.svc.cluster.local"
+namespace = os.environ.get("NAMESPACE", "spark-dev")
+service_account = os.environ.get("SERVICE_ACCOUNT", "spark")
+executor_image = os.environ.get("EXECUTOR_IMAGE", "wenyixu101/spark:3.5.0-python3.11")
 
 # Create a Spark session
 def create_spark():
@@ -43,10 +44,10 @@ def create_spark():
         .config("spark.executor.instances", "1") \
         .config("spark.executor.cores", "1") \
         .config("spark.executor.memory", "1g") \
-        .config("spark.kubernetes.namespace", "spark-dev") \
-        .config("spark.kubernetes.container.image", "wenyixu101/spark:3.5.0-python3.11") \
-        .config("spark.kubernetes.authenticate.driver.serviceAccountName", "spark") \
-        .config("spark.kubernetes.authenticate.executor.serviceAccountName", "spark") \
+        .config("spark.kubernetes.namespace", namespace) \
+        .config("spark.kubernetes.container.image", executor_image) \
+        .config("spark.kubernetes.authenticate.driver.serviceAccountName", service_account) \
+        .config("spark.kubernetes.authenticate.executor.serviceAccountName", service_account) \
         .config("spark.eventLog.enabled", "true") \
         .config("spark.eventLog.dir", f"gs://{bucket_name}/event-logs/") \
         .config("spark.history.fs.logDirectory", f"gs://{bucket_name}/event-logs/") \
@@ -65,8 +66,7 @@ def start():
     v1 = client.CoreV1Api()
 
     # Fetching the service details
-    service_name = "notebook-spark-ui"
-    namespace = "spark-dev"
+    service_name = os.environ.get("WEBUI_SERVICE_NAME", "notebook-spark-ui")
     service = v1.read_namespaced_service(service_name, namespace)
 
     webui_host = service.status.load_balancer.ingress[0].ip
