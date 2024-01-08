@@ -1,4 +1,4 @@
-<h1 align="center">Data Platform: For Big Data & AI</h2>
+<h1 align="center">DataPulse: Platform For Big Data & AI</h2>
 <p align="center">
     <a href="https://github.com/xuwenyihust/Data-Platform/actions/workflows/build-deploy-examples.yml">
         <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/build-deploy-examples.yml?logo=github&label=build%20%20examples">
