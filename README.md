@@ -11,8 +11,6 @@
     </a>
 </p>
 
-> ⚠️ Currently in Development: Expect breaking changes and bugs!
-
 ## Features
 - Spark Application Deployment
     - Jar Application Submission
