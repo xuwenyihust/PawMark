@@ -1,7 +1,7 @@
 <h1 align="center">DataPulse: Platform For Big Data & AI</h2>
 <p align="center">
-    <a href="https://github.com/xuwenyihust/Data-Platform/actions/workflows/build-deploy-examples.yml">
-        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/Data-Platform/build-deploy-examples.yml?logo=github&label=build%20%20examples">
+    <a href="https://github.com/xuwenyihust/DataPulse/actions/workflows/build-examples.yml">
+        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/DataPulse/build-examples.yml?logo=github&label=build%20%20examples">
     </a>
     <a href="https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker.yml">
       <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/xuwenyihust/DataPulse/build-docker.yml?logo=github&label=build%20docker">
@@ -65,25 +65,6 @@ start()
 ![Alt text](<resources/images/spark-ui.png>)
 
 Check Spark UI by clicking the link in the notebook cell output.
-
-### Spark Jar Application
-#### Step1: Setup Configuration
-Same as above.
-
-#### Step2: Create a Kubernetes cluster on GCP
-Same as above.
-
-#### Step3: Prepare Spark Application Docker Image
-- Could prepare your own docker image
-- Or use the examples in [`examples/`](examples/)
-
-#### Step4: Prepare Input Data (If Needed)
-- GCS directory: `gs://<BUCKET_NAME>/application/`
-
-#### Step5: Deploy Spark Application on Kubernetes
-```bash
-source bin/submit_spark_app.sh --image APP_IMAGE --name APP_NAME --main MAIN_CLASS --jar JAR_FILE
-```
 
 ## License
 This project is licensed under the terms of the MIT license.
