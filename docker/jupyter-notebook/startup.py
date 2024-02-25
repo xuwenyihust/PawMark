@@ -85,27 +85,30 @@ def display_msg():
         f"**Spark UI**: {webui_url}"
     display(Markdown(msg))
 
-if environment == 'development':
-    pass
+# if environment == 'development':
+#     pass
 
-elif environment == 'production':
-    # Initialize the GCS client
-    storage_client = storage.Client()
+# elif environment == 'production':
+#     # Initialize the GCS client
+#     storage_client = storage.Client()
 
-    # Get the GCS bucket
-    bucket_name = os.environ.get("BUCKET_NAME", "default-bucket-name")
-    bucket = storage_client.bucket(bucket_name)
+#     # Get the GCS bucket
+#     bucket_name = os.environ.get("BUCKET_NAME", "default-bucket-name")
+#     bucket = storage_client.bucket(bucket_name)
 
-    # Ensure the local directory exists
-    local_notebook_dir = os.environ.get("HOME_DIR", "/home/jovyan")
-    os.makedirs(local_notebook_dir, exist_ok=True)
+#     # Ensure the local directory exists
+#     local_notebook_dir = os.environ.get("HOME_DIR", "/home/jovyan")
+#     os.makedirs(local_notebook_dir, exist_ok=True)
 
-    # Sync from GCS to local
-    print("Copying notebooks from GCS to local")
-    subprocess.run(["gsutil", "-m", "rsync", "-r", f"gs://{bucket_name}/notebooks", local_notebook_dir])
+#     # Sync from GCS to local
+#     print("Copying notebooks from GCS to local")
+#     subprocess.run(["gsutil", "-m", "rsync", "-r", f"gs://{bucket_name}/notebooks", local_notebook_dir])
 
-    set_env()
-    spark = create_spark()
-    start()
-else:
-    raise ValueError(f"Invalid environment: {environment}")
+#     set_env()
+#     spark = create_spark()
+#     start()
+# else:
+#     raise ValueError(f"Invalid environment: {environment}")
+    
+
+
