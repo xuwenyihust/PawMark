@@ -73,7 +73,7 @@ def start():
 
     display(Markdown(msg))
 
-if environment == 'development':
+def display_msg():
     app_name = 'unknown'
     kubernetes_url = 'unknown'
     driver_host = 'unknown'
@@ -84,6 +84,10 @@ if environment == 'development':
         f"**Driver host**: {driver_host}\n\n" + \
         f"**Spark UI**: {webui_url}"
     display(Markdown(msg))
+
+if environment == 'development':
+    test = display_msg()
+    display_msg()
 
 elif environment == 'production':
     # Initialize the GCS client
