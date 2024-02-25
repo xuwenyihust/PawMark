@@ -76,6 +76,17 @@ start()
 
 Check Spark UI by clicking the link in the notebook cell output.
 
+## Docker Image
+- [all-spark-notebook](https://hub.docker.com/repository/docker/wenyixu101/all-spark-notebook/general)
+  - Based on jupyter/all-spark-notebook:spark-3.5.0
+  - Include Google Cloud SDK and GCS connector
+  - Include pyspark startup script
+  - Include notebook save hook function to save notebook to GCS
+ 
+- [spark-history-server](https://hub.docker.com/repository/docker/wenyixu101/spark-history-server)
+  - Based on apache/spark:3.5.0
+  - Include GCS connector
+
 ## License
 This project is licensed under the terms of the MIT license.
 

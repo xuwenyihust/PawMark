@@ -1,0 +1,11 @@
+services:
+  jupyter:
+    image: wenyixu101/all-spark-notebook:latest
+    container_name: notebook
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=no
+      - ENVIRONMENT=TEST
+    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+
