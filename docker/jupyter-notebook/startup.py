@@ -86,7 +86,7 @@ def display_msg():
     display(Markdown(msg))
 
 if environment == 'development':
-    start = display_msg()
+    display_msg()
 
 elif environment == 'production':
     # Initialize the GCS client
