@@ -6,6 +6,7 @@ services:
       - "8888:8888"
     environment:
       - JUPYTER_ENABLE_LAB=no
-      - ENVIRONMENT=TEST
+      - ENVIRONMENT=development
     command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+    pull_policy: always
 
