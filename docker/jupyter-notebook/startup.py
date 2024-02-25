@@ -85,6 +85,14 @@ def display_msg():
         f"**Spark UI**: {webui_url}"
     display(Markdown(msg))
 
+def create_spark_dev():
+    spark = SparkSession.builder \
+        .appName("PySpark Example") \
+        .master("local[*]") \
+        .getOrCreate()
+    
+    return spark
+
 # if environment == 'development':
 #     pass
 
@@ -110,5 +118,5 @@ def display_msg():
 # else:
 #     raise ValueError(f"Invalid environment: {environment}")
     
-
+spark = create_spark_dev()
 
