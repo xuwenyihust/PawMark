@@ -119,4 +119,4 @@ def create_spark_dev():
 #     raise ValueError(f"Invalid environment: {environment}")
     
 spark = create_spark_dev()
-
+display_msg()
