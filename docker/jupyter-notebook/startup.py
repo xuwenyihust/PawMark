@@ -118,5 +118,5 @@ def create_spark_dev():
 # else:
 #     raise ValueError(f"Invalid environment: {environment}")
     
-spark = create_spark_dev()
-display_msg()
+# spark = create_spark_dev()
+# display_msg()
