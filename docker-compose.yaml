@@ -1,0 +1,37 @@
+services:
+  jupyter:
+    image: wenyixu101/all-spark-notebook:latest
+    container_name: notebook
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=no
+      - ENVIRONMENT=development
+    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
+  spark-master:
+    image: wenyixu101/spark:3.5.0-python3.11
+    container_name: spark-master
+    ports:
+      - "4040:4040"
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MODE=master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
