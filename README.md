@@ -1,14 +1,12 @@
 <h1 align="center">DataPulse: Platform For Big Data & AI</h2>
 <p align="center">
-    <a href="https://github.com/xuwenyihust/DataPulse/releases">
-      <img alt="GitHub Release" src="https://img.shields.io/github/v/release/xuwenyihust/DataPulse?include_prereleases&label=Release">
-    </a>
-    <!-- <a> -->
-      <img alt="Static Badge" src="https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark">
-    <!-- </a> -->
-    <a href="https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE">
-        <img alt="GitHub License" src="https://img.shields.io/github/license/xuwenyihust/Data-Platform?link=https%3A%2F%2Fgithub.com%2Fxuwenyihust%2FData-Platform%2Fblob%2Fmain%2FLICENSE&label=License">
-    </a>
+
+[![GitHub Release](https://img.shields.io/github/v/release/xuwenyihust/DataPulse?include_prereleases&label=Release)](https://github.com/xuwenyihust/DataPulse/releases)
+
+![Apache Spark 3.5.0](https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark)
+
+[![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?label=License)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)
+
 </p>
 
 ## Summary
