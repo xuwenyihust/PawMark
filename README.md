@@ -2,7 +2,7 @@
 <p align="center">
     <a href="https://github.com/xuwenyihust/DataPulse/releases">
       <img alt="GitHub Release" src="https://img.shields.io/github/v/release/xuwenyihust/DataPulse?include_prereleases&label=Release">
-    </a>
+    </a> <a></a>
     <a>
       <img alt="Static Badge" src="https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark">
     </a>
