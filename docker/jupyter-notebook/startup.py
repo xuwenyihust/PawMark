@@ -88,7 +88,7 @@ def display_msg():
 def create_spark_dev():
     spark = SparkSession.builder \
         .appName("PySpark Example") \
-        .master("local[*]") \
+        .master("spark://spark-master:7077") \
         .getOrCreate()
     
     return spark
