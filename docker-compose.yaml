@@ -7,7 +7,7 @@ services:
     environment:
       - JUPYTER_ENABLE_LAB=no
       - ENVIRONMENT=development
-    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+    command: "start-notebook.sh --NotebookApp.default_url=/tree --NotebookApp.token='' --NotebookApp.password=''"
     pull_policy: always
     deploy:
       resources:

@@ -31,11 +31,6 @@ RUN mkdir -p /home/jovyan/.custom_ipython_profile/profile_default/startup/ && \
     chown -R jovyan:users /home/jovyan/.custom_ipython_profile && \
     chmod -R 775 /home/jovyan/.custom_ipython_profile
 
-# Create a new directory for the Jupyter custom configuration
-RUN mkdir -p /home/jovyan/.jupyter/custom && \
-    chown -R jovyan:users /home/jovyan/.jupyter/custom && \
-    chmod -R 775 /home/jovyan/.jupyter/custom
-
 # Copy the custom IPython profile to the new directory
 COPY startup.py /home/jovyan/.custom_ipython_profile/profile_default/startup/
 
@@ -43,8 +38,8 @@ COPY startup.py /home/jovyan/.custom_ipython_profile/profile_default/startup/
 COPY gcs_save_hook.py /home/jovyan/.jupyter/
 COPY jupyter_notebook_config.py /home/jovyan/.jupyter/
 
-# Copy the custom Jupyter configuration file into the container
-COPY custom.js /home/jovyan/.jupyter/custom/
+# Copy the notebook into the container
+COPY quickstart.ipynb /home/jovyan/work/quickstart.ipynb
 
 # Switch back to the jovyan user
 USER jovyan
