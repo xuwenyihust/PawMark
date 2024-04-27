@@ -8,6 +8,22 @@
 ## Summary
 DataPulse is a platform for big data and AI. It is based on Apache Spark and Kubernetes. The platform is designed to be scalable and easy to use. It provides a set of tools for data processing, machine learning, and data visualization.
 
+## Quick Start
+### Local Development
+- Start [docker-compose](./docker-compose.yml)
+
+  ```bash
+  docker-compose up -d
+  ```
+- Use notebook
+  - Access [http://localhost:8888](http://localhost:8888)
+  - Spark session has been created automatically
+  - Run the following code in the notebook to test the spark session
+    ```python
+    spark.range(10).show()
+    ```
+
+
 ## Docker Images
 ### Spark  
 [![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)
