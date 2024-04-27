@@ -1,0 +1,27 @@
+name: Build Docker - History Server
+
+on:
+  push:
+    paths:
+      - 'docker/history-server/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_PASSWORD }}
+            
+      - name: Docker Build & Push
+        run: |
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/history-server:$timestamp -f docker/history-server/Dockerfile ./docker/history-server
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/history-server:$timestamp ${{ secrets.DOCKERHUB_USERNAME }}/history-server:latest
+
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/history-server:$timestamp
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/history-server:latest
