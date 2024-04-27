@@ -9,12 +9,33 @@
 DataPulse is a platform for big data and AI. It is based on Apache Spark and Kubernetes. The platform is designed to be scalable and easy to use. It provides a set of tools for data processing, machine learning, and data visualization.
 
 ## Docker Images
-- [Dockerfile](./docker/spark/Dockerfile) [![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)
-  - Include Spark, Python
-- [![Build Docker - Notebook](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml)
+### Spark  
+[![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)
+
+  - [Dockerfile](./docker/spark/Dockerfile) 
+  - Includes
+    - Spark
+    - Python
+
+### Notebook
+[![Build Docker - Notebook](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml)
+
   - [Dockerfile](./docker/notebook/Dockerfile)
-- [![Build Docker - History Server](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml)
+  - Includes
+    - Jupyter Notebook
+    - Spark
+    - Google Cloud SDK
+    - GCS Connector
+    - Pyspark Startup Script
+    - Notebook Save Hook Function
+
+### History Server  
+[![Build Docker - History Server](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml)
+
   - [Dockerfile](./docker/history-server/Dockerfile) 
+  - Includes
+    - Spark
+    - GCS Connector
 
 ## License
 This project is licensed under the terms of the MIT license.
