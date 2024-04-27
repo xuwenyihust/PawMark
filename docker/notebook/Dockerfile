@@ -44,7 +44,7 @@ COPY gcs_save_hook.py /home/jovyan/.jupyter/
 COPY jupyter_notebook_config.py /home/jovyan/.jupyter/
 
 # Copy the custom Jupyter configuration file into the container
-
+COPY custom.js /home/jovyan/.jupyter/custom/
 
 # Switch back to the jovyan user
 USER jovyan
