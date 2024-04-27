@@ -35,3 +35,21 @@ services:
           cpus: "1" 
           memory: 1g
 
+  spark-worker:
+    image: wenyixu101/spark:latest
+    container_name: spark-worker
+    ports:
+      - "8081:8081"
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MODE=worker
+      - SPARK_WORKER_PORT=8081
+      - SPARK_WORKER_WEBUI_PORT=8081
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
