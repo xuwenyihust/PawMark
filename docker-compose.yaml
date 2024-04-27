@@ -1,6 +1,6 @@
 services:
-  jupyter:
-    image: wenyixu101/all-spark-notebook:latest
+  notebook:
+    image: wenyixu101/notebook:latest
     container_name: notebook
     ports:
       - "8888:8888"
@@ -16,7 +16,7 @@ services:
           memory: 1g
 
   spark-master:
-    image: wenyixu101/spark:3.5.0-python3.11
+    image: wenyixu101/spark:latest
     container_name: spark-master
     ports:
       - "4040:4040"
