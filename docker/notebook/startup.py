@@ -77,7 +77,7 @@ def create_spark_dev():
     spark = SparkSession.builder \
         .appName("PySpark Example") \
         .master("spark://spark-master:7077") \
-        .config("spark.jars.packages", "io.delta:delta-core_2.12:3.1.0") \
+        .config("spark.jars.packages", "io.delta:delta-core_2.12:2.1.0") \
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
         .getOrCreate()
