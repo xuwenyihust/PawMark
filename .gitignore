@@ -173,3 +173,5 @@ dependency-reduced-pom.xml
 spark-sa-key.json
 
 Values.yaml
+
+data/*
