@@ -34,7 +34,6 @@ services:
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
     volumes:
       - ./data:/opt/data
-      - ./spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
     pull_policy: always
     deploy:
       resources:
@@ -56,7 +55,6 @@ services:
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
     volumes:
       - ./data:/opt/data
-      - ./spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
     pull_policy: always
     deploy:
       resources:
@@ -75,7 +73,6 @@ services:
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer"
     volumes:
       - ./data/spark-events:/opt/data/spark-events
-      - ./spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
     pull_policy: always
     deploy:
       resources:
