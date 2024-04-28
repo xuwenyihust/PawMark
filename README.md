@@ -25,6 +25,9 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
          .format("delta") \
          .save("/opt/data/delta-table/demo_0")
     ```
+- Check the history server
+  - Access [http://localhost:18080](http://localhost:18080)
+  - Spark application history / progress can be viewed here
 
 
 ## Docker Images
