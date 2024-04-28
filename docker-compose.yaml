@@ -7,7 +7,7 @@ services:
     environment:
       - JUPYTER_ENABLE_LAB=no
       - ENVIRONMENT=development
-      - PYSPARK_SUBMIT_ARGS=--packages io.delta:delta-core_2.12:2.1.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog pyspark-shell
+      - PYSPARK_SUBMIT_ARGS=--packages io.delta:delta-spark_2.12:3.0.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog pyspark-shell
     command: "start-notebook.sh --NotebookApp.default_url=/tree --NotebookApp.token='' --NotebookApp.password=''"
     volumes:
       - ./data:/opt/data
