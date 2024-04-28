@@ -7,7 +7,10 @@ services:
     environment:
       - JUPYTER_ENABLE_LAB=no
       - ENVIRONMENT=development
+      - PYSPARK_SUBMIT_ARGS=--packages io.delta:delta-spark_2.12:3.0.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog pyspark-shell
     command: "start-notebook.sh --NotebookApp.default_url=/tree --NotebookApp.token='' --NotebookApp.password=''"
+    volumes:
+      - ./data:/opt/data
     pull_policy: always
     deploy:
       resources:
@@ -28,6 +31,8 @@ services:
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=8080
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
+    volumes:
+      - ./data:/opt/data
     pull_policy: always
     deploy:
       resources:
@@ -46,10 +51,11 @@ services:
       - SPARK_WORKER_PORT=8081
       - SPARK_WORKER_WEBUI_PORT=8081
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
+    volumes:
+      - ./data:/opt/data
     pull_policy: always
     deploy:
       resources:
         limits:
           cpus: "1" 
           memory: 1g
-
