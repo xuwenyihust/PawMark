@@ -30,6 +30,7 @@ services:
       - SPARK_MODE=master
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/opt/data/spark-events
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
     volumes:
       - ./data:/opt/data
@@ -50,6 +51,7 @@ services:
       - SPARK_MODE=worker
       - SPARK_WORKER_PORT=8081
       - SPARK_WORKER_WEBUI_PORT=8081
+      - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/opt/data/spark-events
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
     volumes:
       - ./data:/opt/data
@@ -59,3 +61,22 @@ services:
         limits:
           cpus: "1" 
           memory: 1g
+
+  history-server:
+    image: wenyixu101/history-server:latest
+    container_name: history-server
+    ports:
+      - "18080:18080"
+    environment:
+      - SPARK_HISTORY_OPTS="-Dspark.history.fs.logDirectory=file:/opt/data/spark-events"
+      - SPARK_MODE=history-server
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer"
+    volumes:
+      - ./data/spark-events:/opt/data/spark-events
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+  
