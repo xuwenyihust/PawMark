@@ -1,0 +1,28 @@
+name: Build Docker - Spark
+
+on:
+  push:
+    paths:
+      - 'docker/spark/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_PASSWORD }}
+            
+      - name: Docker Build & Push
+        run: |
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/spark:$timestamp -f docker/spark/Dockerfile ./docker/spark
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/spark:$timestamp ${{ secrets.DOCKERHUB_USERNAME }}/spark:latest
+
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/spark:$timestamp
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/spark:latest
+

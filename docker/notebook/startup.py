@@ -6,34 +6,27 @@ from IPython import get_ipython
 from IPython.display import *
 from kubernetes import client, config
 
-# Initialize the GCS client
-storage_client = storage.Client()
+environment = os.getenv('ENVIRONMENT', 'development')  # Default to 'development' if not set
 
-# Get the GCS bucket
-bucket_name = os.environ.get("BUCKET_NAME", "default-bucket-name")
-bucket = storage_client.bucket(bucket_name)
+# Set the environment variables
+def set_env():
+    # kubernetes_host = os.environ.get('KUBERNETES_SERVICE_HOST')
+    # kubernetes_port = os.environ.get('KUBERNETES_SERVICE_PORT')
+    # kubernetes_url = f"k8s://https://{kubernetes_host}:{kubernetes_port}"
 
-# Ensure the local directory exists
-local_notebook_dir = os.environ.get("HOME_DIR", "/home/jovyan")
-os.makedirs(local_notebook_dir, exist_ok=True)
+    # app_name = os.environ.get("APP_NAME", "PySpark Example")
+    # driver_host = "notebook-cluster-ip.spark-dev.svc.cluster.local"
+    # namespace = os.environ.get("NAMESPACE", "spark-dev")
+    # service_account = os.environ.get("SERVICE_ACCOUNT", "spark")
+    # executor_image = os.environ.get("EXECUTOR_IMAGE", "wenyixu101/spark:3.5.0-python3.11")
 
-# Sync from GCS to local
-print("Copying notebooks from GCS to local")
-subprocess.run(["gsutil", "-m", "rsync", "-r", f"gs://{bucket_name}/notebooks", local_notebook_dir])
+    # app_name = os.environ.get("APP_NAME", "PySpark Example")
+    # master_url = os.environ.get("MASTER_URL", "k8s://https://kubernetes.default.svc")
 
-
-kubernetes_host = os.environ.get('KUBERNETES_SERVICE_HOST')
-kubernetes_port = os.environ.get('KUBERNETES_SERVICE_PORT')
-kubernetes_url = f"k8s://https://{kubernetes_host}:{kubernetes_port}"
-
-app_name = os.environ.get("APP_NAME", "PySpark Example")
-driver_host = "notebook-cluster-ip.spark-dev.svc.cluster.local"
-namespace = os.environ.get("NAMESPACE", "spark-dev")
-service_account = os.environ.get("SERVICE_ACCOUNT", "spark")
-executor_image = os.environ.get("EXECUTOR_IMAGE", "wenyixu101/spark:3.5.0-python3.11")
+    pass
 
 # Create a Spark session
-def create_spark():
+def create_spark(app_name, master_url):
     spark = SparkSession.builder \
         .appName(app_name) \
         .master(kubernetes_url) \
@@ -80,6 +73,18 @@ def start():
 
     display(Markdown(msg))
 
-spark = create_spark()
-start()
-
+def create_spark_dev():
+    spark = SparkSession.builder \
+        .appName("PySpark Example") \
+        .master("spark://spark-master:7077") \
+        .config("spark.jars.packages", "io.delta:delta-spark_2.12:3.0.0") \
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+        .config("spark.eventLog.enabled", "true") \
+        .config("spark.eventLog.dir", "/opt/data/spark-events") \
+        .config("spark.history.fs.logDirectory", "/opt/data/spark-events") \
+        .getOrCreate()
+    
+    return spark
+    
+spark = create_spark_dev()

@@ -1,0 +1,82 @@
+services:
+  notebook:
+    image: wenyixu101/notebook:latest
+    container_name: notebook
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=no
+      - ENVIRONMENT=development
+      - PYSPARK_SUBMIT_ARGS=--packages io.delta:delta-spark_2.12:3.0.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog pyspark-shell
+    command: "start-notebook.sh --NotebookApp.default_url=/tree --NotebookApp.token='' --NotebookApp.password=''"
+    volumes:
+      - ./data:/opt/data
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
+  spark-master:
+    image: wenyixu101/spark:latest
+    container_name: spark-master
+    ports:
+      - "4040:4040"
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MODE=master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/opt/data/spark-events
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
+    volumes:
+      - ./data:/opt/data
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
+  spark-worker:
+    image: wenyixu101/spark:latest
+    container_name: spark-worker
+    ports:
+      - "8081:8081"
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MODE=worker
+      - SPARK_WORKER_PORT=8081
+      - SPARK_WORKER_WEBUI_PORT=8081
+      - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/opt/data/spark-events
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
+    volumes:
+      - ./data:/opt/data
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
+  history-server:
+    image: wenyixu101/history-server:latest
+    container_name: history-server
+    ports:
+      - "18080:18080"
+    environment:
+      - SPARK_HISTORY_OPTS="-Dspark.history.fs.logDirectory=file:/opt/data/spark-events"
+      - SPARK_MODE=history-server
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer"
+    volumes:
+      - ./data/spark-events:/opt/data/spark-events
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+  
