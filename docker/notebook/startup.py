@@ -83,6 +83,7 @@ def create_spark_dev():
         .config("spark.eventLog.enabled", "true") \
         .config("spark.eventLog.dir", "/opt/data/spark-events") \
         .config("spark.history.fs.logDirectory", "/opt/data/spark-events") \
+        .config("spark.sql.warehouse.dir", "/opt/data/spark-warehouse") \
         .getOrCreate()
     
     return spark

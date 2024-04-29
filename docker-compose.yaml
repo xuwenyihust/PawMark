@@ -11,8 +11,9 @@ services:
     command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
     volumes:
       - ./data/spark-events:/opt/data/spark-events
-      - ./data/delta-table:/opt/data/delta-table
-      - ./examples:/home/jovyan/
+      - ./data/spark-warehouse:/opt/data/spark-warehouse
+      - ./datasets:/opt/data/datasets
+      - ./examples:/home/jovyan/work
     pull_policy: always
     deploy:
       resources:
@@ -36,7 +37,7 @@ services:
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
     volumes:
       - ./data/spark-events:/opt/data/spark-events
-      - ./data/delta-table:/opt/data/delta-table
+      - ./data/spark-warehouse:/opt/data/spark-warehouse
       - ./datasets:/opt/data/datasets
     pull_policy: always
     deploy:
@@ -59,7 +60,7 @@ services:
     command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
     volumes:
       - ./data/spark-events:/opt/data/spark-events
-      - ./data/delta-table:/opt/data/delta-table
+      - ./data/spark-warehouse:/opt/data/spark-warehouse
       - ./datasets:/opt/data/datasets
     pull_policy: always
     deploy:
