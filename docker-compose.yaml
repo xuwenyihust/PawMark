@@ -8,11 +8,11 @@ services:
       - JUPYTER_ENABLE_LAB=no
       - ENVIRONMENT=development
       - PYSPARK_SUBMIT_ARGS=--packages io.delta:delta-spark_2.12:3.0.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog pyspark-shell
-    command: "start-notebook.sh --NotebookApp.default_url=/tree --NotebookApp.token='' --NotebookApp.password=''"
+    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
     volumes:
       - ./data/spark-events:/opt/data/spark-events
       - ./data/delta-table:/opt/data/delta-table
-      - ./data/notebook:/home/jovyan/work/
+      - ./examples:/home/jovyan/
     pull_policy: always
     deploy:
       resources:
@@ -37,6 +37,7 @@ services:
     volumes:
       - ./data/spark-events:/opt/data/spark-events
       - ./data/delta-table:/opt/data/delta-table
+      - ./datasets:/opt/data/datasets
     pull_policy: always
     deploy:
       resources:
@@ -59,6 +60,7 @@ services:
     volumes:
       - ./data/spark-events:/opt/data/spark-events
       - ./data/delta-table:/opt/data/delta-table
+      - ./datasets:/opt/data/datasets
     pull_policy: always
     deploy:
       resources:
