@@ -84,6 +84,9 @@ def create_spark_dev():
         .config("spark.eventLog.dir", "/opt/data/spark-events") \
         .config("spark.history.fs.logDirectory", "/opt/data/spark-events") \
         .config("spark.sql.warehouse.dir", "/opt/data/spark-warehouse") \
+        .config("executor.memory", "1g") \
+        .config("executor.cores", "1") \
+        .config("spark.executor.instances", "1") \
         .getOrCreate()
     
     return spark

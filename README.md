@@ -70,6 +70,16 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
     - Spark
     - GCS Connector
 
+## Supported Versions
+- Scala
+  - 2.12
+- Python
+  - 3.11
+- Apache Spark 
+  - 3.5.0
+- Delta Lake
+  - 3.0.0
+
 ## License
 This project is licensed under the terms of the MIT license.
 
