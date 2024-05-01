@@ -29,6 +29,17 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
   - Access [http://localhost:18080](http://localhost:18080)
   - Spark application history / progress can be viewed here
 
+- Delta tables
+  - Use `/opt/data/delta-table/` as the root directory for delta tables
+
+## Examples
+### Basic Analysis on Static Tables 
+- Singapore Resale Flat Prices Analysis
+  - [Notebook](./examples/sg-resale-flat-prices/sg-resale-flat-prices-analysis.ipynb)
+  - [Data Source](https://beta.data.gov.sg/datasets/d_8b84c4ee58e3cfc0ece0d773c8ca6abc/view)
+
+### Incremental Pipeline
+- TODO
 
 ## Docker Images
 ### Spark  

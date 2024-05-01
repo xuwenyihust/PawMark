@@ -175,3 +175,8 @@ spark-sa-key.json
 Values.yaml
 
 data/*
+
+*/.jupyter/*
+*/.local/*
+*/.npm/*
+*/.custom_ipython_profile/*

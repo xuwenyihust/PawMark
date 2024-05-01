@@ -38,9 +38,6 @@ COPY startup.py /home/jovyan/.custom_ipython_profile/profile_default/startup/
 COPY gcs_save_hook.py /home/jovyan/.jupyter/
 COPY jupyter_notebook_config.py /home/jovyan/.jupyter/
 
-# Copy the notebook into the container
-COPY quickstart.ipynb /home/jovyan/work/quickstart.ipynb
-
 # Switch back to the jovyan user
 USER jovyan
 

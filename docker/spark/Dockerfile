@@ -17,4 +17,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3.11 get-pip.py
 
+RUN mkdir /opt/data/spark-warehouse
+RUN chmod -R 777 /opt/data/spark-warehouse
+
 USER spark
