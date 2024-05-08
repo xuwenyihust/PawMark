@@ -25,8 +25,6 @@ with DAG(
         task_id='sg_resale_flat_prices_notebook',
         input_nb='/opt/airflow/examples/sg-resale-flat-prices/sg-resale-flat-prices.ipynb',
         output_nb='/opt/airflow/examples/sg-resale-flat-prices/output/output-notebook-{{ execution_date }}.ipynb'
-        # input_nb='/opt/airflow/examples/demo.ipynb',
-        # output_nb='/opt/airflow/examples/demo-{{ execution_date }}.ipynb'
     )
 
 run_notebook

@@ -17,9 +17,20 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
   ```
 - Use notebook
   - Access [http://localhost:8888](http://localhost:8888)
-  - Spark session has been created automatically
   - Run the following code in the notebook to test the spark session
     ```python
+    spark = SparkSession.builder \
+        .appName("PySpark Example") \
+        .master(spark_master) \
+        .config("spark.jars.packages", "io.delta:delta-spark_2.12:3.0.0") \
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+        .config("spark.eventLog.enabled", "true") \
+        .config("spark.eventLog.dir", "/opt/data/spark-events") \
+        .config("spark.history.fs.logDirectory", "/opt/data/spark-events") \
+        .config("spark.sql.warehouse.dir", "/opt/data/spark-warehouse") \
+        .getOrCreate()
+
     spark.range(0, 5) \
          .write \
          .format("delta") \
