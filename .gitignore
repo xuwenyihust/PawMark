@@ -180,3 +180,5 @@ data/*
 */.local/*
 */.npm/*
 */.custom_ipython_profile/*
+
+*/output/*

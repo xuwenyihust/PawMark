@@ -24,7 +24,10 @@ with DAG(
     run_notebook = PapermillOperator(
         task_id='sg_resale_flat_prices_notebook',
         input_nb='/opt/airflow/examples/sg-resale-flat-prices/sg-resale-flat-prices.ipynb',
-        output_nb='/opt/airflow/examples/sg-resale-flat-prices/output/output-notebook-{{ execution_date }}.ipynb'
+        output_nb='/opt/airflow/examples/sg-resale-flat-prices/output/output-notebook-{{ execution_date }}.ipynb',
+        parameters={
+          'spark_master': 'spark://spark-master:7077'
+        },
     )
 
 run_notebook
