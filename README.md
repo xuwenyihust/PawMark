@@ -80,7 +80,9 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 - Delta Lake
   - 3.0.0
 - Airflow
-  - 2.1.0
+  - 2.9.1
+- Postgres
+  - 13
 
 ## License
 This project is licensed under the terms of the MIT license.

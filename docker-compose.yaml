@@ -111,11 +111,11 @@ services:
           memory: 1g
 
   airflow-webserver:
-    image: wenyixu101/airflow:2.1.0
+    image: wenyixu101/airflow:latest
     container_name: airflow-webserver
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
       - AIRFLOW__CORE__FERNET_KEY=<your_fernet_key>
     ports:
       - "8090:8080"
@@ -136,11 +136,11 @@ services:
           memory: 1g
 
   airflow-scheduler:
-    image: wenyixu101/airflow:2.1.0
+    image: wenyixu101/airflow:latest
     container_name: airflow-scheduler
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
       - AIRFLOW__CORE__FERNET_KEY=<your_fernet_key>
     command: scheduler
     volumes:
@@ -148,7 +148,7 @@ services:
       - ./examples:/opt/airflow/examples
     pull_policy: always
     depends_on:
-      - airflow-postgres
+      - postgres
     deploy:
       resources:
         limits:

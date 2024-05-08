@@ -23,8 +23,10 @@ with DAG(
 
     run_notebook = PapermillOperator(
         task_id='sg_resale_flat_prices_notebook',
-        input_nb='/opt/airflow/examples/sg-resale-flat-prices/sg_resale_flat_prices.ipynb',
-        output_nb='/opt/airflow/examples/sg-resale-flat-prices/output/output-notebook-{{ execution_date }}.ipynb'
+        # input_nb='/opt/airflow/examples/sg-resale-flat-prices/sg_resale_flat_prices.ipynb',
+        # output_nb='/opt/airflow/examples/sg-resale-flat-prices/output/output-notebook-{{ execution_date }}.ipynb'
+        input_nb='/opt/airflow/examples/demo.ipynb',
+        output_nb='/opt/airflow/examples/demo-{{ execution_date }}.ipynb'
     )
 
 run_notebook
