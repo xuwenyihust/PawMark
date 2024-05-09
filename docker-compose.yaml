@@ -126,6 +126,8 @@ services:
     volumes:
       - ./dags:/opt/airflow/dags
       - ./examples:/opt/airflow/examples
+      - ./data/spark-events:/opt/data/spark-events
+      - ./datasets:/opt/data/datasets
     pull_policy: always
     depends_on:
       - airflow-scheduler
@@ -146,6 +148,8 @@ services:
     volumes:
       - ./dags:/opt/airflow/dags
       - ./examples:/opt/airflow/examples
+      - ./data/spark-events:/opt/data/spark-events
+      - ./datasets:/opt/data/datasets
     pull_policy: always
     depends_on:
       - postgres
