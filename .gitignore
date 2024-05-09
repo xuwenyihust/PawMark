@@ -181,4 +181,4 @@ data/*
 */.npm/*
 */.custom_ipython_profile/*
 
-*/output/*
+output

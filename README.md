@@ -84,6 +84,8 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 ## Supported Versions
 - Scala
   - 2.12
+- Java
+  - 17
 - Python
   - 3.11
 - Apache Spark 
