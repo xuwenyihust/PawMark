@@ -69,28 +69,28 @@ services:
           cpus: "1" 
           memory: 1g
 
-  spark-worker-2:
-    image: wenyixu101/spark:latest
-    container_name: spark-worker-2
-    ports:
-      - "8082:8082"
-    environment:
-      - SPARK_MASTER_HOST=spark-master
-      - SPARK_MODE=worker
-      - SPARK_WORKER_PORT=8082
-      - SPARK_WORKER_WEBUI_PORT=8082
-      - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/opt/data/spark-events
-    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
-    volumes:
-      - ./data/spark-events:/opt/data/spark-events
-      - ./data/spark-warehouse:/opt/data/spark-warehouse
-      - ./datasets:/opt/data/datasets
-    pull_policy: always
-    deploy:
-      resources:
-        limits:
-          cpus: "1" 
-          memory: 1g
+  # spark-worker-2:
+  #   image: wenyixu101/spark:latest
+  #   container_name: spark-worker-2
+  #   ports:
+  #     - "8082:8082"
+  #   environment:
+  #     - SPARK_MASTER_HOST=spark-master
+  #     - SPARK_MODE=worker
+  #     - SPARK_WORKER_PORT=8082
+  #     - SPARK_WORKER_WEBUI_PORT=8082
+  #     - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/opt/data/spark-events
+  #   command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
+  #   volumes:
+  #     - ./data/spark-events:/opt/data/spark-events
+  #     - ./data/spark-warehouse:/opt/data/spark-warehouse
+  #     - ./datasets:/opt/data/datasets
+  #   pull_policy: always
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: "1" 
+  #         memory: 1g
 
   history-server:
     image: wenyixu101/history-server:latest
@@ -109,4 +109,74 @@ services:
         limits:
           cpus: "1" 
           memory: 1g
+
+  airflow-webserver:
+    image: wenyixu101/airflow:latest
+    container_name: airflow-webserver
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CORE__FERNET_KEY=<your_fernet_key>
+    ports:
+      - "8090:8080"
+    command: >
+      bash -c "airflow db upgrade &&
+               airflow users create --username admin --firstname YourFirstName --lastname YourLastName --role Admin --email example@example.com --password yourpassword &&
+               airflow webserver"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./examples:/opt/airflow/examples
+      - ./data/spark-events:/opt/data/spark-events
+      - ./datasets:/opt/data/datasets
+      - ./data/spark-warehouse:/opt/data/spark-warehouse
+    pull_policy: always
+    depends_on:
+      - airflow-scheduler
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
+  airflow-scheduler:
+    image: wenyixu101/airflow:latest
+    container_name: airflow-scheduler
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CORE__FERNET_KEY=<your_fernet_key>
+    command: scheduler
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./examples:/opt/airflow/examples
+      - ./data/spark-events:/opt/data/spark-events
+      - ./datasets:/opt/data/datasets
+      - ./data/spark-warehouse:/opt/data/spark-warehouse
+    pull_policy: always
+    depends_on:
+      - postgres
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+  
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
   

@@ -17,9 +17,20 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
   ```
 - Use notebook
   - Access [http://localhost:8888](http://localhost:8888)
-  - Spark session has been created automatically
   - Run the following code in the notebook to test the spark session
     ```python
+    spark = SparkSession.builder \
+        .appName("PySpark Example") \
+        .master(spark_master) \
+        .config("spark.jars.packages", "io.delta:delta-spark_2.12:3.0.0") \
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+        .config("spark.eventLog.enabled", "true") \
+        .config("spark.eventLog.dir", "/opt/data/spark-events") \
+        .config("spark.history.fs.logDirectory", "/opt/data/spark-events") \
+        .config("spark.sql.warehouse.dir", "/opt/data/spark-warehouse") \
+        .getOrCreate()
+
     spark.range(0, 5) \
          .write \
          .format("delta") \
@@ -32,6 +43,12 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 - Delta tables
   - Use `/opt/data/delta-table/` as the root directory for delta tables
 
+- Schedule with Airflow
+  - Access [http://localhost:8090](http://localhost:8090)
+  - Use the default username and password to login
+  - Create a new DAG to schedule the spark job
+  - Or use the example DAGs in the [`./dags`](./dags/) folder
+
 ## Examples
 ### Basic Analysis on Static Tables 
 - Singapore Resale Flat Prices Analysis
@@ -42,43 +59,68 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 - TODO
 
 ## Docker Images
-### Spark  
+### Docker Images
+<details>
+<summary>Spark</summary>
+
 [![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)
 
-  - [Dockerfile](./docker/spark/Dockerfile) 
-  - Includes
-    - Spark
-    - Python
+- [Dockerfile](./docker/spark/Dockerfile) 
+- Includes
+  - Spark
+  - Python
 
-### Notebook
+</details>
+
+<details>
+<summary>Notebook</summary>
+
 [![Build Docker - Notebook](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml)
 
-  - [Dockerfile](./docker/notebook/Dockerfile)
-  - Includes
-    - Jupyter Notebook
-    - Spark
-    - Google Cloud SDK
-    - GCS Connector
-    - Pyspark Startup Script
-    - Notebook Save Hook Function
+- [Dockerfile](./docker/notebook/Dockerfile)
+- Includes
+  - Jupyter Notebook
+  - Spark
+  - Google Cloud SDK
+  - GCS Connector
+  - Pyspark Startup Script
+  - Notebook Save Hook Function
+</details>
 
-### History Server  
+<details>
+<summary>History Server</summary>
+
 [![Build Docker - History Server](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml)
 
-  - [Dockerfile](./docker/history-server/Dockerfile) 
-  - Includes
-    - Spark
-    - GCS Connector
+- [Dockerfile](./docker/history-server/Dockerfile) 
+- Includes
+  - Spark
+  - GCS Connector
+</details>
 
-## Supported Versions
-- Scala
-  - 2.12
-- Python
-  - 3.11
-- Apache Spark 
-  - 3.5.0
-- Delta Lake
-  - 3.0.0
+<details>
+<summary> Airflow </summary>
+
+[![Build Docker - Airflow](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-airflow.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-airflow.yml)
+
+- [Dockerfile](./docker/airflow/Dockerfile) 
+- Includes
+  - Python
+  - Java
+  - pyspark
+</details>
+
+## Versions
+| Component    | Version |
+|--------------|---------|
+| Scala        | 2.12    |
+| Java         | 17      |
+| Python       | 3.11    |
+| Apache Spark | 3.5.0   |
+| Delta Lake   | 3.0.0   |
+| Airflow      | 2.9.1   |
+| Postgres     | 13      |
+
 
 ## License
 This project is licensed under the terms of the MIT license.
