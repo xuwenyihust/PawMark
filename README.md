@@ -43,6 +43,12 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 - Delta tables
   - Use `/opt/data/delta-table/` as the root directory for delta tables
 
+- Schedule with Airflow
+  - Access [http://localhost:8090](http://localhost:8090)
+  - Use the default username and password to login
+  - Create a new DAG to schedule the spark job
+  - Or use the example DAGs in the [`./dags`](./dags/) folder
+
 ## Examples
 ### Basic Analysis on Static Tables 
 - Singapore Resale Flat Prices Analysis
