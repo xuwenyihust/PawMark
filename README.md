@@ -53,49 +53,68 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 - TODO
 
 ## Docker Images
-### Spark  
+### Docker Images
+<details>
+<summary>Spark</summary>
+
 [![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)
 
-  - [Dockerfile](./docker/spark/Dockerfile) 
-  - Includes
-    - Spark
-    - Python
+- [Dockerfile](./docker/spark/Dockerfile) 
+- Includes
+  - Spark
+  - Python
 
-### Notebook
+</details>
+
+<details>
+<summary>Notebook</summary>
+
 [![Build Docker - Notebook](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-notebook.yml)
 
-  - [Dockerfile](./docker/notebook/Dockerfile)
-  - Includes
-    - Jupyter Notebook
-    - Spark
-    - Google Cloud SDK
-    - GCS Connector
-    - Pyspark Startup Script
-    - Notebook Save Hook Function
+- [Dockerfile](./docker/notebook/Dockerfile)
+- Includes
+  - Jupyter Notebook
+  - Spark
+  - Google Cloud SDK
+  - GCS Connector
+  - Pyspark Startup Script
+  - Notebook Save Hook Function
+</details>
 
-### History Server  
+<details>
+<summary>History Server</summary>
+
 [![Build Docker - History Server](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-history-server.yml)
 
-  - [Dockerfile](./docker/history-server/Dockerfile) 
-  - Includes
-    - Spark
-    - GCS Connector
+- [Dockerfile](./docker/history-server/Dockerfile) 
+- Includes
+  - Spark
+  - GCS Connector
+</details>
 
-## Supported Versions
-- Scala
-  - 2.12
-- Java
-  - 17
-- Python
-  - 3.11
-- Apache Spark 
-  - 3.5.0
-- Delta Lake
-  - 3.0.0
-- Airflow
-  - 2.9.1
-- Postgres
-  - 13
+<details>
+<summary> Airflow </summary>
+
+[![Build Docker - Airflow](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-airflow.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-airflow.yml)
+
+- [Dockerfile](./docker/airflow/Dockerfile) 
+- Includes
+  - Python
+  - Java
+  - pyspark
+</details>
+
+## Versions
+| Component    | Version |
+|--------------|---------|
+| Scala        | 2.12    |
+| Java         | 17      |
+| Python       | 3.11    |
+| Apache Spark | 3.5.0   |
+| Delta Lake   | 3.0.0   |
+| Airflow      | 2.9.1   |
+| Postgres     | 13      |
+
 
 ## License
 This project is licensed under the terms of the MIT license.
