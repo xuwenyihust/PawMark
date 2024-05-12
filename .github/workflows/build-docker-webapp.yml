@@ -20,7 +20,7 @@ jobs:
         run: |
           timestamp=$(date +"%Y%m%d%H%M%S")
           
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/webapp:$timestamp -f docker/webapp/Dockerfile ./docker/webapp
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/webapp:$timestamp -f webapp/Dockerfile ./docker/webapp
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/webapp:$timestamp ${{ secrets.DOCKERHUB_USERNAME }}/webapp:latest
 
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/webapp:$timestamp
