@@ -1,12 +1,11 @@
 # Use an official Python runtime as a parent image
 FROM python:3.11-slim
 
-COPY requirements.txt /app/requirements.txt
-COPY ../notebook/startup.py /app/startup.py
-COPY ../../webapp /app
+COPY requirements.txt /usr/src/app/requirements.txt
+COPY ../../webapp/ /usr/src/app/
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
