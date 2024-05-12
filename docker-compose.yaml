@@ -7,6 +7,12 @@ services:
     environment:
       - FLASK_ENV=development
       - FLASK_APP=main.py
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
 
   notebook:
     image: wenyixu101/notebook:latest
