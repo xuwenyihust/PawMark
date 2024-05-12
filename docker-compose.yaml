@@ -1,4 +1,19 @@
 services:
+  webapp:
+    image: wenyixu101/webapp:latest
+    container_name: webapp
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=main.py
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
   notebook:
     image: wenyixu101/notebook:latest
     container_name: notebook

@@ -1,0 +1,28 @@
+name: Build Docker - WebApp
+
+on:
+  push:
+    paths:
+      - 'webapp/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_PASSWORD }}
+            
+      - name: Docker Build & Push
+        run: |
+          timestamp=$(date +"%Y%m%d%H%M%S")
+          
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/webapp:$timestamp -f webapp/Dockerfile ./webapp
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/webapp:$timestamp ${{ secrets.DOCKERHUB_USERNAME }}/webapp:latest
+
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/webapp:$timestamp
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/webapp:latest
+
