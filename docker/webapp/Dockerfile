@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 COPY requirements.txt /usr/src/app/requirements.txt
-COPY ../../webapp/ /usr/src/app/
+COPY ./webapp/ /usr/src/app/
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
