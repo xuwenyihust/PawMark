@@ -3,7 +3,7 @@ name: Build Docker - WebApp
 on:
   push:
     paths:
-      - 'docker/webapp/**'
+      - 'webapp/**'
 jobs:
   build:
     runs-on: ubuntu-latest
