@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
 const App = () => {
@@ -8,7 +8,7 @@ const App = () => {
       <div style={{ display: 'flex' }}>
         <Sidebar />
         <div style={{ flex: 1, padding: '10px' }}>
-          <Switch>
+          <Routes>
             <Route path="/create-notebook">
               {/* Component to handle creating a new notebook */}
               <h1>Create a new Notebook</h1>
@@ -17,7 +17,7 @@ const App = () => {
               {/* Iframe for Jupyter Notebook */}
               <iframe src="http://localhost:8888" width="100%" height="800px" style={{ border: 'none' }}></iframe>
             </Route>
-          </Switch>
+          </Routes>
         </div>
       </div>
     </Router>
