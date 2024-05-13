@@ -7,6 +7,6 @@ c = get_config()
 c.NotebookApp.tornado_settings = {
     'headers': {
         'Content-Security-Policy': "frame-ancestors 'self' http://localhost:5001",
-        'X-Frame-Options': 'ALLOW-FROM http://localhost:80',
+        'X-Frame-Options': 'ALLOW-FROM http://localhost:5001',
     }
 }

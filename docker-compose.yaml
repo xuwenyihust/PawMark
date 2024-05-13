@@ -4,7 +4,7 @@ services:
     container_name: webapp
     ports:
       # - "5001:5000"
-      - "80:80"
+      - "5001:80"
     # environment:
     #   - FLASK_ENV=development
     #   - FLASK_APP=main.py
