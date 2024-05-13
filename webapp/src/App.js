@@ -1,52 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Notebook from './Notebook';
+import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CgNotes, CgEye, CgCalendarToday } from "react-icons/cg";
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+// Create a theme instance.
+const theme = createTheme({
+  components: {
+      MuiDrawer: {
+          styleOverrides: {
+              paper: {
+                  backgroundColor: '#333', // Dark grey
+                  color: '#fff', // White text color
+                  paddingLeft: '20px',
+                  width: '200px',
+                  justifyContent: 'left',
+              },
+          },
+      },
+  },
+});
+
 
 const App = () => {
-  return (
-    <div className="App">
-      <h1>DataPulse</h1>
-      <iframe src="http://localhost:8888" width="100%" height="800px" style={{ border: 'none' }}></iframe>
-    </div>
+  const [showIframe, setShowIframe] = useState(false);
 
-    // <Router>
-    //   <div style={{ display: 'flex' }}>
-    //     <Sidebar />
-    //     <div style={{ flex: 1, padding: '10px' }}>
-    //       <Routes>
-    //         <Route path="/create-notebook">
-    //           {/* Component to handle creating a new notebook */}
-    //           <h1>Create a new Notebook</h1>
-    //         </Route>
-    //         <Route path="/notebook">
-    //           {/* Iframe for Jupyter Notebook */}
-    //           <iframe src="http://localhost:8888" width="100%" height="800px" style={{ border: 'none' }}></iframe>
-    //         </Route>
-    //       </Routes>
-    //     </div>
-    //   </div>
-    // </Router>
+  const handleNotebookClick = () => {
+    setShowIframe(!showIframe);
+    console.log("Notebook Clicked");
+  };
+
+  return (
+      <ThemeProvider theme={theme}>
+        <Sidebar onNotebookClick={handleNotebookClick} />
+        <Notebook showIframe={showIframe} />
+          {/* <Container component="main" maxWidth="xl" sx={{ mt: 3, mb: 3, flexGrow: 1 }}>
+            
+          </Container> */}
+          
+          {/* Main Content Area - where the notebook iframe will be displayed */}
+          {/* <Container component="main" maxWidth="xl" sx={{ mt: 3, mb: 3, flexGrow: 1 }}>
+              <iframe
+                  src="http://localhost:8888" // Adjust this URL as needed
+                  title="Jupyter Notebook"
+                  style={{ width: '100%', height: '100%', border: 'none' }}
+                  allowFullScreen
+              />
+          </Container> */}
+      </ThemeProvider>
   );
 };
 
