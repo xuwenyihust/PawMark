@@ -11,4 +11,5 @@ c.NotebookApp.tornado_settings = {
     }
 }
 c.NotebookApp.allow_origin = 'http://localhost:3000'  # Allows requests from your React app
+c.NotebookApp.allow_credentials = True  # Allows cookies to be sent
 c.NotebookApp.disable_check_xsrf = True
