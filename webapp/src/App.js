@@ -36,19 +36,6 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Sidebar onNotebookClick={handleNotebookClick} />
         <Notebook showIframe={showIframe} />
-          {/* <Container component="main" maxWidth="xl" sx={{ mt: 3, mb: 3, flexGrow: 1 }}>
-            
-          </Container> */}
-          
-          {/* Main Content Area - where the notebook iframe will be displayed */}
-          {/* <Container component="main" maxWidth="xl" sx={{ mt: 3, mb: 3, flexGrow: 1 }}>
-              <iframe
-                  src="http://localhost:8888" // Adjust this URL as needed
-                  title="Jupyter Notebook"
-                  style={{ width: '100%', height: '100%', border: 'none' }}
-                  allowFullScreen
-              />
-          </Container> */}
       </ThemeProvider>
   );
 };

@@ -10,3 +10,5 @@ c.NotebookApp.tornado_settings = {
         'X-Frame-Options': 'ALLOW-FROM http://localhost:5001 http://localhost:3000',
     }
 }
+
+c.NotebookApp.disable_check_xsrf = True

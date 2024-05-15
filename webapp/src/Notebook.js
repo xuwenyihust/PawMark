@@ -5,9 +5,9 @@ function Notebook({ showIframe }) {
         <div style={{ padding: 20, marginLeft: 240 }}> {/* Adjust marginLeft based on your sidebar width */}
             {showIframe && (
                 <iframe
-                    src="http://localhost:8888" // Adjust the src as needed
+                    src="http://localhost:8888/lab/tree/work/quickstart.ipynb" // Adjust the src as needed
                     title="Jupyter Notebook"
-                    style={{ width: '100%', height: '600px', border: 'none' }}
+                    style={{ width: '100%', height: '100vh', border: 'none' }}
                     allowFullScreen
                 />
             )}

@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
-import { CgNotes, CgEye, CgCalendarToday } from "react-icons/cg";
+import { CgAdd, CgNotes, CgEye, CgCalendarToday } from "react-icons/cg";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function Sidebar({ onNotebookClick }) {
+    const [openMainDrawer, setOpenMainDrawer] = useState(true);
+    const [openNestedDrawer, setOpenNestedDrawer] = useState(false);
+
+    const handleToggleNestedDrawer = () => {
+        setOpenNestedDrawer(!openNestedDrawer);
+    };
+
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      {/* Drawer for the Sidebar */}
-        <Drawer variant="permanent">
+      <div style={{ padding: 20, marginLeft: 240 }}>
+        <Drawer 
+          variant="permanent"
+          open={openMainDrawer}
+          sx={{ width: openNestedDrawer ? 240 : 72, transition: 'width 0.3s' }}>
             <Toolbar> {/* This Toolbar component pushes the content below the AppBar */}
               <Typography variant="h6" sx={{ fontFamily: 'Roboto', fontWeight: 'bold' }}>
                     DataPulse
@@ -18,12 +28,30 @@ function Sidebar({ onNotebookClick }) {
             </Typography>
 
             <List>
-                <ListItem button onClick={onNotebookClick}>
+                <ListItem button onClick={handleToggleNestedDrawer}>
+                  <ListItemIcon>
+                      <CgAdd style={{ color: 'white' }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Create" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
+                </ListItem>
+
+                {openNestedDrawer && (
+                        <List component="div" disablePadding>
+                            <ListItem button onClick={onNotebookClick} sx={{ pl: 4 }}>
+                                <ListItemIcon>
+                                    <CgNotes style={{ color: 'white' }} />
+                                </ListItemIcon>
+                                <ListItemText primary="Notebook" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
+                            </ListItem>
+                        </List>
+                    )}
+
+                {/* <ListItem button onClick={onNotebookClick}>
                   <ListItemIcon>
                       <CgNotes style={{ color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText primary="Notebook" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem button>
                   <ListItemIcon>
@@ -41,7 +69,7 @@ function Sidebar({ onNotebookClick }) {
             </List>
             
         </Drawer>
-      </Box>
+      </div>
     );
 }
 
