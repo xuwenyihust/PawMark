@@ -10,6 +10,6 @@ c.NotebookApp.tornado_settings = {
         'X-Frame-Options': 'ALLOW-FROM http://localhost:5001 http://localhost:3000',
     }
 }
-c.NotebookApp.allow_origin = 'http://localhost:3000'  # Allows requests from your React app
+c.NotebookApp.allow_origin_pat = 'http://localhost:(3000|5001)'  # Allows requests from your React app
 c.NotebookApp.allow_credentials = True  # Allows cookies to be sent
 c.NotebookApp.disable_check_xsrf = True
