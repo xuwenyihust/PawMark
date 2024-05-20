@@ -1,0 +1,3 @@
+window._env_ = {
+  REACT_APP_JUPYTER_BASE_URL: "$REACT_APP_JUPYTER_BASE_URL",
+};
