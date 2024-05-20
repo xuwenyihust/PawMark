@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
 import { CgFileDocument, CgFolder, CgArrowLeftR } from "react-icons/cg";
 import { fetchFiles } from '../../api';
 
@@ -44,7 +44,7 @@ function WorkspaceSidebar({ openWorkspaceDrawer, top, handleToggleWorkspaceDrawe
         style: { 
           position: 'relative',
           height: `${calculatedHeight}px`,
-          width: 200, 
+          width: 250, 
           left: 220 } }}>
       <List component="div" disablePadding>
         {currentPath && (
@@ -68,20 +68,26 @@ function WorkspaceSidebar({ openWorkspaceDrawer, top, handleToggleWorkspaceDrawe
           }
 
           return (
-          <ListItem 
-            button 
-            key={index}
-            onClick={() => {
-                if (file.type === 'directory') {
-                  handleDirectoryClick(file.path)
-                } else if (file.type === 'notebook') {
-                  onExistinNotebookClick(file.path)
-                }}}>
-              <ListItemIcon>
-                <IconComponent style={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary={file.name} />
-          </ListItem>
+          <Tooltip title={file.name} key={index} arrow> 
+            <ListItem 
+              button 
+              key={index}
+              onClick={() => {
+                  if (file.type === 'directory') {
+                    handleDirectoryClick(file.path)
+                  } else if (file.type === 'notebook') {
+                    onExistinNotebookClick(file.path)
+                  }}}
+              sx={{ 
+                whiteSpace: 'nowrap', 
+                overflow: 'hidden', 
+                textOverflow: 'ellipsis' }}>
+                <ListItemIcon>
+                  <IconComponent style={{ color: 'white' }} />
+                </ListItemIcon>
+                <ListItemText primary={file.name} />
+            </ListItem>
+          </Tooltip>
           );
         })}
       </List>
