@@ -182,3 +182,29 @@ data/*
 */.custom_ipython_profile/*
 
 output
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+webapp/node_modules
+webapp/.pnp
+webapp/.pnp.js
+
+# testing
+webapp/coverage
+
+# production
+webapp/build
+
+# misc
+webapp/.DS_Store
+webapp/.env.local
+webapp/.env.development.local
+webapp/.env.test.local
+webapp/.env.production.local
+
+webapp/npm-debug.log*
+webapp/yarn-debug.log*
+webapp/yarn-error.log*
+webapp/node_modules/*
+node_modules/*

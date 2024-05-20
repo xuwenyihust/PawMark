@@ -3,10 +3,7 @@ services:
     image: wenyixu101/webapp:latest
     container_name: webapp
     ports:
-      - "5001:5000"
-    environment:
-      - FLASK_ENV=development
-      - FLASK_APP=main.py
+      - "5001:80"
     pull_policy: always
     deploy:
       resources:
@@ -24,7 +21,7 @@ services:
       - JUPYTER_ENABLE_LAB=no
       - ENVIRONMENT=development
       - PYSPARK_SUBMIT_ARGS=--packages io.delta:delta-spark_2.12:3.0.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog pyspark-shell
-    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+    command: ["jupyter", "notebook", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
     volumes:
       - ./data/spark-events:/opt/data/spark-events
       - ./data/spark-warehouse:/opt/data/spark-warehouse

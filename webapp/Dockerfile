@@ -1,19 +1,13 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim
+# Stage 1: Build the React application
+FROM node:14 as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
 
-COPY app/ /usr/src/app/
-
-# Set the working directory in the container
-WORKDIR /usr/src/app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
-
-# Define environment variable
-ENV NAME World
-
-# Run app.py when the container launches
-CMD ["python", "main.py"]
+# Stage 2: Serve the app with nginx
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
