@@ -5,7 +5,7 @@ services:
     ports:
       - "5001:80"
     env_file:
-      - .env.dev
+      - ./webapp/.env.dev
     pull_policy: always
     deploy:
       resources:
