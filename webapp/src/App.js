@@ -3,6 +3,8 @@ import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/Notebook';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createNotebook } from './api';
+import config from './config';
+
 
 const theme = createTheme({
   components: {
@@ -20,15 +22,15 @@ const theme = createTheme({
   },
 });
 
-const jupyterBaseUrl = process.env.REACT_APP_JUPYTER_BASE_URL;
+// const jupyterBaseUrl = process.env.REACT_APP_JUPYTER_BASE_URL;
 
 const App = () => {
   const [showNotebook, setShowNotebook] = useState(false);
   const [notebookSrc, setNotbookSrc] = useState('');
 
   const handleNewNotebookClick = () => {
-    createNotebook(`${jupyterBaseUrl}/api/contents/work`).then((data) => {
-      setNotbookSrc(`${jupyterBaseUrl}/tree/${data.path}`);
+    createNotebook(`${config.jupyterBaseUrl}/api/contents/work`).then((data) => {
+      setNotbookSrc(`${config.jupyterBaseUrl}/tree/${data.path}`);
       setShowNotebook(true);
     }).catch((error) => {
       console.error('Failed to create notebook:', error);
@@ -36,13 +38,13 @@ const App = () => {
   };  
 
   const handleExistingNotebookClick = (path) => {
-    setNotbookSrc(`${jupyterBaseUrl}/tree/${path}`);
+    setNotbookSrc(`${config.jupyterBaseUrl}/tree/${path}`);
     setShowNotebook(true);
   }
 
   return (
       <ThemeProvider theme={theme}>
-        <Sidebar jupyterBaseUrl={jupyterBaseUrl} onNewNotebookClick={handleNewNotebookClick} onExistinNotebookClick={handleExistingNotebookClick} />
+        <Sidebar jupyterBaseUrl={config.jupyterBaseUrl} onNewNotebookClick={handleNewNotebookClick} onExistinNotebookClick={handleExistingNotebookClick} />
         <Notebook showNotebook={showNotebook} notebookSrc={notebookSrc} />
       </ThemeProvider>
   );
