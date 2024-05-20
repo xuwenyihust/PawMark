@@ -20,14 +20,15 @@ const theme = createTheme({
   },
 });
 
+const jupyterBaseUrl = process.env.REACT_APP_JUPYTER_BASE_URL;
 
 const App = () => {
   const [showNotebook, setShowNotebook] = useState(false);
   const [notebookSrc, setNotbookSrc] = useState('');
 
   const handleNewNotebookClick = () => {
-    createNotebook('http://localhost:8888/api/contents/work').then((data) => {
-      setNotbookSrc(`http://localhost:8888/tree/${data.path}`);
+    createNotebook(`${jupyterBaseUrl}/api/contents/work`).then((data) => {
+      setNotbookSrc(`${jupyterBaseUrl}/tree/${data.path}`);
       setShowNotebook(true);
     }).catch((error) => {
       console.error('Failed to create notebook:', error);
@@ -35,13 +36,13 @@ const App = () => {
   };  
 
   const handleExistingNotebookClick = (path) => {
-    setNotbookSrc(`http://localhost:8888/tree/${path}`);
+    setNotbookSrc(`${jupyterBaseUrl}/tree/${path}`);
     setShowNotebook(true);
   }
 
   return (
       <ThemeProvider theme={theme}>
-        <Sidebar onNewNotebookClick={handleNewNotebookClick} onExistinNotebookClick={handleExistingNotebookClick} />
+        <Sidebar jupyterBaseUrl={jupyterBaseUrl} onNewNotebookClick={handleNewNotebookClick} onExistinNotebookClick={handleExistingNotebookClick} />
         <Notebook showNotebook={showNotebook} notebookSrc={notebookSrc} />
       </ThemeProvider>
   );

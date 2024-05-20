@@ -4,6 +4,8 @@ services:
     container_name: webapp
     ports:
       - "5001:80"
+    env_file:
+      - ./webapp/.env.dev
     pull_policy: always
     deploy:
       resources:

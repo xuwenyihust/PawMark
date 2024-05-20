@@ -3,8 +3,8 @@ import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, List
 import { CgFileDocument, CgFolder, CgArrowLeftR } from "react-icons/cg";
 import { fetchFiles } from '../../api';
 
-function WorkspaceSidebar({ openWorkspaceDrawer, top, handleToggleWorkspaceDrawer, onExistinNotebookClick}) {
-  const baseUrl = `http://localhost:8888/api/contents/`
+function WorkspaceSidebar({ jupyterBaseUrl, openWorkspaceDrawer, top, handleToggleWorkspaceDrawer, onExistinNotebookClick}) {
+  const baseUrl = `${jupyterBaseUrl}/api/contents/`
   const [currentPath, setCurrentPath] = useState('work');
   const [workspaceFiles, setWorkspaceFiles] = useState([]);
 

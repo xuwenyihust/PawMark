@@ -1,6 +1,7 @@
 <h1 align="center">DataPulse: Platform For Big Data & AI</h2>
 
 [![GitHub Release](https://img.shields.io/github/v/release/xuwenyihust/DataPulse?include_prereleases&label=Release)](https://github.com/xuwenyihust/DataPulse/releases)
+![Docker Pulls](https://img.shields.io/docker/pulls/wenyixu101/webapp?logo=docker)
 ![Apache Spark 3.5.0](https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark)
 [![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?label=License)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)
 
@@ -66,6 +67,15 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 
 ## Docker Images
 <details>
+<summary>WebApp</summary>
+
+[![Build Docker - WebApp](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-webapp.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-webapp.yml)
+
+- [Dockerfile](./webapp/Dockerfile) 
+
+</details>
+
+<details>
 <summary>Spark</summary>
 
 [![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)
@@ -114,6 +124,7 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
   - Java
   - pyspark
 </details>
+
 
 ## Versions
 | Component    | Version |
