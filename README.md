@@ -19,6 +19,8 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
   ```bash
   docker-compose up -d
   ```
+- Access platform UI
+  - http://localhost:3000
 - Use notebook
   - Access [http://localhost:8888](http://localhost:8888)
   - Run the following code in the notebook to test the spark session
