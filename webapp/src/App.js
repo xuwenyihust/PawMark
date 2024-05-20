@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Notebook from './Notebook';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
+import Sidebar from './components/sidebar/Sidebar';
+import Notebook from './components/Notebook';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CgNotes, CgEye, CgCalendarToday } from "react-icons/cg";
+import { createNotebook } from './api';
 
-// Create a theme instance.
 const theme = createTheme({
   components: {
       MuiDrawer: {
@@ -25,17 +22,27 @@ const theme = createTheme({
 
 
 const App = () => {
-  const [showIframe, setShowIframe] = useState(false);
+  const [showNotebook, setShowNotebook] = useState(false);
+  const [notebookSrc, setNotbookSrc] = useState('');
 
-  const handleNotebookClick = () => {
-    setShowIframe(!showIframe);
-    console.log("Notebook Clicked");
-  };
+  const handleNewNotebookClick = () => {
+    createNotebook('http://localhost:8888/api/contents/work').then((data) => {
+      setNotbookSrc(`http://localhost:8888/tree/${data.path}`);
+      setShowNotebook(true);
+    }).catch((error) => {
+      console.error('Failed to create notebook:', error);
+    });
+  };  
+
+  const handleExistingNotebookClick = (path) => {
+    setNotbookSrc(`http://localhost:8888/tree/${path}`);
+    setShowNotebook(true);
+  }
 
   return (
       <ThemeProvider theme={theme}>
-        <Sidebar onNotebookClick={handleNotebookClick} />
-        <Notebook showIframe={showIframe} />
+        <Sidebar onNewNotebookClick={handleNewNotebookClick} onExistinNotebookClick={handleExistingNotebookClick} />
+        <Notebook showNotebook={showNotebook} notebookSrc={notebookSrc} />
       </ThemeProvider>
   );
 };
