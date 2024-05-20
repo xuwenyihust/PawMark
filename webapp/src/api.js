@@ -11,6 +11,7 @@ export const fetchFiles = async (path = '') => {
 };
 
 export const createNotebook = async (path = '') => {
+  console.log("Creating new notebook at path:", path);
   const notebookData = {
     type: 'notebook',
     content: {

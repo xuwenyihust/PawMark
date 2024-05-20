@@ -5,7 +5,7 @@ import WorkspaceSidebar from './WorkspaceSidebar';
 import CreateSidebar from './CreateSidebar';
 
 
-function Sidebar({ onNewNotebookClick, onExistinNotebookClick }) {
+function Sidebar({ jupyterBaseUrl, onNewNotebookClick, onExistinNotebookClick }) {
     const [openMainDrawer, setOpenMainDrawer] = useState(true);
     
     const [openCreateDrawer, setOpenCreateDrawer] = useState(false);
@@ -27,7 +27,9 @@ function Sidebar({ onNewNotebookClick, onExistinNotebookClick }) {
         <Drawer 
           variant="permanent"
           open={openMainDrawer}
-          sx={{ width: 200, transition: 'width 0.3s' }}
+          sx={{ 
+            width: 200, 
+            transition: 'width 0.3s' }}
           PaperProps={{ style: { width: 200 } }}>
             <Toolbar> {/* This Toolbar component pushes the content below the AppBar */}
               <Typography variant="h6" sx={{ fontFamily: 'Roboto', fontWeight: 'bold' }}>
@@ -40,7 +42,12 @@ function Sidebar({ onNewNotebookClick, onExistinNotebookClick }) {
             </Typography>
 
             <List>
-                <ListItem button ref={createButtonRef} onClick={handleToggleCreateDrawer} >
+                <ListItem button ref={createButtonRef} onClick={handleToggleCreateDrawer} 
+                  sx={{ 
+                      '&:hover': {
+                        backgroundColor: '#555'
+                      }
+                    }}>
                   <ListItemIcon>
                       <CgAdd style={{ color: 'white' }} />
                   </ListItemIcon>
@@ -55,7 +62,12 @@ function Sidebar({ onNewNotebookClick, onExistinNotebookClick }) {
                     onNewNotebookClick={onNewNotebookClick}/>
                 )}
 
-                <ListItem button ref={workspaceButtonRef} onClick={handleToggleWorkspaceDrawer} >
+                <ListItem button ref={workspaceButtonRef} onClick={handleToggleWorkspaceDrawer} 
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#555'
+                    }
+                  }}>
                   <ListItemIcon>
                       <CgAlbum style={{ color: 'white' }} />
                   </ListItemIcon>
@@ -64,20 +76,31 @@ function Sidebar({ onNewNotebookClick, onExistinNotebookClick }) {
                 
                 { openWorkspaceDrawer && (
                   <WorkspaceSidebar 
+                  jupyterBaseUrl={jupyterBaseUrl}
                   openWorkspaceDrawer={openWorkspaceDrawer} 
                   top={workspaceButtonRef.current.offsetTop + workspaceButtonRef.current.offsetParent.offsetTop} 
                   handleToggleWorkspaceDrawer={handleToggleWorkspaceDrawer}
                   onExistinNotebookClick={onExistinNotebookClick} />
                 )}
 
-                <ListItem button>
+                <ListItem button
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#555'
+                    }
+                  }}>
                   <ListItemIcon>
                       <CgEye style={{ color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText primary="History Server" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
                 </ListItem>
 
-                <ListItem button>
+                <ListItem button
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: '#555'
+                    }
+                  }}>
                   <ListItemIcon>
                       <CgCalendarToday style={{ color: 'white' }} />
                   </ListItemIcon>
