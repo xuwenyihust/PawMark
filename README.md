@@ -28,9 +28,7 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
   - Run the following code in the notebook to test the spark session
     ```python
     spark.range(0, 5) \
-         .write \
-         .format("delta") \
-         .save("/opt/data/delta-table/demo_0")
+      .write.format("delta").mode("overwrite").saveAsTable("test")
     ```
 - Check the history server
   - Access [http://localhost:18080](http://localhost:18080)
