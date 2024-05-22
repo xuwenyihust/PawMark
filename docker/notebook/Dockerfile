@@ -7,6 +7,9 @@ RUN apt-get update -y && \
     apt-get install -y curl gcc python3-dev apt-transport-https lsb-release gnupg && \
     rm -rf /var/lib/apt/lists/*
 
+# Install pyspark
+RUN pip install pyspark
+
 # Add Google Cloud SDK to the sources list
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 

@@ -73,23 +73,23 @@ def start():
 
     display(Markdown(msg))
 
-# def create_spark_dev():
-#     spark = SparkSession.builder \
-#         .appName("PySpark Example") \
-#         .master("spark://spark-master:7077") \
-#         .config("spark.jars.packages", "io.delta:delta-spark_2.12:3.0.0") \
-#         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
-#         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
-#         .config("spark.eventLog.enabled", "true") \
-#         .config("spark.eventLog.dir", "/opt/data/spark-events") \
-#         .config("spark.history.fs.logDirectory", "/opt/data/spark-events") \
-#         .config("spark.sql.warehouse.dir", "/opt/data/spark-warehouse") \
-#         .config("executor.memory", "1g") \
-#         .config("executor.cores", "1") \
-#         .config("spark.executor.instances", "1") \
-#         .getOrCreate()
+def create_spark_dev():
+    spark = SparkSession.builder \
+        .appName("PySpark Example") \
+        .master("spark://spark-master:7077") \
+        .config("spark.jars.packages", "io.delta:delta-spark_2.12:3.0.0") \
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+        .config("spark.eventLog.enabled", "true") \
+        .config("spark.eventLog.dir", "/opt/data/spark-events") \
+        .config("spark.history.fs.logDirectory", "/opt/data/spark-events") \
+        .config("spark.sql.warehouse.dir", "/opt/data/spark-warehouse") \
+        .config("executor.memory", "1g") \
+        .config("executor.cores", "1") \
+        .config("spark.executor.instances", "1") \
+        .getOrCreate()
     
-#     return spark
+    return spark
     
-# spark = create_spark_dev()
-spark_master = 'spark://spark-master:7077'
+spark = create_spark_dev()
+# spark_master = 'spark://spark-master:7077'
