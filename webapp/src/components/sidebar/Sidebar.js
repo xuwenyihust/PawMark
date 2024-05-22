@@ -5,7 +5,11 @@ import WorkspaceSidebar from './WorkspaceSidebar';
 import CreateSidebar from './CreateSidebar';
 
 
-function Sidebar({ jupyterBaseUrl, onNewNotebookClick, onExistinNotebookClick }) {
+function Sidebar({ 
+      jupyterBaseUrl, 
+      onNewNotebookClick, 
+      onExistinNotebookClick, 
+      onHistoryServerClick }) {
     const [openMainDrawer, setOpenMainDrawer] = useState(true);
     
     const [openCreateDrawer, setOpenCreateDrawer] = useState(false);
@@ -83,7 +87,7 @@ function Sidebar({ jupyterBaseUrl, onNewNotebookClick, onExistinNotebookClick })
                   onExistinNotebookClick={onExistinNotebookClick} />
                 )}
 
-                <ListItem button
+                <ListItem button onClick={onHistoryServerClick}
                   sx={{
                     '&:hover': {
                       backgroundColor: '#555'

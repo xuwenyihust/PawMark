@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/Notebook';
+import HistoryServer from './components/HistoryServer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createNotebook } from './api';
 import config from './config';
@@ -26,11 +27,14 @@ const theme = createTheme({
 
 const App = () => {
   const [showNotebook, setShowNotebook] = useState(false);
+  const [showHistoryServer, setShowHistoryServer] = useState(false);
+
   const [notebookSrc, setNotbookSrc] = useState('');
 
   const handleNewNotebookClick = () => {
     createNotebook(`${config.jupyterBaseUrl}/api/contents/work`).then((data) => {
       setNotbookSrc(`${config.jupyterBaseUrl}/tree/${data.path}`);
+      setShowHistoryServer(false);
       setShowNotebook(true);
     }).catch((error) => {
       console.error('Failed to create notebook:', error);
@@ -39,13 +43,24 @@ const App = () => {
 
   const handleExistingNotebookClick = (path) => {
     setNotbookSrc(`${config.jupyterBaseUrl}/tree/${path}`);
+    setShowHistoryServer(false);
     setShowNotebook(true);
   }
 
+  const handleHistoryServerClick = () => {
+    setShowNotebook(false);
+    setShowHistoryServer(true);
+  };
+
   return (
       <ThemeProvider theme={theme}>
-        <Sidebar jupyterBaseUrl={config.jupyterBaseUrl} onNewNotebookClick={handleNewNotebookClick} onExistinNotebookClick={handleExistingNotebookClick} />
+        <Sidebar 
+          jupyterBaseUrl={config.jupyterBaseUrl} 
+          onNewNotebookClick={handleNewNotebookClick} 
+          onExistinNotebookClick={handleExistingNotebookClick}
+          onHistoryServerClick={handleHistoryServerClick} />
         <Notebook showNotebook={showNotebook} notebookSrc={notebookSrc} />
+        <HistoryServer showHistoryServer={showHistoryServer} />
       </ThemeProvider>
   );
 };
