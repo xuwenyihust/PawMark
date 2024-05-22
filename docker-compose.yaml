@@ -114,7 +114,7 @@ services:
     environment:
       - SPARK_HISTORY_OPTS="-Dspark.history.fs.logDirectory=file:/opt/data/spark-events"
       - SPARK_MODE=history-server
-    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer"
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer "
     volumes:
       - ./data/spark-events:/opt/data/spark-events
     pull_policy: always
@@ -192,5 +192,20 @@ services:
         limits:
           cpus: "1" 
           memory: 1g
+
+  # For reverse proxy
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - "18081:80"
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
 
   
