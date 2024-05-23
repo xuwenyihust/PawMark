@@ -26,7 +26,7 @@ def set_env():
     pass
 
 # Create a Spark session
-def create_spark(app_name, master_url):
+# def create_spark(app_name, master_url):
     spark = SparkSession.builder \
         .appName(app_name) \
         .master(kubernetes_url) \
@@ -51,7 +51,7 @@ def create_spark(app_name, master_url):
     
     return spark
 
-def start():
+# def start():
     # Configuring the API client
     config.load_incluster_config()
 
@@ -73,8 +73,22 @@ def start():
 
     display(Markdown(msg))
 
+class DataPulseSparkSession:
+
+    def __init__(self, spark_session):
+        self._spark_session = spark_session
+    
+    def __getattr__(self, name):
+        return getattr(self._spark_session, name)
+    
+    def __repr__(self):
+        application_id = self._spark_session.sparkContext.applicationId
+        spark_ui_link = self._spark_session.sparkContext.uiWebUrl
+        custom_message = f"Custom Spark Session (App ID: {application_id}) - UI: {spark_ui_link}"
+        return custom_message
+
 def create_spark_dev():
-    spark = SparkSession.builder \
+    spark = DataPulseSparkSession(SparkSession.builder \
         .appName("PySpark Example") \
         .master("spark://spark-master:7077") \
         .config("spark.jars.packages", "io.delta:delta-spark_2.12:3.0.0") \
@@ -87,9 +101,8 @@ def create_spark_dev():
         .config("executor.memory", "1g") \
         .config("executor.cores", "1") \
         .config("spark.executor.instances", "1") \
-        .getOrCreate()
+        .getOrCreate())
     
     return spark
     
 spark = create_spark_dev()
-# spark_master = 'spark://spark-master:7077'
