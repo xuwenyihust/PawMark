@@ -87,6 +87,17 @@ class DataPulseSparkSession:
         custom_message = f"Custom Spark Session (App ID: {application_id}) - UI: {spark_ui_link}"
         return custom_message
 
+    def _repr_html_(self):
+        application_id = self.spark.sparkContext.applicationId
+        spark_ui_link = self.spark.sparkContext.uiWebUrl
+        return f"""
+        <div style="border: 1px solid #e8e8e8; padding: 10px;">
+            <h3>Spark Session Information</h3>
+            <p><strong>Application ID:</strong> {application_id}</p>
+            <p><strong>Spark UI:</strong> <a href="{spark_ui_link}">{spark_ui_link}</a></p>
+        </div>
+        """
+
 def create_spark_dev():
     spark = DataPulseSparkSession(SparkSession.builder \
         .appName("PySpark Example") \
