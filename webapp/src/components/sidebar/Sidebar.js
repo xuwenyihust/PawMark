@@ -37,7 +37,7 @@ function Sidebar({
     };
 
     return (
-      <div style={{ padding: 20, marginLeft: 240 }}>
+      <div style={{ padding: 0, marginLeft: 240 }}>
         <Drawer 
           variant="permanent"
           open={openMainDrawer}

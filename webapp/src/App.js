@@ -19,6 +19,14 @@ const theme = createTheme({
               },
           },
       },
+      MuiAppBar: {
+        styleOverrides: {
+          root: {
+            position: 'sticky',
+            top: 0,
+          },
+        },
+      },
   },
 });
 
@@ -40,7 +48,7 @@ const App = () => {
   };  
 
   const handleExistingNotebookClick = (path) => {
-    fetchNotebook().then((data) => {
+    fetchNotebook(`${config.jupyterBaseUrl}/api/contents/${path}`).then((data) => {
       console.log('Fetched notebook:', data);
       setNotebook(data);
 

@@ -11,9 +11,15 @@ export const fetchFiles = async (path = '') => {
 };
 
 export const fetchNotebook = async (path = '') => {
-  const response = await fetch('http://localhost:8888/api/contents/work/demo.ipynb', {
+  const url = new URL(path);
+  // const url = new URL('http://localhost:8888/api/contents/work/demo.ipynb');
+  url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
+  const response = await fetch(url, {
       method: 'GET',
-      redirect: "follow"
+      redirect: "follow",
+      headers: {
+          'Content-Type': 'application/json'
+      }
   });
 
   const data = await response.json();
