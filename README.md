@@ -30,6 +30,7 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 - Use notebook
   - Access [http://localhost:8888](http://localhost:8888)
   - Spark session is automatically created
+    - Run `spark` in cell to check the spark session
   - Run the following code in the notebook to test the spark session
     ```python
     spark.range(0, 5) \
