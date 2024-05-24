@@ -77,6 +77,7 @@ class DataPulseSparkSession:
 
     def __init__(self, spark_session):
         self._spark_session = spark_session
+        self.history_server_base_url = "http://localhost:18080"
     
     def __getattr__(self, name):
         return getattr(self._spark_session, name)
@@ -89,7 +90,7 @@ class DataPulseSparkSession:
 
     def _repr_html_(self):
         application_id = self._spark_session.sparkContext.applicationId
-        spark_ui_link = self._spark_session.sparkContext.uiWebUrl
+        spark_ui_link = f"{self.history_server_base_url}/history/{application_id}"
         return f"""
         <div style="border: 1px solid #e8e8e8; padding: 10px;">
             <h3>Spark Session Information</h3>
