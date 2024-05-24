@@ -16,12 +16,10 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 
 ## Quick Start
 
-
-## Development 
-
 ### Docker Compose
 <details>
 <summary>Details</summary>
+
 - Start [docker-compose](./docker-compose.yml)
 
   ```bash

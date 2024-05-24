@@ -88,8 +88,8 @@ class DataPulseSparkSession:
         return custom_message
 
     def _repr_html_(self):
-        application_id = self.spark.sparkContext.applicationId
-        spark_ui_link = self.spark.sparkContext.uiWebUrl
+        application_id = self._spark_session.sparkContext.applicationId
+        spark_ui_link = self._spark_session.sparkContext.uiWebUrl
         return f"""
         <div style="border: 1px solid #e8e8e8; padding: 10px;">
             <h3>Spark Session Information</h3>
