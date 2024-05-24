@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
+import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
 import { CgAdd, CgNotes, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
 import WorkspaceSidebar from './WorkspaceSidebar'; 
 import CreateSidebar from './CreateSidebar';
@@ -11,6 +11,16 @@ function Sidebar({
       onExistinNotebookClick, 
       onHistoryServerClick }) {
     const [openMainDrawer, setOpenMainDrawer] = useState(true);
+
+    const handleLogoClick = async () => {
+      try {
+          const response = await fetch('http://localhost:5002/test');
+          const data = await response.json();
+          console.log(data);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+    };
     
     const [openCreateDrawer, setOpenCreateDrawer] = useState(false);
     const createButtonRef = useRef(null);
@@ -36,9 +46,19 @@ function Sidebar({
             transition: 'width 0.3s' }}
           PaperProps={{ style: { width: 200 } }}>
             <Toolbar> {/* This Toolbar component pushes the content below the AppBar */}
-              <Typography variant="h6" sx={{ fontFamily: 'Roboto', fontWeight: 'bold' }}>
-                    DataPulse
-                </Typography>
+              <Button 
+                onClick={handleLogoClick}
+                sx={{
+                  textTransform: 'none', // Prevents capitalization of the button text
+                  color: 'inherit', // Inherits the color from the parent instead of applying button default styles
+                  padding: 0 // Removes padding that might affect layout
+                }}>
+                <Typography 
+                  variant="h6" 
+                  sx={{ fontFamily: 'Roboto', fontWeight: 'bold' }}>
+                      DataPulse
+                  </Typography>
+              </Button>
             </Toolbar>
 
             <Typography variant="body1" sx={{ fontFamily: 'Roboto', mt: 4 }}>

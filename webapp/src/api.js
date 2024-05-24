@@ -10,6 +10,16 @@ export const fetchFiles = async (path = '') => {
   return data.content; // Assuming the API returns a 'content' array
 };
 
+export const fetchNotebook = async (path = '') => {
+  const response = await fetch('http://localhost:8888/api/contents/work/demo.ipynb', {
+      method: 'GET',
+      redirect: "follow"
+  });
+
+  const data = await response.json();
+  return data;
+}
+
 export const createNotebook = async (path = '') => {
   console.log("Creating new notebook at path:", path);
   const notebookData = {
