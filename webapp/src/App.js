@@ -3,9 +3,8 @@ import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/Notebook';
 import HistoryServer from './components/HistoryServer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createNotebook } from './api';
+import { createNotebook, fetchNotebook } from './api';
 import config from './config';
-
 
 const theme = createTheme({
   components: {
@@ -20,16 +19,23 @@ const theme = createTheme({
               },
           },
       },
+      MuiAppBar: {
+        styleOverrides: {
+          root: {
+            position: 'sticky',
+            top: 0,
+          },
+        },
+      },
   },
 });
-
-// const jupyterBaseUrl = process.env.REACT_APP_JUPYTER_BASE_URL;
 
 const App = () => {
   const [showNotebook, setShowNotebook] = useState(false);
   const [showHistoryServer, setShowHistoryServer] = useState(false);
 
   const [notebookSrc, setNotbookSrc] = useState('');
+  const [notebook, setNotebook] = useState({});
 
   const handleNewNotebookClick = () => {
     createNotebook(`${config.jupyterBaseUrl}/api/contents/work`).then((data) => {
@@ -42,9 +48,16 @@ const App = () => {
   };  
 
   const handleExistingNotebookClick = (path) => {
-    setNotbookSrc(`${config.jupyterBaseUrl}/tree/${path}`);
-    setShowHistoryServer(false);
-    setShowNotebook(true);
+    fetchNotebook(`${config.jupyterBaseUrl}/api/contents/${path}`).then((data) => {
+      console.log('Fetched notebook:', data);
+      setNotebook(data);
+
+      setNotbookSrc(`${config.jupyterBaseUrl}/tree/${path}`);
+      setShowHistoryServer(false);
+      setShowNotebook(true);
+    }).catch((error) => {
+      console.error('Failed to fetch notebook:', error);
+    });
   }
 
   const handleHistoryServerClick = () => {
@@ -59,7 +72,7 @@ const App = () => {
           onNewNotebookClick={handleNewNotebookClick} 
           onExistinNotebookClick={handleExistingNotebookClick}
           onHistoryServerClick={handleHistoryServerClick} />
-        <Notebook showNotebook={showNotebook} notebookSrc={notebookSrc} />
+        <Notebook showNotebook={showNotebook} notebookSrc={notebookSrc} notebook={notebook} />
         <HistoryServer showHistoryServer={showHistoryServer} />
       </ThemeProvider>
   );

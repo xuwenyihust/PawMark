@@ -10,6 +10,22 @@ export const fetchFiles = async (path = '') => {
   return data.content; // Assuming the API returns a 'content' array
 };
 
+export const fetchNotebook = async (path = '') => {
+  const url = new URL(path);
+  // const url = new URL('http://localhost:8888/api/contents/work/demo.ipynb');
+  url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
+  const response = await fetch(url, {
+      method: 'GET',
+      redirect: "follow",
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  });
+
+  const data = await response.json();
+  return data;
+}
+
 export const createNotebook = async (path = '') => {
   console.log("Creating new notebook at path:", path);
   const notebookData = {
