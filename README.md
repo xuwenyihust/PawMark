@@ -2,6 +2,7 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/xuwenyihust/DataPulse?include_prereleases&label=Release)](https://github.com/xuwenyihust/DataPulse/releases)
 ![Docker Pulls](https://img.shields.io/docker/pulls/wenyixu101/webapp?logo=docker)
+![GitHub Repo stars](https://img.shields.io/github/stars/xuwenyihust/datapulse)
 ![Apache Spark 3.5.0](https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark)
 [![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?label=License)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)
 
@@ -14,7 +15,11 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 </p>
 
 ## Quick Start
-### Local Development (Docker Compose)
+
+### Docker Compose
+<details>
+<summary>Details</summary>
+
 - Start [docker-compose](./docker-compose.yml)
 
   ```bash
@@ -25,6 +30,7 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
 - Use notebook
   - Access [http://localhost:8888](http://localhost:8888)
   - Spark session is automatically created
+    - Run `spark` in cell to check the spark session
   - Run the following code in the notebook to test the spark session
     ```python
     spark.range(0, 5) \
@@ -42,6 +48,10 @@ DataPulse is a platform for big data and AI. It is based on Apache Spark and Kub
   - Use the default username and password to login
   - Create a new DAG to schedule the spark job
   - Or use the example DAGs in the [`./dags`](./dags/) folder
+</details>
+
+### MiniKube
+- TODO
 
 ## Examples
 ### Basic Analysis on Static Tables 
