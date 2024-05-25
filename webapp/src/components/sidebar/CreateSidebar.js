@@ -2,7 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
 import { CgAdd, CgNotes, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
 
-function CreateSidebar({ openCreateDrawer, handleToggleCreateDrawer, createButtonRef, onNewNotebookClick }) {
+function CreateSidebar({ openCreateDrawer, 
+    closeCreateDrawer,
+    handleToggleCreateDrawer, 
+    createButtonRef, 
+    onNewNotebookClick }) {
   return (
     <Drawer
       variant="temporary"
@@ -22,7 +26,12 @@ function CreateSidebar({ openCreateDrawer, handleToggleCreateDrawer, createButto
           width: 200, 
           left: 220 } }}>
       <List component="div" disablePadding>
-          <ListItem button onClick={onNewNotebookClick} sx={{ pl: 4 }}>
+          <ListItem button 
+            onClick={() => {
+              closeCreateDrawer()
+              onNewNotebookClick()
+            }} 
+            sx={{ pl: 4 }}>
               <ListItemIcon>
                   <CgNotes style={{ color: 'white' }} />
               </ListItemIcon>
