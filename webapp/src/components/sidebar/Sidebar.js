@@ -40,6 +40,10 @@ function Sidebar({
       setOpenWorkspaceDrawer(false);
     }
 
+    const closeCreateDrawer = () => {
+      setOpenCreateDrawer(false);
+    }
+
     return (
       <div style={{ padding: 0, marginLeft: 240 }}>
         <Drawer 
@@ -85,6 +89,7 @@ function Sidebar({
                 {openCreateDrawer && (
                   <CreateSidebar 
                     openCreateDrawer={openCreateDrawer}
+                    closeCreateDrawer={closeCreateDrawer}
                     handleToggleCreateDrawer={handleToggleCreateDrawer}
                     createButtonRef={createButtonRef}
                     onNewNotebookClick={onNewNotebookClick}/>

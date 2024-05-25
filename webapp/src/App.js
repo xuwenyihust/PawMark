@@ -39,9 +39,16 @@ const App = () => {
 
   const handleNewNotebookClick = () => {
     createNotebook(`${config.jupyterBaseUrl}/api/contents/work`).then((data) => {
-      setNotbookSrc(`${config.jupyterBaseUrl}/tree/${data.path}`);
-      setShowHistoryServer(false);
-      setShowNotebook(true);
+      const notebookPath = `${config.jupyterBaseUrl}/api/contents/${data.path}`
+      fetchNotebook(notebookPath).then((data) => {
+        console.log('Fetched newly created notebook:', data);
+        setNotebook(data);
+        setShowHistoryServer(false);
+        setShowNotebook(true);
+      }).catch((error) => {
+        console.error('Failed to fetch newly created notebook:', error);
+      });
+      
     }).catch((error) => {
       console.error('Failed to create notebook:', error);
     });
