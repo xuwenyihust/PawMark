@@ -36,6 +36,10 @@ function Sidebar({
       setOpenWorkspaceDrawer(!openWorkspaceDrawer);
     };
 
+    const closeWorkspaceDrawer = () => {
+      setOpenWorkspaceDrawer(false);
+    }
+
     return (
       <div style={{ padding: 0, marginLeft: 240 }}>
         <Drawer 
@@ -102,6 +106,7 @@ function Sidebar({
                   <WorkspaceSidebar 
                   jupyterBaseUrl={jupyterBaseUrl}
                   openWorkspaceDrawer={openWorkspaceDrawer} 
+                  closeWorkspaceDrawer={closeWorkspaceDrawer}
                   top={workspaceButtonRef.current.offsetTop + workspaceButtonRef.current.offsetParent.offsetTop} 
                   handleToggleWorkspaceDrawer={handleToggleWorkspaceDrawer}
                   onExistinNotebookClick={onExistinNotebookClick} />

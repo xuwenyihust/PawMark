@@ -3,7 +3,13 @@ import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, List
 import { CgFileDocument, CgFolder, CgArrowLeftR } from "react-icons/cg";
 import { fetchFiles } from '../../api';
 
-function WorkspaceSidebar({ jupyterBaseUrl, openWorkspaceDrawer, top, handleToggleWorkspaceDrawer, onExistinNotebookClick}) {
+function WorkspaceSidebar({ jupyterBaseUrl, 
+    openWorkspaceDrawer, 
+    closeWorkspaceDrawer, 
+    top, 
+    handleToggleWorkspaceDrawer, 
+    onExistinNotebookClick}) {
+
   const baseUrl = `${jupyterBaseUrl}/api/contents/`
   const [currentPath, setCurrentPath] = useState('work');
   const [workspaceFiles, setWorkspaceFiles] = useState([]);
@@ -16,6 +22,10 @@ function WorkspaceSidebar({ jupyterBaseUrl, openWorkspaceDrawer, top, handleTogg
     }
   }, [openWorkspaceDrawer, currentPath]);
 
+  useEffect(() => {
+    calculateHeight();
+  }, [workspaceFiles]);
+
   const handleDirectoryClick = (path) => {
     setCurrentPath(path);  // Update the path to fetch and display new contents
   };
@@ -26,7 +36,17 @@ function WorkspaceSidebar({ jupyterBaseUrl, openWorkspaceDrawer, top, handleTogg
   };
 
   const itemHeight = 48; // Height of one ListItem
-  const calculatedHeight = workspaceFiles.length * itemHeight;
+  const [workspaceSideBarHeight, setWorkspaceSideBarHeight] = useState(200);
+
+  const calculateHeight = () => {
+    // only the directories and notebooks will be counted in the height
+    const directoriesAndNotebooks = workspaceFiles.filter(item => item.type === 'directory' || item.type === 'notebook'); // Replace with your actual condition
+    const itemCount = directoriesAndNotebooks.length;
+    const height = (itemCount + 1) * itemHeight;
+    console.log("Height:", height);
+    console.log("Workspace Files:", workspaceFiles);
+    setWorkspaceSideBarHeight(height);
+  }
 
   return (
     <Drawer
@@ -43,7 +63,7 @@ function WorkspaceSidebar({ jupyterBaseUrl, openWorkspaceDrawer, top, handleTogg
       PaperProps={{ 
         style: { 
           position: 'relative',
-          height: `${calculatedHeight}px`,
+          height: `${workspaceSideBarHeight}px`,
           width: 250, 
           left: 220 } }}>
       <List component="div" disablePadding>
@@ -77,6 +97,7 @@ function WorkspaceSidebar({ jupyterBaseUrl, openWorkspaceDrawer, top, handleTogg
                     handleDirectoryClick(file.path)
                   } else if (file.type === 'notebook') {
                     onExistinNotebookClick(file.path)
+                    closeWorkspaceDrawer();
                   }}}
               sx={{ 
                 whiteSpace: 'nowrap', 
