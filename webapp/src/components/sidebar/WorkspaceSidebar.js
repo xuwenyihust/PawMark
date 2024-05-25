@@ -36,15 +36,13 @@ function WorkspaceSidebar({ jupyterBaseUrl,
   };
 
   const itemHeight = 48; // Height of one ListItem
-  const [workspaceSideBarHeight, setWorkspaceSideBarHeight] = useState(200);
+  const [workspaceSideBarHeight, setWorkspaceSideBarHeight] = useState(0);
 
   const calculateHeight = () => {
     // only the directories and notebooks will be counted in the height
     const directoriesAndNotebooks = workspaceFiles.filter(item => item.type === 'directory' || item.type === 'notebook'); // Replace with your actual condition
     const itemCount = directoriesAndNotebooks.length;
     const height = (itemCount + 1) * itemHeight;
-    console.log("Height:", height);
-    console.log("Workspace Files:", workspaceFiles);
     setWorkspaceSideBarHeight(height);
   }
 
@@ -55,7 +53,7 @@ function WorkspaceSidebar({ jupyterBaseUrl,
       open={openWorkspaceDrawer}
       onClose={handleToggleWorkspaceDrawer}
       sx={{ 
-        width: 200, 
+        width: 250, 
         flexShrink: 0,
         height: 'auto',
         top: top
@@ -98,15 +96,15 @@ function WorkspaceSidebar({ jupyterBaseUrl,
                   } else if (file.type === 'notebook') {
                     onExistinNotebookClick(file.path)
                     closeWorkspaceDrawer();
-                  }}}
-              sx={{ 
-                whiteSpace: 'nowrap', 
-                overflow: 'hidden', 
-                textOverflow: 'ellipsis' }}>
+                  }}}>
                 <ListItemIcon>
                   <IconComponent style={{ color: 'white' }} />
                 </ListItemIcon>
-                <ListItemText primary={file.name} />
+                <ListItemText primary={file.name} 
+                  sx={{ 
+                    whiteSpace: 'nowrap', 
+                    overflow: 'hidden', 
+                    textOverflow: 'ellipsis' }}/>
             </ListItem>
           </Tooltip>
           );
