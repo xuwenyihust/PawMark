@@ -79,7 +79,10 @@ const App = () => {
           onNewNotebookClick={handleNewNotebookClick} 
           onExistinNotebookClick={handleExistingNotebookClick}
           onHistoryServerClick={handleHistoryServerClick} />
-        <Notebook showNotebook={showNotebook} notebookSrc={notebookSrc} notebook={notebook} />
+        <Notebook 
+          jupyterBaseUrl={config.jupyterBaseUrl}
+          showNotebook={showNotebook}
+          notebook={notebook} />
         <HistoryServer showHistoryServer={showHistoryServer} />
       </ThemeProvider>
   );

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, AppBar, Toolbar, Typography, Card, CardContent, TextField, IconButton } from '@mui/material';
 import { MdOutlineSave, MdDeleteOutline } from "react-icons/md";
+import { updateNotebook } from '../api';
 
-function Notebook({ showNotebook, notebook }) {
+function Notebook({ jupyterBaseUrl, showNotebook, notebook }) {
     const [notebookContent, setNotebookContent] = useState({});
 
     useEffect(() => {
@@ -17,6 +18,16 @@ function Notebook({ showNotebook, notebook }) {
             newContent.cells[cellIndex].source = newValue;
             return newContent;
     });}
+
+    const baseUrl = `${jupyterBaseUrl}/api/contents/`
+
+    function saveNotebook() {
+        updateNotebook(baseUrl + notebook.path, notebookContent).then((data) => {
+            console.log('Notebook saved:', data);
+        }).catch((error) => {
+            console.error('Failed to save notebook:', error);
+        });
+    }
 
     return (
         <div style={{ paddingLeft: 20, paddingRight: 0, marginLeft: 200 }}> {/* Adjust marginLeft based on your sidebar width */}
@@ -35,7 +46,7 @@ function Notebook({ showNotebook, notebook }) {
                                         {notebook.name}
                                     </Typography>
                                     <Box sx={{ display: 'flex', mt: 0 }}>
-                                        <IconButton aria-label="save" 
+                                        <IconButton onClick={saveNotebook} aria-label="save" 
                                             sx={{ 
                                                 width: 'auto', 
                                                 mt: 0.5 }}>
