@@ -12,7 +12,6 @@ export const fetchFiles = async (path = '') => {
 
 export const fetchNotebook = async (path = '') => {
   const url = new URL(path);
-  // const url = new URL('http://localhost:8888/api/contents/work/demo.ipynb');
   url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
   const response = await fetch(url, {
       method: 'GET',
@@ -56,6 +55,26 @@ export const createNotebook = async (path = '') => {
 
     if (!response.ok) {
         throw new Error('Failed to create notebook');
+    }
+    const data = await response.json();
+    return data;
+};
+
+export const updateNotebook = async (path = '', content = {}) => {
+  console.log("Updating notebook at path:", path);
+  const response = await fetch(path, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            content: content,
+            type: 'notebook'
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to update notebook');
     }
     const data = await response.json();
     return data;
