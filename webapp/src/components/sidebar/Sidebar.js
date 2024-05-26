@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
-import { CgAdd, CgNotes, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
+import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
 import WorkspaceSidebar from './WorkspaceSidebar'; 
 import CreateSidebar from './CreateSidebar';
 
@@ -50,9 +50,12 @@ function Sidebar({
           variant="permanent"
           open={openMainDrawer}
           sx={{ 
-            width: 200, 
             transition: 'width 0.3s' }}
-          PaperProps={{ style: { width: 200 } }}>
+          PaperProps={{ 
+            style: { 
+              width: 200 },
+            elevation: 1,
+            }}>
             <Toolbar> {/* This Toolbar component pushes the content below the AppBar */}
               <Button 
                 onClick={handleLogoClick}

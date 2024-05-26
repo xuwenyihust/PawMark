@@ -20,11 +20,13 @@ function CreateSidebar({ openCreateDrawer,
         top: createButtonRef.current.offsetTop + createButtonRef.current.offsetParent.offsetTop
         }}
       PaperProps={{ 
+        elevation: 1,
         style: { 
           position: 'relative',
           height: '48px',
           width: 200, 
-          left: 220 } }}>
+          left: 220 } }}
+      BackdropProps={{ style: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}>
       <List component="div" disablePadding>
           <ListItem button 
             onClick={() => {

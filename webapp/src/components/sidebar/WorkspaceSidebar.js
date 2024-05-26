@@ -53,17 +53,20 @@ function WorkspaceSidebar({ jupyterBaseUrl,
       open={openWorkspaceDrawer}
       onClose={handleToggleWorkspaceDrawer}
       sx={{ 
-        width: 250, 
+        width: 470,
         flexShrink: 0,
         height: 'auto',
-        top: top
+        top: top,
+        overflow: 'auto'
         }}
       PaperProps={{ 
+        elevation: 1,
         style: { 
           position: 'relative',
           height: `${workspaceSideBarHeight}px`,
           width: 250, 
-          left: 220 } }}>
+          left: 220 } }}
+      BackdropProps={{ style: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}>
       <List component="div" disablePadding>
         {currentPath && (
           <ListItem button onClick={handleBackClick}>
