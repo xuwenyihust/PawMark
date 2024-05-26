@@ -1,7 +1,23 @@
-import React from 'react';
-import { Box, AppBar, Toolbar, Typography, Card, CardContent, TextField, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, AppBar, Toolbar, Typography, Card, CardContent, TextField, IconButton } from '@mui/material';
+import { MdOutlineSave, MdDeleteOutline } from "react-icons/md";
 
-function Notebook({ showNotebook, notebookSrc, notebook }) {
+function Notebook({ showNotebook, notebook }) {
+    const [notebookContent, setNotebookContent] = useState({});
+
+    useEffect(() => {
+        if (notebook && notebook.content) {
+            setNotebookContent(notebook.content);
+        }
+    }, [notebook]);
+
+    function handleCellChange(newValue, cellIndex) {
+        setNotebookContent(prevContent => {
+            const newContent = {...prevContent};
+            newContent.cells[cellIndex].source = newValue;
+            return newContent;
+    });}
+
     return (
         <div style={{ paddingLeft: 20, paddingRight: 0, marginLeft: 200 }}> {/* Adjust marginLeft based on your sidebar width */}
             {showNotebook && (
@@ -11,13 +27,32 @@ function Notebook({ showNotebook, notebookSrc, notebook }) {
                             marginBottom: 5 }}> 
                         <AppBar position="static" color="default" sx={{ backgroundColor: '#fff' }}>
                             <Toolbar>
-                                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                                    {notebook.name}
-                                </Typography>
+                                <Box sx={{ 
+                                        flexDirection: 'column', 
+                                        alignItems: 'start',
+                                        mt: 2 }}>
+                                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                                        {notebook.name}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', mt: 0 }}>
+                                        <IconButton aria-label="save" 
+                                            sx={{ 
+                                                width: 'auto', 
+                                                mt: 0.5 }}>
+                                            <MdOutlineSave size={18} style={{ color: 'black' }}/>
+                                        </IconButton>
+                                        <IconButton aria-label="delete" 
+                                            sx={{ 
+                                                width: 'auto', 
+                                                mt: 0.5 }}>
+                                            <MdDeleteOutline size={18} style={{ color: 'black' }}/>
+                                        </IconButton>
+                                    </Box>
+                                </Box>
                             </Toolbar>
                         </AppBar>
                     </Box>
-                    {notebook.content.cells.map((cell, index) => (
+                    {notebookContent.cells && notebookContent.cells.map((cell, index) => (
                         <Card key={index} 
                             sx={{ 
                                 marginTop: 3,
@@ -31,25 +66,26 @@ function Notebook({ showNotebook, notebookSrc, notebook }) {
                                     outline: 'rgba(0, 0, 0, 3)'  // Change this to your desired outline color
                                   }  }}>
                             <CardContent>
-                            <TextField
-                                multiline
-                                fullWidth
-                                variant="outlined"
-                                value={cell.source}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        '& fieldset': {
-                                          borderColor: 'rgba(0, 0, 0, 0)', // Change this to adjust the color
+                                <TextField
+                                    multiline
+                                    fullWidth
+                                    variant="outlined"
+                                    value={cell.source}
+                                    onChange={e => handleCellChange(e.target.value, index)}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '& fieldset': {
+                                            borderColor: 'rgba(0, 0, 0, 0)', // Change this to adjust the color
+                                            },
+                                            '&:hover fieldset': {
+                                            borderColor: 'rgba(0, 0, 0, 0)', // Change this to adjust the hover color
+                                            },
+                                            '&.Mui-focused fieldset': {
+                                            borderColor: 'rgba(0, 0, 0, 0.1)', // Change this to adjust the focus color
+                                            },
                                         },
-                                        '&:hover fieldset': {
-                                          borderColor: 'rgba(0, 0, 0, 0)', // Change this to adjust the hover color
-                                        },
-                                        '&.Mui-focused fieldset': {
-                                          borderColor: 'rgba(0, 0, 0, 0.1)', // Change this to adjust the focus color
-                                        },
-                                      },
-                                }}
-                                />
+                                    }}
+                                    />
                             </CardContent>
                         </Card>
                     ))}
