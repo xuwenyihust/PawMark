@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from './components/sidebar/Sidebar';
-import Notebook from './components/Notebook';
+import Notebook from './components/notebook/Notebook';
 import HistoryServer from './components/HistoryServer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createNotebook, fetchNotebook } from './api';
