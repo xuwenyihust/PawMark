@@ -21,13 +21,13 @@ function NotebookToolbar({notebook, saveNotebook, deleteNotebook}) {
                               sx={{ 
                                   width: 'auto', 
                                   mt: 0.5 }}>
-                              <MdOutlineSave size={18} style={{ color: 'black' }}/>
+                              <MdOutlineSave size={18} style={{ color: 'grey' }}/>
                           </IconButton>
                           <IconButton onClick={deleteNotebook} aria-label="delete" 
                               sx={{ 
                                   width: 'auto', 
                                   mt: 0.5 }}>
-                              <MdDeleteOutline size={18} style={{ color: 'black' }}/>
+                              <MdDeleteOutline size={18} style={{ color: 'grey' }}/>
                           </IconButton>
                       </Box>
                   </Box>
