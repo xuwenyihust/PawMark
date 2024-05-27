@@ -9,7 +9,13 @@ function Sidebar({
       jupyterBaseUrl, 
       onNewNotebookClick, 
       onExistinNotebookClick, 
-      onHistoryServerClick }) {
+      onHistoryServerClick,
+      handleDirectoryClick,
+      openWorkspaceDrawer,
+      setOpenWorkspaceDrawer,
+      currentPath,
+      setCurrentPath,
+      workspaceFiles }) {
     const [openMainDrawer, setOpenMainDrawer] = useState(true);
 
     const handleLogoClick = async () => {
@@ -29,7 +35,6 @@ function Sidebar({
       setOpenCreateDrawer(!openCreateDrawer);
     };
 
-    const [openWorkspaceDrawer, setOpenWorkspaceDrawer] = useState(false);
     const workspaceButtonRef = useRef(null);
     const handleToggleWorkspaceDrawer = () => {
       console.log("Workspace button Clicked");
@@ -117,7 +122,11 @@ function Sidebar({
                   closeWorkspaceDrawer={closeWorkspaceDrawer}
                   top={workspaceButtonRef.current.offsetTop + workspaceButtonRef.current.offsetParent.offsetTop} 
                   handleToggleWorkspaceDrawer={handleToggleWorkspaceDrawer}
-                  onExistinNotebookClick={onExistinNotebookClick} />
+                  onExistinNotebookClick={onExistinNotebookClick} 
+                  handleDirectoryClick={handleDirectoryClick}
+                  currentPath={currentPath}
+                  setCurrentPath={setCurrentPath}
+                  workspaceFiles={workspaceFiles}/>
                 )}
 
                 <ListItem button onClick={onHistoryServerClick}

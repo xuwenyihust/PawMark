@@ -1,13 +1,15 @@
 export const fetchFiles = async (path = '') => {
-  const response = await fetch(path, {
-      method: 'GET',
-      redirect: "follow"
-  });
-  if (!response.ok) {
-      throw new Error('Failed to fetch files');
-  }
-  const data = await response.json();
-  return data.content; // Assuming the API returns a 'content' array
+    const url = new URL(path);
+    url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
+    const response = await fetch(url, {
+        method: 'GET',
+        redirect: "follow"
+    });
+    if (!response.ok) {
+        throw new Error('Failed to fetch files');
+    }
+    const data = await response.json();
+    return data.content; // Assuming the API returns a 'content' array
 };
 
 export const fetchNotebook = async (path = '') => {
@@ -60,6 +62,19 @@ export const createNotebook = async (path = '') => {
     return data;
 };
 
+export const deleteNotebook = async (path = '') => {
+    console.log("Deleting notebook at path:", path);
+    const response = await fetch(path, {
+            method: 'DELETE'
+        });
+    
+        if (!response.ok) {
+            throw new Error('Failed to delete notebook');
+        }
+        const data = response.status !== 204 ? await response.json() : {};
+        return data;
+};
+
 export const updateNotebook = async (path = '', content = {}) => {
   console.log("Updating notebook at path:", path);
   const response = await fetch(path, {
@@ -79,3 +94,4 @@ export const updateNotebook = async (path = '', content = {}) => {
     const data = await response.json();
     return data;
 };
+

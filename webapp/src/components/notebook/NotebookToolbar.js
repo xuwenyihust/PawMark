@@ -1,8 +1,8 @@
 import React from 'react';
 import { MdOutlineSave, MdDeleteOutline } from "react-icons/md";
-import { Box, AppBar, Toolbar, Typography, Card, CardContent, TextField, IconButton } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 
-function NotebookToolbar({notebook, saveNotebook}) {
+function NotebookToolbar({notebook, saveNotebook, deleteNotebook}) {
     return (
       <Box sx={{ 
         marginLeft: 0,
@@ -23,7 +23,7 @@ function NotebookToolbar({notebook, saveNotebook}) {
                                   mt: 0.5 }}>
                               <MdOutlineSave size={18} style={{ color: 'black' }}/>
                           </IconButton>
-                          <IconButton aria-label="delete" 
+                          <IconButton onClick={deleteNotebook} aria-label="delete" 
                               sx={{ 
                                   width: 'auto', 
                                   mt: 0.5 }}>
