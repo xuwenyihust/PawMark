@@ -5,8 +5,8 @@ function NotebookCell({ cell, index, handleCellChange}) {
     return (
       <Card key={index} 
           sx={{ 
-              marginTop: 3,
-              marginBottom: 3,
+              marginTop: 1,
+              marginBottom: 1,
               marginLeft: 10,
               marginRight: 10,
               borderBottom: 0,
