@@ -17,7 +17,17 @@ function Notebook({ jupyterBaseUrl,
         }
     }, [notebook]);
 
-    function handleCellChange(newValue, cellIndex) {
+    const baseUrl = `${jupyterBaseUrl}/api/contents/`
+
+    const handleUpdateNotebook = () => {
+        updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
+            console.log('Notebook saved:', data);
+        }).catch((error) => {
+            console.error('Failed to save notebook:', error);
+        });
+    }
+
+    const handleChangeCell = (newValue, cellIndex) => {
         setNotebookState(prevState => {
             const newState = {...prevState};
             newState.content.cells[cellIndex].source = newValue;
@@ -49,13 +59,11 @@ function Notebook({ jupyterBaseUrl,
         });
     }
 
-    const baseUrl = `${jupyterBaseUrl}/api/contents/`
-
-    const handleUpdateNotebook = () => {
-        updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
-            console.log('Notebook saved:', data);
-        }).catch((error) => {
-            console.error('Failed to save notebook:', error);
+    const handleDeleteCell = (cellIndex) => {
+        setNotebookState(prevState => {
+            const newState = {...prevState};
+            newState.content.cells.splice(cellIndex, 1);
+            return newState;
         });
     }
 
@@ -76,7 +84,8 @@ function Notebook({ jupyterBaseUrl,
                             <NotebookCell
                                 cell={cell}
                                 index={index}
-                                handleCellChange={handleCellChange} />
+                                handleChangeCell={handleChangeCell}
+                                handleDeleteCell={handleDeleteCell} />
                             <div 
                                 style={{ 
                                     display: 'flex',
