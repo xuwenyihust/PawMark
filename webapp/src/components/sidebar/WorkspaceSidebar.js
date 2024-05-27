@@ -1,34 +1,37 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
 import { CgFileDocument, CgFolder, CgArrowLeftR } from "react-icons/cg";
-import { fetchFiles } from '../../api';
 
 function WorkspaceSidebar({ jupyterBaseUrl, 
     openWorkspaceDrawer, 
     closeWorkspaceDrawer, 
     top, 
     handleToggleWorkspaceDrawer, 
-    onExistinNotebookClick}) {
+    onExistinNotebookClick,
+    handleDirectoryClick,
+    currentPath,
+    setCurrentPath,
+    workspaceFiles}) {
 
-  const baseUrl = `${jupyterBaseUrl}/api/contents/`
-  const [currentPath, setCurrentPath] = useState('work');
-  const [workspaceFiles, setWorkspaceFiles] = useState([]);
+  // const baseUrl = `${jupyterBaseUrl}/api/contents/`
+  // const [currentPath, setCurrentPath] = useState('work');
+  // const [workspaceFiles, setWorkspaceFiles] = useState([]);
 
-  useEffect(() => {
-    if (openWorkspaceDrawer) {
-        fetchFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
-            .then(setWorkspaceFiles)
-            .catch(error => console.error('Failed to fetch files:', error));
-    }
-  }, [openWorkspaceDrawer, currentPath]);
+  // useEffect(() => {
+  //   if (openWorkspaceDrawer) {
+  //       fetchFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
+  //           .then(setWorkspaceFiles)
+  //           .catch(error => console.error('Failed to fetch files:', error));
+  //   }
+  // }, [openWorkspaceDrawer, currentPath]);
 
   useEffect(() => {
     calculateHeight();
   }, [workspaceFiles]);
 
-  const handleDirectoryClick = (path) => {
-    setCurrentPath(path);  // Update the path to fetch and display new contents
-  };
+  // const handleDirectoryClick = (path) => {
+  //   setCurrentPath(path);  // Update the path to fetch and display new contents
+  // };
 
   const handleBackClick = () => {
     const parentPath = currentPath.split('/').slice(0, -1).join('/');

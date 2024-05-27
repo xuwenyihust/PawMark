@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/notebook/Notebook';
 import HistoryServer from './components/HistoryServer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createNotebook, fetchNotebook } from './api';
+import { createNotebook, deleteNotebook, fetchNotebook, fetchFiles } from './api/notebooks';
 import config from './config';
 
 const theme = createTheme({
@@ -31,15 +31,36 @@ const theme = createTheme({
 });
 
 const App = () => {
-  const [showNotebook, setShowNotebook] = useState(false);
   const [showHistoryServer, setShowHistoryServer] = useState(false);
 
-  const [notebookSrc, setNotbookSrc] = useState('');
-  const [notebook, setNotebook] = useState({});
+  const baseUrl = `${config.jupyterBaseUrl}/api/contents/`
 
+  const [showNotebook, setShowNotebook] = useState(false);
+  const [notebook, setNotebook] = useState({});
+  const [notebookState, setNotebookState] = useState({}); 
+
+  const [openWorkspaceDrawer, setOpenWorkspaceDrawer] = useState(false);
+  const [currentPath, setCurrentPath] = useState('work');
+  const [workspaceFiles, setWorkspaceFiles] = useState([]);
+
+  // Workspace
+  useEffect(() => {
+    if (openWorkspaceDrawer) {
+        fetchFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
+            .then(setWorkspaceFiles)
+            .catch(error => console.error('Failed to fetch files:', error));
+        console.log('Fetched workspace files:', workspaceFiles);
+    }
+  }, [openWorkspaceDrawer, currentPath, notebookState]);
+
+  const handleDirectoryClick = (path) => {
+    setCurrentPath(path);  // Update the path to fetch and display new contents
+  };
+
+  // Notebook
   const handleNewNotebookClick = () => {
-    createNotebook(`${config.jupyterBaseUrl}/api/contents/work`).then((data) => {
-      const notebookPath = `${config.jupyterBaseUrl}/api/contents/${data.path}`
+    createNotebook(`${baseUrl}work`).then((data) => {
+      const notebookPath = `${baseUrl}${data.path}`
       fetchNotebook(notebookPath).then((data) => {
         console.log('Fetched newly created notebook:', data);
         setNotebook(data);
@@ -55,11 +76,9 @@ const App = () => {
   };  
 
   const handleExistingNotebookClick = (path) => {
-    fetchNotebook(`${config.jupyterBaseUrl}/api/contents/${path}`).then((data) => {
+    fetchNotebook(`${baseUrl}${path}`).then((data) => {
       console.log('Fetched notebook:', data);
       setNotebook(data);
-
-      setNotbookSrc(`${config.jupyterBaseUrl}/tree/${path}`);
       setShowHistoryServer(false);
       setShowNotebook(true);
     }).catch((error) => {
@@ -67,6 +86,17 @@ const App = () => {
     });
   }
 
+  const handleDeleteNotebook = () => {
+    if (window.confirm('Are you sure you want to delete this notebook?')) {
+      deleteNotebook(baseUrl + notebook.path).then((data) => {
+        setNotebookState({}); // Clear notebook content
+        console.log('Notebook deleted:', notebookState);
+    }).catch((error) => {
+        console.error('Failed to delete notebook:', error);
+    });
+  }}
+
+  // History server
   const handleHistoryServerClick = () => {
     setShowNotebook(false);
     setShowHistoryServer(true);
@@ -78,11 +108,20 @@ const App = () => {
           jupyterBaseUrl={config.jupyterBaseUrl} 
           onNewNotebookClick={handleNewNotebookClick} 
           onExistinNotebookClick={handleExistingNotebookClick}
-          onHistoryServerClick={handleHistoryServerClick} />
+          onHistoryServerClick={handleHistoryServerClick} 
+          handleDirectoryClick={handleDirectoryClick}
+          openWorkspaceDrawer={openWorkspaceDrawer}
+          setOpenWorkspaceDrawer={setOpenWorkspaceDrawer}
+          currentPath={currentPath}
+          setCurrentPath={setCurrentPath}
+          workspaceFiles={workspaceFiles}/>
         <Notebook 
           jupyterBaseUrl={config.jupyterBaseUrl}
           showNotebook={showNotebook}
-          notebook={notebook} />
+          notebook={notebook}
+          notebookState={notebookState}
+          setNotebookState={setNotebookState}
+          handleDeleteNotebook={handleDeleteNotebook} />
         <HistoryServer showHistoryServer={showHistoryServer} />
       </ThemeProvider>
   );
