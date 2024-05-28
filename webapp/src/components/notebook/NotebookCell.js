@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, Typography, Card, CardHeader, CardContent, TextField, IconButton } from '@mui/material';
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
 
 
-function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell, handleChangeCellType}) {
+function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDeleteCell, handleChangeCellType, handleMoveCell}) {
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
@@ -12,18 +12,17 @@ function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell, handleC
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}>
         <Card key={index} 
+            elevation={0}
             sx={{ 
                 width: '85%',
                 marginTop: 1,
                 marginBottom: 1,
                 marginLeft: 10,
                 marginRight: 1,
-                borderBottom: 0,
-                borderColor: 'divider',
+                border: isFocused ? 0.8 : 0.5,
+                borderColor: isFocused ? 'black' : 'lightgrey',
                 backgroundColor: 'rgba(0, 0, 0, 0.03)',
-                '&:focus-visible': {
-                    outline: 'rgba(0, 0, 0, 3)'  // Change this to your desired outline color
-                  }  }}>
+            }}>
             <CardHeader title={
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Select
@@ -69,18 +68,33 @@ function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell, handleC
             </CardContent>
         </Card>   
         {(isFocused || isHovered) && (
-          <IconButton variant="outlined" aria-label="delete" 
-          style={{ 
-            height: 30,
-            marginTop: 10,
-            marginLeft: 0, 
-            marginRight: 20 }}>
-          <MdDeleteOutline 
-            onClick={() => handleDeleteCell(index)}
-            size={20} 
-            style={{ 
-              color: 'grey' }}/>
-        </IconButton>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <IconButton aria-label="delete" 
+              style={{ 
+                height: 30,
+                marginTop: 10,
+                marginLeft: 0, 
+                marginRight: 0 }}>
+              <MdDeleteOutline 
+                onClick={() => handleDeleteCell(index)}
+                size={20} 
+                style={{ 
+                  color: 'grey' }}/>
+            </IconButton>
+
+            {index !== 0 && 
+              <IconButton onClick={() => handleMoveCell(index, index-1)}
+                style={{ marginLeft: 0, marginTop: 10 }}>
+                <MdArrowDropUp
+                  size={20}  />
+              </IconButton>}
+            {index !== notebookState.content.cells.length - 1 && 
+              <IconButton onClick={() => handleMoveCell(index, index+1)}
+                style={{ marginLeft: 0, marginTop: 10 }}>
+                <MdArrowDropDown
+                  size={20}  />
+              </IconButton>}
+          </div>
         )}
       </div>        
     )
