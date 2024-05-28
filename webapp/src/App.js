@@ -38,6 +38,7 @@ const App = () => {
   const [showNotebook, setShowNotebook] = useState(false);
   const [notebook, setNotebook] = useState({});
   const [notebookState, setNotebookState] = useState({}); 
+  const [isNotebookModified, setIsNotebookModified] = useState(false);
 
   const [openWorkspaceDrawer, setOpenWorkspaceDrawer] = useState(false);
   const [currentPath, setCurrentPath] = useState('work');
@@ -58,31 +59,48 @@ const App = () => {
   };
 
   // Notebook
+  const handleUnsavedChanges = () => {
+    if (isNotebookModified) {
+      const confirmSwitch = window.confirm('You have unsaved changes. Are you sure you want to switch notebooks?');
+      if (confirmSwitch) {
+        setIsNotebookModified(false);
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
   const handleNewNotebookClick = () => {
-    createNotebook(`${baseUrl}work`).then((data) => {
-      const notebookPath = `${baseUrl}${data.path}`
-      fetchNotebook(notebookPath).then((data) => {
+    if (handleUnsavedChanges()) {
+      createNotebook(`${baseUrl}work`).then((data) => {
+        const notebookPath = `${baseUrl}${data.path}`
+        fetchNotebook(notebookPath).then((data) => {
+          setNotebook(data);
+          setShowHistoryServer(false);
+          setShowNotebook(true);
+        }).catch((error) => {
+          console.error('Failed to fetch newly created notebook:', error);
+        });
+        
+      }).catch((error) => {
+        console.error('Failed to create notebook:', error);
+      });
+    }
+  };  
+
+  const handleExistingNotebookClick = (path) => {
+    if (handleUnsavedChanges()) {
+      fetchNotebook(`${baseUrl}${path}`).then((data) => {
+        console.log('Fetched notebook:', data);
         setNotebook(data);
         setShowHistoryServer(false);
         setShowNotebook(true);
       }).catch((error) => {
-        console.error('Failed to fetch newly created notebook:', error);
+        console.error('Failed to fetch notebook:', error);
       });
-      
-    }).catch((error) => {
-      console.error('Failed to create notebook:', error);
-    });
-  };  
-
-  const handleExistingNotebookClick = (path) => {
-    fetchNotebook(`${baseUrl}${path}`).then((data) => {
-      console.log('Fetched notebook:', data);
-      setNotebook(data);
-      setShowHistoryServer(false);
-      setShowNotebook(true);
-    }).catch((error) => {
-      console.error('Failed to fetch notebook:', error);
-    });
+    }
   }
 
   const handleDeleteNotebook = () => {
@@ -97,8 +115,10 @@ const App = () => {
 
   // History server
   const handleHistoryServerClick = () => {
-    setShowNotebook(false);
-    setShowHistoryServer(true);
+    if (handleUnsavedChanges()) {
+      setShowNotebook(false);
+      setShowHistoryServer(true);
+    }
   };
 
   return (
@@ -120,6 +140,8 @@ const App = () => {
           notebook={notebook}
           notebookState={notebookState}
           setNotebookState={setNotebookState}
+          isNotebookModified={isNotebookModified}
+          setIsNotebookModified={setIsNotebookModified}
           handleDeleteNotebook={handleDeleteNotebook} />
         <HistoryServer showHistoryServer={showHistoryServer} />
       </ThemeProvider>

@@ -12,7 +12,8 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
     const [isHovered, setIsHovered] = useState(false);
 
     const textEditorLineHeight = 20; // adjust this to match your actual line height
-    const textEditorLines = cell.source.split('\n').length;
+    const textEditorLines = cell.source && typeof cell.source === 'string' ? 
+      cell.source.split('\n').length : 1;
     const textEditorHeight = `${Math.max(textEditorLines, 1) * textEditorLineHeight}px`;
 
     return (
