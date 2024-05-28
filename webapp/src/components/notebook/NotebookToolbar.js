@@ -7,7 +7,14 @@ function NotebookToolbar({notebook, saveNotebook, deleteNotebook}) {
       <Box sx={{ 
         marginLeft: 0,
         marginBottom: 5 }}> 
-          <AppBar position="static" color="default" sx={{ backgroundColor: '#fff' }}>
+          <AppBar 
+            position="static" 
+            color="default" 
+            elevation={0}
+            sx={{ 
+              backgroundColor: '#fff',
+              borderBottom: '0.2px solid grey'
+              }}>
               <Toolbar>
                   <Box sx={{ 
                           flexDirection: 'column', 

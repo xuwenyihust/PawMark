@@ -59,7 +59,9 @@ function Sidebar({
           PaperProps={{ 
             style: { 
               width: 200 },
-            elevation: 1,
+            elevation: 0,
+            sx: {
+              borderRight: '0.5px solid grey',}
             }}>
             <Toolbar> {/* This Toolbar component pushes the content below the AppBar */}
               <Button 

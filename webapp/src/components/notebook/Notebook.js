@@ -75,6 +75,22 @@ function Notebook({ jupyterBaseUrl,
         });
     }
 
+    const handleMoveCell = (fromIndex, toIndex) => {
+        if (!notebookState.content.cells || toIndex < 0 || toIndex >= notebookState.content.cells.length) return;
+
+        const cellsCopy = [...notebookState.content.cells];
+        const cellToMove = cellsCopy.splice(fromIndex, 1)[0];
+        cellsCopy.splice(toIndex, 0, cellToMove);
+
+        setNotebookState({
+            ...notebookState,
+            content: {
+                ...notebookState.content,
+                cells: cellsCopy
+            }
+        });
+    }
+
     return (
         <div style={{ paddingLeft: 20, paddingRight: 0, marginLeft: 200 }}> {/* Adjust marginLeft based on your sidebar width */}
             {showNotebook && (
@@ -92,9 +108,11 @@ function Notebook({ jupyterBaseUrl,
                             <NotebookCell
                                 cell={cell}
                                 index={index}
+                                notebookState={notebookState}
                                 handleChangeCell={handleChangeCell}
                                 handleDeleteCell={handleDeleteCell} 
-                                handleChangeCellType={handleChangeCellType}/>
+                                handleChangeCellType={handleChangeCellType}
+                                handleMoveCell={handleMoveCell}/>
                             <div 
                                 style={{ 
                                     display: 'flex',
