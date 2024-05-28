@@ -34,7 +34,7 @@ function Notebook({ jupyterBaseUrl,
             return newState;
     });}
 
-    const createCell = (type = 'code', index) => {
+    const handleCreateCell = (type = 'code', index) => {
         const newCell = {
             cell_type: type,
             metadata: {},
@@ -67,6 +67,14 @@ function Notebook({ jupyterBaseUrl,
         });
     }
 
+    const handleChangeCellType = (cellIndex, newCellType) => {
+        setNotebookState(prevState => {
+            const newState = {...prevState};
+            newState.content.cells[cellIndex].cell_type = newCellType;
+            return newState;
+        });
+    }
+
     return (
         <div style={{ paddingLeft: 20, paddingRight: 0, marginLeft: 200 }}> {/* Adjust marginLeft based on your sidebar width */}
             {showNotebook && (
@@ -85,7 +93,8 @@ function Notebook({ jupyterBaseUrl,
                                 cell={cell}
                                 index={index}
                                 handleChangeCell={handleChangeCell}
-                                handleDeleteCell={handleDeleteCell} />
+                                handleDeleteCell={handleDeleteCell} 
+                                handleChangeCellType={handleChangeCellType}/>
                             <div 
                                 style={{ 
                                     display: 'flex',
@@ -93,14 +102,14 @@ function Notebook({ jupyterBaseUrl,
                                 <Tooltip title="Add Code Cell" 
                                     sx={{fontSize: 11,
                                     color: "grey"}}>
-                                    <Button onClick={() => createCell('code', index + 1)}>
+                                    <Button onClick={() => handleCreateCell('code', index + 1)}>
                                         + Code
                                     </Button>
                                 </Tooltip>
                                 <Tooltip title="Add Code Cell"
                                     sx={{fontSize: 11,
                                     color: "grey"}}>
-                                    <Button onClick={() => createCell('markdown', index + 1)}>
+                                    <Button onClick={() => handleCreateCell('markdown', index + 1)}>
                                         + Markdown
                                     </Button>
                                 </Tooltip>

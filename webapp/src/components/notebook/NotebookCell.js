@@ -1,14 +1,19 @@
-import React from 'react';
-import { Typography, Card, CardHeader, CardContent, TextField, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import { Select, MenuItem, Typography, Card, CardHeader, CardContent, TextField, IconButton } from '@mui/material';
 import { MdDeleteOutline } from "react-icons/md";
 
 
-function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell}) {
+function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell, handleChangeCellType}) {
+    const [isFocused, setIsFocused] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+
     return (
-      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-start' }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}>
         <Card key={index} 
             sx={{ 
-                width: '90%',
+                width: '85%',
                 marginTop: 1,
                 marginBottom: 1,
                 marginLeft: 10,
@@ -20,14 +25,23 @@ function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell}) {
                     outline: 'rgba(0, 0, 0, 3)'  // Change this to your desired outline color
                   }  }}>
             <CardHeader title={
-              <Typography variant="body1" 
-                style={{ 
-                    fontFamily: 'Arial',
-                    fontSize: '13px',
-                    color: 'grey',
-                    textAlign: 'right'}}>
-                  {`${cell.cell_type}`}
-              </Typography>} 
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Select
+                  value={cell.cell_type}
+                  onChange={(event) => handleChangeCellType(index, event.target.value)}
+                  style={{ 
+                      fontFamily: 'Arial',
+                      fontSize: '13px',
+                      color: 'grey',
+                      textAlign: 'center',
+                      backgroundColor: '#f2f2f2'
+                  }}
+                  // IconComponent={() => null}
+                  sx={{ bgcolor: '#f2f2f2', height: '22px' }}>
+                  <MenuItem value={"markdown"}>Markdown</MenuItem>
+                  <MenuItem value={"code"}>Code</MenuItem>
+                </Select>
+              </div>}
               sx={{ bgcolor: '#f2f2f2', height: '5px' }}/>
             <CardContent>
                 <TextField
@@ -36,6 +50,8 @@ function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell}) {
                     variant="outlined"
                     value={cell.source}
                     onChange={e => handleChangeCell(e.target.value, index)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
                     sx={{
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
@@ -52,11 +68,12 @@ function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell}) {
                     />
             </CardContent>
         </Card>   
-        <IconButton variant="outlined" aria-label="delete" 
+        {(isFocused || isHovered) && (
+          <IconButton variant="outlined" aria-label="delete" 
           style={{ 
             height: 30,
             marginTop: 10,
-            marginLeft: 1, 
+            marginLeft: 0, 
             marginRight: 20 }}>
           <MdDeleteOutline 
             onClick={() => handleDeleteCell(index)}
@@ -64,6 +81,7 @@ function NotebookCell({ cell, index, handleChangeCell, handleDeleteCell}) {
             style={{ 
               color: 'grey' }}/>
         </IconButton>
+        )}
       </div>        
     )
 }
