@@ -62,7 +62,6 @@ const App = () => {
     createNotebook(`${baseUrl}work`).then((data) => {
       const notebookPath = `${baseUrl}${data.path}`
       fetchNotebook(notebookPath).then((data) => {
-        console.log('Fetched newly created notebook:', data);
         setNotebook(data);
         setShowHistoryServer(false);
         setShowNotebook(true);

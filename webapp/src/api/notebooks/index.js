@@ -28,38 +28,54 @@ export const fetchNotebook = async (path = '') => {
 }
 
 export const createNotebook = async (path = '') => {
-  console.log("Creating new notebook at path:", path);
-  const notebookData = {
-    type: 'notebook',
-    content: {
-        cells: [],
-        metadata: {
-            kernelspec: {
-                name: 'python3',
-                display_name: 'Python 3'
+    const timestamp = Date.now();
+    const notebookName = `notebook-${timestamp}.ipynb`;
+    const notebookPath = `${path}/${notebookName}`;
+  
+    const initCells = [
+        { 
+            cell_type: 'markdown', 
+            metadata: {},
+            source: '# My Notebook' },
+        { 
+            cell_type: 'code', 
+            execution_count: 1,
+            metadata: {},
+            outputs: [],
+            source: '# SparkSession: spark is already created\nspark' },
+    ];
+
+    const notebookData = {
+        type: 'notebook',
+        content: {
+            cells: initCells,
+            metadata: {
+                kernelspec: {
+                    name: 'python3',
+                    display_name: 'Python 3'
+                },
+                language_info: {
+                    name: 'python'
+                }
             },
-            language_info: {
-                name: 'python'
-            }
-        },
-        nbformat: 4,
-        nbformat_minor: 4
-    }
-  };
+            nbformat: 4,
+            nbformat_minor: 4
+        }
+    };
 
-  const response = await fetch(path, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(notebookData)
-    });
+    const response = await fetch(notebookPath, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(notebookData)
+        });
 
-    if (!response.ok) {
-        throw new Error('Failed to create notebook');
-    }
-    const data = await response.json();
-    return data;
+        if (!response.ok) {
+            throw new Error('Failed to create notebook');
+        }
+        const data = await response.json();
+        return data;
 };
 
 export const deleteNotebook = async (path = '') => {
