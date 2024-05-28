@@ -2,7 +2,15 @@ import React from 'react';
 import { MdOutlineSave, MdDeleteOutline } from "react-icons/md";
 import { Box, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 
-function NotebookToolbar({notebook, isNotebookModified, saveNotebook, deleteNotebook}) {
+function NotebookToolbar({notebook, 
+  isNameEditing,
+  currentName,
+  isNotebookModified, 
+  handleClickNotebookName,
+  handleChangeNotebookName,
+  handleSaveNotebookName,
+  saveNotebook, 
+  deleteNotebook}) {
     return (
       <Box sx={{ 
         marginLeft: 0,
@@ -20,14 +28,32 @@ function NotebookToolbar({notebook, isNotebookModified, saveNotebook, deleteNote
                           flexDirection: 'column', 
                           alignItems: 'start',
                           mt: 2 }}>
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                          {notebook.name} 
-                          {isNotebookModified && 
-                            <span style={{ 
-                                fontSize: '14px',
-                                color: 'grey',
-                                marginLeft: '10px' }}>(Unsaved Changes)</span>}
-                      </Typography>
+                      {isNameEditing ? (
+                          <input 
+                              type="text"
+                              value={currentName}
+                              onChange={handleChangeNotebookName}
+                              onBlur={handleSaveNotebookName}
+                              autoFocus
+                              style={{ 
+                                  border: 'none',
+                                  fontSize: '20px',
+                                  fontWeight: 'bold',
+                                  backgroundColor: 'transparent',
+                                  color: 'black' }}/>
+                        ) : (
+                          <Typography variant="h6" 
+                            sx={{ fontWeight: 'bold' }}
+                            onClick={handleClickNotebookName}>
+                            {currentName} 
+                            {isNotebookModified && 
+                              <span style={{ 
+                                  fontSize: '14px',
+                                  color: 'grey',
+                                  marginLeft: '10px' }}>(Unsaved Changes)</span>}
+                          </Typography>
+                        )
+                      }
                       <Box sx={{ display: 'flex', mt: 0 }}>
                           <IconButton onClick={saveNotebook} aria-label="save" 
                               sx={{ 

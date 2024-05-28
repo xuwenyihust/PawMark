@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import NotebookCell from './NotebookCell';
-import { updateNotebook } from '../../api';
+import { updateNotebook, renameNotebook } from '../../api';
 
 function Notebook({ jupyterBaseUrl, 
     showNotebook, 
@@ -14,11 +14,33 @@ function Notebook({ jupyterBaseUrl,
     useEffect(() => {
         if (notebook && notebook.content) {
             setNotebookState(notebook);
+            setCurrentName(notebook.name);
         }
     }, [notebook]);
 
     const baseUrl = `${jupyterBaseUrl}/api/contents/`
     const [isNotebookModified, setIsNotebookModified] = useState(false);
+    const [isNameEditing, setIsNameEditing] = useState(false);
+    const [currentName, setCurrentName] = useState(notebook.name);
+
+    const handleClickNotebookName = () => {
+        setIsNameEditing(true);
+    }
+
+    const handleChangeNotebookName = (event) => {
+        setCurrentName(event.target.value);
+    }
+
+    const handleSaveNotebookName = () => {
+        console.log('Saving notebook name:', currentName);
+        setIsNameEditing(false);
+        setCurrentName(currentName);
+        renameNotebook(baseUrl, notebook.path, currentName).then((data) => {
+            console.log('Notebook name saved:', data);
+        }).catch((error) => {
+            console.error('Failed to save notebook name:', error);
+        });
+    }
 
     const handleUpdateNotebook = () => {
         updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
@@ -104,7 +126,12 @@ function Notebook({ jupyterBaseUrl,
                     {notebookState.name && 
                         <NotebookToolbar 
                             notebook={notebookState} 
+                            isNameEditing={isNameEditing}
+                            currentName={currentName}
                             isNotebookModified={isNotebookModified}
+                            handleClickNotebookName={handleClickNotebookName}
+                            handleChangeNotebookName={handleChangeNotebookName}
+                            handleSaveNotebookName={handleSaveNotebookName}
                             saveNotebook={handleUpdateNotebook}
                             deleteNotebook={handleDeleteNotebook} />
                     }

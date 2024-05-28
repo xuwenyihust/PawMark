@@ -111,3 +111,22 @@ export const updateNotebook = async (path = '', content = {}) => {
     return data;
 };
 
+export const renameNotebook = async (basePath = '', path = '', newName = '') => {
+    const newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName;
+    console.log("Renaming notebook at path:", path, "to:", newPath);
+    const response = await fetch(basePath + path, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            path: newPath
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to rename notebook');
+    }
+    const data = await response.json();
+    return data;
+}
