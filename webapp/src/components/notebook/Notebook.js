@@ -18,16 +18,18 @@ function Notebook({ jupyterBaseUrl,
     }, [notebook]);
 
     const baseUrl = `${jupyterBaseUrl}/api/contents/`
+    const [isNotebookModified, setIsNotebookModified] = useState(false);
 
     const handleUpdateNotebook = () => {
         updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
-            console.log('Notebook saved:', data);
+            setIsNotebookModified(false)
         }).catch((error) => {
             console.error('Failed to save notebook:', error);
         });
     }
 
     const handleChangeCell = (newValue, cellIndex) => {
+        setIsNotebookModified(true);
         setNotebookState(prevState => {
             const newState = {...prevState};
             newState.content.cells[cellIndex].source = newValue;
@@ -45,7 +47,8 @@ function Notebook({ jupyterBaseUrl,
             newCell.execution_count = null;
             newCell.outputs = [];
         }
-    
+
+        setIsNotebookModified(true);
         setNotebookState(prevState => {
             const cells = [...prevState.content.cells];
             cells.splice(index, 0, newCell);
@@ -60,6 +63,7 @@ function Notebook({ jupyterBaseUrl,
     }
 
     const handleDeleteCell = (cellIndex) => {
+        setIsNotebookModified(true);
         setNotebookState(prevState => {
             const newState = {...prevState};
             newState.content.cells.splice(cellIndex, 1);
@@ -68,6 +72,7 @@ function Notebook({ jupyterBaseUrl,
     }
 
     const handleChangeCellType = (cellIndex, newCellType) => {
+        setIsNotebookModified(true);
         setNotebookState(prevState => {
             const newState = {...prevState};
             newState.content.cells[cellIndex].cell_type = newCellType;
@@ -78,6 +83,7 @@ function Notebook({ jupyterBaseUrl,
     const handleMoveCell = (fromIndex, toIndex) => {
         if (!notebookState.content.cells || toIndex < 0 || toIndex >= notebookState.content.cells.length) return;
 
+        setIsNotebookModified(true);
         const cellsCopy = [...notebookState.content.cells];
         const cellToMove = cellsCopy.splice(fromIndex, 1)[0];
         cellsCopy.splice(toIndex, 0, cellToMove);
@@ -98,6 +104,7 @@ function Notebook({ jupyterBaseUrl,
                     {notebookState.name && 
                         <NotebookToolbar 
                             notebook={notebookState} 
+                            isNotebookModified={isNotebookModified}
                             saveNotebook={handleUpdateNotebook}
                             deleteNotebook={handleDeleteNotebook} />
                     }

@@ -2,7 +2,7 @@ import React from 'react';
 import { MdOutlineSave, MdDeleteOutline } from "react-icons/md";
 import { Box, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 
-function NotebookToolbar({notebook, saveNotebook, deleteNotebook}) {
+function NotebookToolbar({notebook, isNotebookModified, saveNotebook, deleteNotebook}) {
     return (
       <Box sx={{ 
         marginLeft: 0,
@@ -21,7 +21,12 @@ function NotebookToolbar({notebook, saveNotebook, deleteNotebook}) {
                           alignItems: 'start',
                           mt: 2 }}>
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                          {notebook.name}
+                          {notebook.name} 
+                          {isNotebookModified && 
+                            <span style={{ 
+                                fontSize: '14px',
+                                color: 'grey',
+                                marginLeft: '10px' }}>(Unsaved Changes)</span>}
                       </Typography>
                       <Box sx={{ display: 'flex', mt: 0 }}>
                           <IconButton onClick={saveNotebook} aria-label="save" 
