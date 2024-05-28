@@ -9,7 +9,13 @@ function Notebook({ jupyterBaseUrl,
     notebook,
     notebookState,
     setNotebookState,
+    isNotebookModified,
+    setIsNotebookModified,
     handleDeleteNotebook }) {
+
+    const baseUrl = `${jupyterBaseUrl}/api/contents/`
+    const [isNameEditing, setIsNameEditing] = useState(false);
+    const [currentName, setCurrentName] = useState(notebook.name);
 
     useEffect(() => {
         if (notebook && notebook.content) {
@@ -18,10 +24,20 @@ function Notebook({ jupyterBaseUrl,
         }
     }, [notebook]);
 
-    const baseUrl = `${jupyterBaseUrl}/api/contents/`
-    const [isNotebookModified, setIsNotebookModified] = useState(false);
-    const [isNameEditing, setIsNameEditing] = useState(false);
-    const [currentName, setCurrentName] = useState(notebook.name);
+    // useEffect(() => {
+    //     const handleBeforeUnload = (event) => {
+    //       if (isNotebookModified) {
+    //         event.preventDefault();
+    //         event.returnValue = '';
+    //       }
+    //     };
+      
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+      
+    //     return () => {
+    //       window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    //   }, [isNotebookModified]);
 
     const handleClickNotebookName = () => {
         setIsNameEditing(true);
@@ -62,7 +78,7 @@ function Notebook({ jupyterBaseUrl,
         const newCell = {
             cell_type: type,
             metadata: {},
-            source: [],
+            source: "",
         };
 
         if (type === 'code') {
