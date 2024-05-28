@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, Typography, Card, CardHeader, CardContent, TextField, IconButton } from '@mui/material';
 import { MdDeleteOutline, MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
+import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-markdown';
+import 'ace-builds/src-noconflict/theme-github';
 
 
 function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDeleteCell, handleChangeCellType, handleMoveCell}) {
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+
+    const textEditorLineHeight = 20; // adjust this to match your actual line height
+    const textEditorLines = cell.source.split('\n').length;
+    const textEditorHeight = `${Math.max(textEditorLines, 1) * textEditorLineHeight}px`;
 
     return (
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}
@@ -35,7 +43,6 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
                       textAlign: 'center',
                       backgroundColor: '#f2f2f2'
                   }}
-                  // IconComponent={() => null}
                   sx={{ bgcolor: '#f2f2f2', height: '22px' }}>
                   <MenuItem value={"markdown"}>Markdown</MenuItem>
                   <MenuItem value={"code"}>Code</MenuItem>
@@ -43,35 +50,59 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
               </div>}
               sx={{ bgcolor: '#f2f2f2', height: '5px' }}/>
             <CardContent>
-                <TextField
-                    multiline
-                    fullWidth
-                    variant="outlined"
+              {cell.cell_type === 'code' ? (
+                  <AceEditor
+                    mode="python"
+                    theme="github"
+                    style={{ 
+                        backgroundColor: '#f2f2f2' }}
                     value={cell.source}
-                    onChange={e => handleChangeCell(e.target.value, index)}
+                    onChange={newSource => handleChangeCell(newSource, index)}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {
-                            borderColor: 'rgba(0, 0, 0, 0)', // Change this to adjust the color
-                            },
-                            '&:hover fieldset': {
-                            borderColor: 'rgba(0, 0, 0, 0)', // Change this to adjust the hover color
-                            },
-                            '&.Mui-focused fieldset': {
-                            borderColor: 'rgba(0, 0, 0, 0.1)', // Change this to adjust the focus color
-                            },
-                        },
+                    name="UNIQUE_ID_OF_DIV"
+                    editorProps={{ $blockScrolling: false }}
+                    setOptions={{
+                      showLineNumbers: false,
+                      showPrintMargin: false,
+                      showGutter: false,
+                      fontSize: 14,
+                      highlightActiveLine: false,
+                      highlightGutterLine: false,
                     }}
-                    />
+                    width="100%"
+                    height={textEditorHeight}
+                />
+              ) : (
+                <AceEditor
+                    mode="markdown"
+                    theme="github"
+                    style={{ 
+                        backgroundColor: '#f2f2f2' }}
+                    value={cell.source}
+                    onChange={newSource => handleChangeCell(newSource, index)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    name="UNIQUE_ID_OF_DIV"
+                    editorProps={{ $blockScrolling: false }}
+                    setOptions={{
+                      showLineNumbers: false,
+                      showPrintMargin: false,
+                      showGutter: false,
+                      fontSize: 14,
+                      highlightActiveLine: false,
+                      highlightGutterLine: false,
+                    }}
+                    width="100%"
+                    height={textEditorHeight}
+                />)}
             </CardContent>
         </Card>   
         {(isFocused || isHovered) && (
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'top' }}>
             <IconButton aria-label="delete" 
               style={{ 
-                height: 30,
+                height: 20,
                 marginTop: 10,
                 marginLeft: 0, 
                 marginRight: 0 }}>
@@ -84,13 +115,13 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
 
             {index !== 0 && 
               <IconButton onClick={() => handleMoveCell(index, index-1)}
-                style={{ marginLeft: 0, marginTop: 10 }}>
+                style={{ marginLeft: 0, marginTop: 2, marginBottom: 2 }}>
                 <MdArrowDropUp
                   size={20}  />
               </IconButton>}
             {index !== notebookState.content.cells.length - 1 && 
               <IconButton onClick={() => handleMoveCell(index, index+1)}
-                style={{ marginLeft: 0, marginTop: 10 }}>
+                style={{ marginLeft: 0, marginTop: 2, marginBottom: 2 }}>
                 <MdArrowDropDown
                   size={20}  />
               </IconButton>}
