@@ -4,6 +4,7 @@ import NotebookToolbar from './NotebookToolbar';
 import NotebookCell from './NotebookCell';
 import { updateNotebook, renameNotebook } from '../../api';
 
+
 function Notebook({ jupyterBaseUrl, 
     showNotebook, 
     notebook,
@@ -19,25 +20,20 @@ function Notebook({ jupyterBaseUrl,
 
     useEffect(() => {
         if (notebook && notebook.content) {
-            setNotebookState(notebook);
+            const notebookContentWithExecutionFlag = notebook.content.cells.map(cell => ({
+                ...cell,
+                isExecuted: false,
+              }));
+            setNotebookState({
+                ...notebook,
+                content: {
+                    ...notebook.content,
+                    cells: notebookContentWithExecutionFlag,
+                }
+            });
             setCurrentName(notebook.name);
         }
     }, [notebook]);
-
-    // useEffect(() => {
-    //     const handleBeforeUnload = (event) => {
-    //       if (isNotebookModified) {
-    //         event.preventDefault();
-    //         event.returnValue = '';
-    //       }
-    //     };
-      
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
-      
-    //     return () => {
-    //       window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    //   }, [isNotebookModified]);
 
     const handleClickNotebookName = () => {
         setIsNameEditing(true);
@@ -149,7 +145,7 @@ function Notebook({ jupyterBaseUrl,
                             handleChangeNotebookName={handleChangeNotebookName}
                             handleSaveNotebookName={handleSaveNotebookName}
                             saveNotebook={handleUpdateNotebook}
-                            deleteNotebook={handleDeleteNotebook} />
+                            deleteNotebook={handleDeleteNotebook}/>
                     }
                     {notebookState.content && 
                         notebookState.content.cells && 
