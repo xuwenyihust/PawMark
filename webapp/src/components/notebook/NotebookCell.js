@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Select, MenuItem, Typography, Card, CardHeader, CardContent, TextField, IconButton } from '@mui/material';
-import { MdDeleteOutline, MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
+import { MdDeleteOutline, MdArrowDropUp, MdArrowDropDown, MdArrowRight } from "react-icons/md";
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-github';
+import ReactMarkdown from 'react-markdown';
 
 
 function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDeleteCell, handleChangeCellType, handleMoveCell}) {
@@ -15,6 +16,23 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
     const textEditorLines = cell.source && typeof cell.source === 'string' ? 
       cell.source.split('\n').length : 1;
     const textEditorHeight = `${Math.max(textEditorLines, 1) * textEditorLineHeight}px`;
+    
+    const handleDoubleClickMarkdownCell = (cellIndex) => {
+      notebookState.content.cells[cellIndex].isExecuted = false;
+      console.log('Double clicked markdown cell:', cell.source, cell.isExecuted);
+    }
+
+    const handleRunMarkdownCell = (cellIndex) => {
+      notebookState.content.cells[cellIndex].isExecuted = true;
+    }
+
+    const handleRunCell = (cellIndex) => {
+      if (cell.cell_type === 'code') {
+        console.log('Running code cell:', cell.source);
+      } else {
+        handleRunMarkdownCell(cellIndex);
+      }
+    }
 
     return (
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}
@@ -33,7 +51,21 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
                 backgroundColor: 'rgba(0, 0, 0, 0.03)',
             }}>
             <CardHeader title={
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <IconButton 
+                  aria-label="run" 
+                  style={{
+                    height: 20,
+                    width: 40,
+                    marginTop: 0,
+                    marginBottom: 0,
+                    marginLeft: -15, 
+                    marginRight: 0 }}>
+                  <MdArrowRight onClick={() => handleRunCell(index)}
+                    size={40} 
+                    style={{ 
+                      color: 'grey' }}/>
+                </IconButton>
                 <Select
                   value={cell.cell_type}
                   onChange={(event) => handleChangeCellType(index, event.target.value)}
@@ -74,7 +106,13 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
                     width="100%"
                     height={textEditorHeight}
                 />
-              ) : (
+              ) : ( 
+                cell.isExecuted ? 
+                <div onDoubleClick={() => handleDoubleClickMarkdownCell(index)}>
+                  <ReactMarkdown>
+                    {cell.source}
+                  </ReactMarkdown>
+                </div> :
                 <AceEditor
                     mode="markdown"
                     theme="github"
