@@ -16,7 +16,7 @@ function Notebook({ jupyterBaseUrl,
 
     const baseUrl = `${jupyterBaseUrl}/api/contents/`
 
-    const [kernelId, setKernelId] = useState(null);
+    let kernelId = null;
     const [isNameEditing, setIsNameEditing] = useState(false);
     const [currentName, setCurrentName] = useState(notebook.name);
 
@@ -134,10 +134,9 @@ function Notebook({ jupyterBaseUrl,
     }
 
     const handleRunCodeCell = async (cell) => {
-        // If there's no session ID, create a new session
+        // If there's no kernal ID, create a new session
         if (!kernelId) {
-            const kernelId = await createSession(jupyterBaseUrl, notebook.path);
-            setKernelId(kernelId);
+            kernelId = await createSession(jupyterBaseUrl, notebook.path);
         }
 
         console.log('Kernal ID:', kernelId);

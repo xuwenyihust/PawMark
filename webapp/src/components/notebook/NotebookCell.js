@@ -42,7 +42,6 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
 
     const handleRunCell = (cell, cellIndex) => {
       if (cell.cell_type === 'code') {
-        console.log('Running code cell:', cell.source);
         handleRunCodeCell(cell);
       } else {
         handleRunMarkdownCell(cellIndex);

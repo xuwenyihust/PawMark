@@ -158,6 +158,7 @@ export const createSession = async (basePath = '', notebookPath = '') => {
 
         // The response will contain the session data
         const session = await response.json();
+        console.log('Session created:', session);
         // The kernel ID is in the 'id' property of the 'kernel' object
         const kernelId = session.kernel.id;
 
