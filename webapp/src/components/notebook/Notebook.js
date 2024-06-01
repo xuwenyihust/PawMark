@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import NotebookCell from './NotebookCell';
-import { updateNotebook, renameNotebook } from '../../api';
+import { updateNotebook, renameNotebook, createSession, runCell } from '../../api';
 
 
 function Notebook({ jupyterBaseUrl, 
@@ -15,6 +15,8 @@ function Notebook({ jupyterBaseUrl,
     handleDeleteNotebook }) {
 
     const baseUrl = `${jupyterBaseUrl}/api/contents/`
+
+    const [kernelId, setKernelId] = useState(null);
     const [isNameEditing, setIsNameEditing] = useState(false);
     const [currentName, setCurrentName] = useState(notebook.name);
 
@@ -22,7 +24,7 @@ function Notebook({ jupyterBaseUrl,
         if (notebook && notebook.content) {
             const notebookContentWithExecutionFlag = notebook.content.cells.map(cell => ({
                 ...cell,
-                isExecuted: false,
+                isExecuted: cell.cell_type === 'code' ? false : cell.cell_type === 'markdown' ? true : cell.isExecuted,
               }));
             setNotebookState({
                 ...notebook,
@@ -131,6 +133,31 @@ function Notebook({ jupyterBaseUrl,
         });
     }
 
+    const handleRunCodeCell = async (cell) => {
+        // If there's no session ID, create a new session
+        if (!kernelId) {
+            const kernelId = await createSession(jupyterBaseUrl, notebook.path);
+            setKernelId(kernelId);
+        }
+
+        console.log('Kernal ID:', kernelId);
+
+        try {
+            // Call the API to run the cell
+            const result = await runCell(jupyterBaseUrl, cell, kernelId);
+
+            // Update the cell's output with the result
+            cell.outputs = result.outputs;
+
+            // And set the cell as executed
+            cell.isExecuted = true;
+
+            console.log('Execute result:', result);
+        } catch (error) {
+            console.error('Failed to execute cell:', error);
+        }
+    };
+
     return (
         <div style={{ paddingLeft: 20, paddingRight: 0, marginLeft: 200 }}> {/* Adjust marginLeft based on your sidebar width */}
             {showNotebook && (
@@ -158,7 +185,8 @@ function Notebook({ jupyterBaseUrl,
                                 handleChangeCell={handleChangeCell}
                                 handleDeleteCell={handleDeleteCell} 
                                 handleChangeCellType={handleChangeCellType}
-                                handleMoveCell={handleMoveCell}/>
+                                handleMoveCell={handleMoveCell}
+                                handleRunCodeCell={handleRunCodeCell}/>
                             <div 
                                 style={{ 
                                     display: 'flex',

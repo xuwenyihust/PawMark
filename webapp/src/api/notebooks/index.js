@@ -92,14 +92,22 @@ export const deleteNotebook = async (path = '') => {
 };
 
 export const updateNotebook = async (path = '', content = {}) => {
-  console.log("Updating notebook at path:", path);
+  console.log("Updating notebook at path with content:", path, content);
+  const updatedContent = { ...content };
+
+  updatedContent.cells = updatedContent.cells.map(cell => {
+    const updatedCell = { ...cell };
+    delete updatedCell.isExecuted;
+    return updatedCell;
+    });
+
   const response = await fetch(path, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            content: content,
+            content: updatedContent,
             type: 'notebook'
         })
     });
@@ -129,4 +137,113 @@ export const renameNotebook = async (basePath = '', path = '', newName = '') => 
     }
     const data = await response.json();
     return data;
-}
+};
+
+export const createSession = async (basePath = '', notebookPath = '') => {
+    try {
+        const response = await fetch(basePath + '/api/sessions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                notebook: { path: `${basePath}/${notebookPath}` },
+                kernel: { id: null, name: 'python3' },
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // The response will contain the session data
+        const session = await response.json();
+        // The kernel ID is in the 'id' property of the 'kernel' object
+        const kernelId = session.kernel.id;
+
+        // Return the kernal ID
+        return kernelId;
+    } catch (error) {
+        console.error('Failed to create session:', error);
+    }
+};
+
+export const runCell = async (basePath, cell, kernelId) => {
+
+    try {
+        // Create a WebSocket connection to the kernel's channels endpoint
+        const wsBasePath = basePath.replace(/^http/, 'ws');
+        const socket = new WebSocket(`${wsBasePath}/api/kernels/${kernelId}/channels`);
+        // Clear the cell's outputs array
+        cell.outputs = [];
+
+        // Create a unique msg_id for this execution
+        const msg_id = `execute_${Date.now()}`;
+
+        // Wait for the connection to open
+        await new Promise((resolve) => {
+          socket.onopen = resolve;
+        });
+    
+        // Send an execute_request message
+        socket.send(JSON.stringify({
+          header: {
+            msg_id: msg_id,
+            username: '',
+            session: '',
+            msg_type: 'execute_request',
+            version: '5.2',
+          },
+          parent_header: {},
+          metadata: {}, 
+          content: {
+            code: cell.source,
+            silent: false,
+            store_history: true,
+            user_expressions: {},
+            allow_stdin: false,
+          },
+        }));
+    
+        // Wait for the execute_result message
+        const result = await new Promise((resolve) => {
+          socket.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            console.log('Received message:', message);
+            // Only process messages that are in response to this execution
+            if (message.parent_header.msg_id === msg_id) {
+                if (message.header.msg_type === 'stream') {
+                    // Add the output to the cell's outputs array
+                    cell.outputs.push({
+                        output_type: 'stream',
+                        name: message.content.name,
+                        text: message.content.text,
+                    });
+                } else if (message.header.msg_type === 'execute_result') {
+                    // Add the output to the cell's outputs array
+                    cell.outputs.push({
+                        output_type: 'execute_result',
+                        data: message.content.data,
+                        execution_count: message.content.execution_count,
+                        metadata: message.content.metadata,
+                    });
+                } else if (message.header.msg_type === 'error') {
+                    // Add the output to the cell's outputs array
+                    cell.outputs.push({
+                        output_type: 'error',
+                        ename: message.content.ename,
+                        evalue: message.content.evalue,
+                        traceback: message.content.traceback,
+                    });
+                }}
+          };
+        });
+    
+        // Close the WebSocket connection
+        socket.close();
+    
+        return result;
+      } catch (error) {
+        console.error('Failed to execute cell:', error);
+      }
+  };
