@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select, MenuItem, Typography, Card, CardHeader, CardContent, TextField, IconButton } from '@mui/material';
+import { Box, Select, MenuItem, Typography, Card, CardHeader, CardContent, TextField, IconButton, CircularProgress } from '@mui/material';
 import { MdDeleteOutline, MdArrowDropUp, MdArrowDropDown, MdArrowRight } from "react-icons/md";
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-python';
@@ -13,6 +13,7 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [cellExecuted, setCellExecuted] = useState(false);
+    const [cellStatus, setCellStatus] = useState('idle');
 
     const textEditorLineHeight = 20; // adjust this to match your actual line height
     const textEditorLines = cell.source && typeof cell.source === 'string' ? 
@@ -42,7 +43,7 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
 
     const handleRunCell = (cell, cellIndex) => {
       if (cell.cell_type === 'code') {
-        handleRunCodeCell(cell);
+        handleRunCodeCell(cell, cellStatus, setCellStatus);
       } else {
         handleRunMarkdownCell(cellIndex);
       }
@@ -66,29 +67,40 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
                   backgroundColor: 'rgba(0, 0, 0, 0.03)',
               }}>
               <CardHeader title={
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <IconButton 
-                    disableRipple
-                    aria-label="run" 
-                    style={{
-                      height: 40,
-                      width: 40,
-                      marginTop: 0,
-                      marginBottom: 0,
-                      marginLeft: -15, 
-                      marginRight: 0 }}>
-                    <MdArrowRight 
-                      onClick={() => handleRunCell(cell, index)}
-                      size={40} 
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = 'blue';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = 'grey';
-                      }}
-                      style={{ 
-                        color: 'grey' }}/>
-                  </IconButton> 
+                <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Box display="flex" alignItems="center">
+                  {cellStatus === 'busy' || cellStatus === 'initializing' ? 
+                    <CircularProgress size={15} /> :
+                    <IconButton 
+                      disableRipple
+                      aria-label="run" 
+                      style={{
+                        height: 40,
+                        width: 40,
+                        marginTop: 0,
+                        marginBottom: 0,
+                        marginLeft: -15, 
+                        marginRight: 0 }}>
+                      <MdArrowRight 
+                        onClick={() => handleRunCell(cell, index)}
+                        size={40} 
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = 'blue';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = 'grey';
+                        }}
+                        style={{ 
+                          color: 'grey' }}/>
+                      </IconButton> 
+                    } { cellStatus === 'busy' || cellStatus === 'initializing' &&
+                    <Typography 
+                      variant="body2"
+                      style={{ marginLeft: 10 }}
+                      color="textSecondary">
+                      {cellStatus}
+                    </Typography>}
+                  </Box>
                   <Select
                     value={cell.cell_type}
                     onChange={(event) => handleChangeCellType(index, event.target.value)}
@@ -104,7 +116,7 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
                     <MenuItem value={"markdown"}>Markdown</MenuItem>
                     <MenuItem value={"code"}>Code</MenuItem>
                   </Select>
-                </div>}
+                </Box>}
                 sx={{ bgcolor: '#f2f2f2', height: '5px' }}/>
               <CardContent>
                 {cell.cell_type === 'code' ? (

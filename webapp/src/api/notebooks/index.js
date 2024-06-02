@@ -169,7 +169,7 @@ export const createSession = async (basePath = '', notebookPath = '') => {
     }
 };
 
-export const runCell = async (basePath, cell, kernelId) => {
+export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatus) => {
 
     try {
         // Create a WebSocket connection to the kernel's channels endpoint
@@ -213,7 +213,12 @@ export const runCell = async (basePath, cell, kernelId) => {
             console.log('Received message:', message);
             // Only process messages that are in response to this execution
             if (message.parent_header.msg_id === msg_id) {
-                if (message.header.msg_type === 'stream') {
+                if (message.header.msg_type === 'status') {
+                    // Update the cell's status
+                    setCellStatus(message.content.execution_state);
+                    console.log('Cell status:', message.content.execution_state);
+                }
+                else if (message.header.msg_type === 'stream') {
                     // Add the output to the cell's outputs array
                     cell.outputs.push({
                         output_type: 'stream',
@@ -245,6 +250,12 @@ export const runCell = async (basePath, cell, kernelId) => {
     
         return result;
       } catch (error) {
-        console.error('Failed to execute cell:', error);
+        if (error.message.includes('WebSocket connection to')) {
+            console.error('Failed to connect to Jupyter kernel:', error);
+            // Handle the connection error...
+          } else {
+            console.error('Error running cell:', error);
+            // Handle other errors...
+          }
       }
   };

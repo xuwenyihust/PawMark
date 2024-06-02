@@ -133,9 +133,10 @@ function Notebook({ jupyterBaseUrl,
         });
     }
 
-    const handleRunCodeCell = async (cell) => {
+    const handleRunCodeCell = async (cell, cellStatus, setCellStatus) => {
         // If there's no kernal ID, create a new session
         if (!kernelId) {
+            setCellStatus('initializing');
             kernelId = await createSession(jupyterBaseUrl, notebook.path);
         }
 
@@ -143,7 +144,7 @@ function Notebook({ jupyterBaseUrl,
 
         try {
             // Call the API to run the cell
-            const result = await runCell(jupyterBaseUrl, cell, kernelId);
+            const result = await runCell(jupyterBaseUrl, cell, kernelId, cellStatus, setCellStatus);
 
             // Update the cell's output with the result
             cell.outputs = result.outputs;
