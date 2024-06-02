@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
-import NotebookCell from './NotebookCell';
-import { updateNotebook, renameNotebook, createSession, runCell } from '../../api';
+import Cell from './cell/Cell';
+import { updateNotebook, renameNotebook, createSession, runCell, runAllCells } from '../../api';
 
 
-function Notebook({ jupyterBaseUrl, 
+function Notebook({ 
+    jupyterBaseUrl, 
     showNotebook, 
     notebook,
     notebookState,
@@ -16,9 +17,19 @@ function Notebook({ jupyterBaseUrl,
 
     const baseUrl = `${jupyterBaseUrl}/api/contents/`
 
-    let kernelId = null;
+    // let kernelId = null;
+    const [kernelId, setKernelId] = useState(null);
     const [isNameEditing, setIsNameEditing] = useState(false);
     const [currentName, setCurrentName] = useState(notebook.name);
+    const [cellStatuses, setCellStatuses] = useState(notebookState.content ? notebookState.content.cells.map(() => 'idle') : []);
+
+    const setCellStatus = (index, status) => {
+        setCellStatuses(prevStatuses => {
+          const newStatuses = [...prevStatuses];
+          newStatuses[index] = status;
+          return newStatuses;
+        });
+      };
 
     useEffect(() => {
         if (notebook && notebook.content) {
@@ -134,32 +145,29 @@ function Notebook({ jupyterBaseUrl,
     }
 
     const handleRunCodeCell = async (cell, cellStatus, setCellStatus) => {
+        let newKernelId = kernelId;
         // If there's no kernal ID, create a new session
         if (!kernelId) {
             setCellStatus('initializing');
-            kernelId = await createSession(jupyterBaseUrl, notebook.path);
+            newKernelId = await createSession(jupyterBaseUrl, notebook.path);
+            setKernelId(newKernelId)
         }
 
-        console.log('Kernal ID:', kernelId);
-
+        console.log('Kernal ID:', newKernelId);
         try {
             // Call the API to run the cell
-            const result = await runCell(jupyterBaseUrl, cell, kernelId, cellStatus, setCellStatus);
+            const result = await runCell(jupyterBaseUrl, cell, newKernelId, cellStatus, setCellStatus);
 
             // Check if the result contains a newKernelId
             if (result.newKernelId) {
                 // Update the kernelId
-                kernelId = result.newKernelId;
+                const newKernelId = result.newKernelId;
+                setKernelId(newKernelId);
                 // Update the result to the result returned by runCell
                 result = result.result;
             }
-
-            // Update the cell's output with the result
-            cell.outputs = result.outputs;
-
             // And set the cell as executed
             cell.isExecuted = true;
-
             console.log('Execute result:', result);
         } catch (error) {
             console.error('Failed to execute cell:', error);
@@ -172,13 +180,19 @@ function Notebook({ jupyterBaseUrl,
                 <div>
                     {notebookState.name && 
                         <NotebookToolbar 
+                            jupyterBaseUrl={jupyterBaseUrl}
                             notebook={notebookState} 
+                            kernelId={kernelId}
+                            setKernelId={setKernelId}
+                            cellStatuses={cellStatuses}
+                            setCellStatus={setCellStatus}
                             isNameEditing={isNameEditing}
                             currentName={currentName}
                             isNotebookModified={isNotebookModified}
                             handleClickNotebookName={handleClickNotebookName}
                             handleChangeNotebookName={handleChangeNotebookName}
                             handleSaveNotebookName={handleSaveNotebookName}
+                            runAllCells={runAllCells}
                             saveNotebook={handleUpdateNotebook}
                             deleteNotebook={handleDeleteNotebook}/>
                     }
@@ -186,10 +200,12 @@ function Notebook({ jupyterBaseUrl,
                         notebookState.content.cells && 
                         notebookState.content.cells.map((cell, index) => (
                         <div style={{ position: 'relative' }}>
-                            <NotebookCell
+                            <Cell
                                 cell={cell}
                                 index={index}
                                 notebookState={notebookState}
+                                cellStatus={cellStatuses[index]}
+                                setCellStatus={status => setCellStatus(index, status)}
                                 handleChangeCell={handleChangeCell}
                                 handleDeleteCell={handleDeleteCell} 
                                 handleChangeCellType={handleChangeCellType}
