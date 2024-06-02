@@ -169,14 +169,34 @@ export const createSession = async (basePath = '', notebookPath = '') => {
     }
 };
 
-export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatus) => {
+export const handleWebSocketError = async (error, baseUrl, notebook, cell, cellStatus, setCellStatus) => {
+    console.error('WebSocket connection error:', error);
+    // Try to recreate the session
+    try {
+      const newKernelId = await createSession(baseUrl, notebook.path);
+      // Try to run the cell again
+      const result = await runCell(baseUrl, cell, newKernelId, cellStatus, setCellStatus);
+      return { newKernelId, result };
+    } catch (recreateError) {
+      console.error('Failed to recreate session:', recreateError);
+      throw recreateError;
+    }
+  };
 
+export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatus) => {
     try {
         // Create a WebSocket connection to the kernel's channels endpoint
         const wsBasePath = basePath.replace(/^http/, 'ws');
         const socket = new WebSocket(`${wsBasePath}/api/kernels/${kernelId}/channels`);
+        
         // Clear the cell's outputs array
         cell.outputs = [];
+
+        // Listen for the error event
+        socket.onerror = (error) => {
+            console.error('WebSocket connection error:', error);
+            handleWebSocketError(error, basePath, cell, kernelId, cellStatus, setCellStatus);
+        };
 
         // Create a unique msg_id for this execution
         const msg_id = `execute_${Date.now()}`;

@@ -146,6 +146,14 @@ function Notebook({ jupyterBaseUrl,
             // Call the API to run the cell
             const result = await runCell(jupyterBaseUrl, cell, kernelId, cellStatus, setCellStatus);
 
+            // Check if the result contains a newKernelId
+            if (result.newKernelId) {
+                // Update the kernelId
+                kernelId = result.newKernelId;
+                // Update the result to the result returned by runCell
+                result = result.result;
+            }
+
             // Update the cell's output with the result
             cell.outputs = result.outputs;
 
