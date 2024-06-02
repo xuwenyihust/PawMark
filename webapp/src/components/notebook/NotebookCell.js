@@ -68,23 +68,32 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
               <CardHeader title={
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <IconButton 
+                    disableRipple
                     aria-label="run" 
                     style={{
-                      height: 20,
+                      height: 40,
                       width: 40,
                       marginTop: 0,
                       marginBottom: 0,
                       marginLeft: -15, 
                       marginRight: 0 }}>
-                    <MdArrowRight onClick={() => handleRunCell(cell, index)}
+                    <MdArrowRight 
+                      onClick={() => handleRunCell(cell, index)}
                       size={40} 
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = 'blue';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = 'grey';
+                      }}
                       style={{ 
                         color: 'grey' }}/>
-                  </IconButton>
+                  </IconButton> 
                   <Select
                     value={cell.cell_type}
                     onChange={(event) => handleChangeCellType(index, event.target.value)}
                     style={{ 
+                        marginTop: 10,
                         fontFamily: 'Arial',
                         fontSize: '13px',
                         color: 'grey',
@@ -158,6 +167,7 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
           {(isFocused || isHovered) && (
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'top' }}>
               <IconButton aria-label="delete" 
+                disableRipple
                 style={{ 
                   height: 20,
                   marginTop: 10,
@@ -166,18 +176,40 @@ function NotebookCell({ cell, index, notebookState, handleChangeCell, handleDele
                 <MdDeleteOutline 
                   onClick={() => handleDeleteCell(index)}
                   size={20} 
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'black';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'grey';
+                  }}
                   style={{ 
                     color: 'grey' }}/>
               </IconButton>
 
               {index !== 0 && 
-                <IconButton onClick={() => handleMoveCell(index, index-1)}
+                <IconButton 
+                  disableRipple
+                  onClick={() => handleMoveCell(index, index-1)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'black';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'grey';
+                  }}
                   style={{ marginLeft: 0, marginTop: 2, marginBottom: 2 }}>
                   <MdArrowDropUp
                     size={20}  />
                 </IconButton>}
               {index !== notebookState.content.cells.length - 1 && 
-                <IconButton onClick={() => handleMoveCell(index, index+1)}
+                <IconButton 
+                  disableRipple
+                  onClick={() => handleMoveCell(index, index+1)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'black';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'grey';
+                  }}
                   style={{ marginLeft: 0, marginTop: 2, marginBottom: 2 }}>
                   <MdArrowDropDown
                     size={20}  />

@@ -55,17 +55,37 @@ function NotebookToolbar({notebook,
                         )
                       }
                       <Box sx={{ display: 'flex', mt: 0 }}>
-                          <IconButton onClick={saveNotebook} aria-label="save" 
+                          <IconButton 
+                            disableRipple
+                            onClick={saveNotebook} aria-label="save" 
                               sx={{ 
                                   width: 'auto', 
                                   mt: 0.5 }}>
-                              <MdOutlineSave size={18} style={{ color: 'grey' }}/>
+                              <MdOutlineSave 
+                                size={18} 
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.color = 'black';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.color = 'grey';
+                                }}
+                                style={{ color: 'grey' }}/>
                           </IconButton>
-                          <IconButton onClick={deleteNotebook} aria-label="delete" 
+                          <IconButton 
+                            disableRipple 
+                            onClick={deleteNotebook} aria-label="delete" 
                               sx={{ 
                                   width: 'auto', 
                                   mt: 0.5 }}>
-                              <MdDeleteOutline size={18} style={{ color: 'grey' }}/>
+                              <MdDeleteOutline 
+                                size={18} 
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.color = 'black';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.color = 'grey';
+                                }}
+                                style={{ color: 'grey' }}/>
                           </IconButton>
                       </Box>
                   </Box>
