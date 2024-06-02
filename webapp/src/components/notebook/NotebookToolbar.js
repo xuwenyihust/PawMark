@@ -1,14 +1,23 @@
 import React from 'react';
 import { MdOutlineSave, MdDeleteOutline } from "react-icons/md";
+import { CgPlayButtonR } from "react-icons/cg";
+import Tooltip from '@mui/material/Tooltip';
 import { Box, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 
-function NotebookToolbar({notebook, 
+function NotebookToolbar({
+  jupyterBaseUrl,
+  notebook, 
+  kernelId,
+  setKernelId,
+  cellStatuses,
+  setCellStatus,
   isNameEditing,
   currentName,
   isNotebookModified, 
   handleClickNotebookName,
   handleChangeNotebookName,
   handleSaveNotebookName,
+  runAllCells,
   saveNotebook, 
   deleteNotebook}) {
     return (
@@ -28,6 +37,7 @@ function NotebookToolbar({notebook,
                           flexDirection: 'column', 
                           alignItems: 'start',
                           mt: 2 }}>
+                      {/* Title */}
                       {isNameEditing ? (
                           <input 
                               type="text"
@@ -54,39 +64,70 @@ function NotebookToolbar({notebook,
                           </Typography>
                         )
                       }
+                      {/* Buttons */}
                       <Box sx={{ display: 'flex', mt: 0 }}>
-                          <IconButton 
-                            disableRipple
-                            onClick={saveNotebook} aria-label="save" 
-                              sx={{ 
-                                  width: 'auto', 
-                                  mt: 0.5 }}>
-                              <MdOutlineSave 
-                                size={18} 
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.color = 'black';
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.color = 'grey';
-                                }}
-                                style={{ color: 'grey' }}/>
-                          </IconButton>
-                          <IconButton 
-                            disableRipple 
-                            onClick={deleteNotebook} aria-label="delete" 
-                              sx={{ 
-                                  width: 'auto', 
-                                  mt: 0.5 }}>
-                              <MdDeleteOutline 
-                                size={18} 
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.color = 'black';
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.color = 'grey';
-                                }}
-                                style={{ color: 'grey' }}/>
-                          </IconButton>
+
+                          {/* Save Button */}
+                            <Tooltip title="Save Changes">
+                            <IconButton 
+                              disableRipple
+                              onClick={saveNotebook} aria-label="save" 
+                                sx={{ 
+                                    width: 'auto', 
+                                    mt: 0.5 }}>
+                                <MdOutlineSave 
+                                  size={18} 
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = 'black';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = 'grey';
+                                  }}
+                                  style={{ color: 'grey' }}/>
+                            </IconButton>
+                          </Tooltip>
+
+                          {/* Run All Button */}
+                          <Tooltip title="Run All Cells">
+                            <IconButton 
+                              disableRipple 
+                              onClick={() => 
+                                runAllCells(jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus)}
+                              aria-label="run" 
+                                sx={{ 
+                                    width: 'auto', 
+                                    mt: 0.5 }}>
+                                <CgPlayButtonR 
+                                  size={16} 
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = 'black';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = 'grey';
+                                  }}
+                                  style={{ color: 'grey' }}/>
+                            </IconButton>
+                          </Tooltip>
+
+                          {/* Delete Button */}
+                          <Tooltip title="Delete Notebook">
+                            <IconButton 
+                              disableRipple 
+                              onClick={deleteNotebook} aria-label="delete" 
+                                sx={{ 
+                                    width: 'auto', 
+                                    mt: 0.5 }}>
+                                <MdDeleteOutline 
+                                  size={18} 
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = 'black';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = 'grey';
+                                  }}
+                                  style={{ color: 'grey' }}/>
+                            </IconButton>
+                          </Tooltip>
                       </Box>
                   </Box>
               </Toolbar>

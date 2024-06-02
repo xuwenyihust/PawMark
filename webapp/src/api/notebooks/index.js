@@ -230,13 +230,17 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
         const result = await new Promise((resolve) => {
           socket.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            console.log('Received message:', message);
+            // console.log('Received message:', message);
             // Only process messages that are in response to this execution
             if (message.parent_header.msg_id === msg_id) {
                 if (message.header.msg_type === 'status') {
                     // Update the cell's status
-                    setCellStatus(message.content.execution_state);
                     console.log('Cell status:', message.content.execution_state);
+                    setCellStatus(message.content.execution_state);
+                    // If the kernel is idle, resolve the promise
+                    if (message.content.execution_state === 'idle') {
+                        resolve(cell.outputs);
+                    }
                 }
                 else if (message.header.msg_type === 'stream') {
                     // Add the output to the cell's outputs array
@@ -278,4 +282,26 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
             // Handle other errors...
           }
       }
+  };
+
+  export const runAllCells = async (jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus) => {
+    console.log('Running all cells:', notebook.content.cells);
+    for (let i = 0; i < notebook.content.cells.length; i++) {
+        const cell = notebook.content.cells[i];
+        let newKernelId = kernelId;
+        console.log('Running cell:', cell);
+        if (cell.cell_type === 'code') {
+            // If there's no kernel ID, create a new session
+            if (!kernelId) {
+                setCellStatus(i, 'initializing');
+                newKernelId = await createSession(jupyterBaseUrl, notebook.path);
+                setKernelId(newKernelId);
+            }
+            // Call the API to run the cell
+            const result = await runCell(jupyterBaseUrl, cell, newKernelId, cellStatuses[i], (status) => setCellStatus(i, status));
+            console.log('Execute result:', result);
+        } else {
+            console.log('Skipping cell:', cell);
+        }
+    }
   };
