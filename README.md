@@ -1,4 +1,4 @@
-<h1 align="center">DataPulse: Platform For Big Data & AI</h2>
+<h1 align="center">PawMark: Platform For Big Data & AI</h2>
 
 [![GitHub Release](https://img.shields.io/github/v/release/xuwenyihust/DataPulse?include_prereleases&label=Release)](https://github.com/xuwenyihust/DataPulse/releases)
 ![Docker Pulls](https://img.shields.io/docker/pulls/wenyixu101/webapp?logo=docker)
@@ -8,7 +8,7 @@
 
 
 ## Summary
-DataPulse is a platform for big data and AI. It is based on Apache Spark and Kubernetes. The platform is designed to be scalable and easy to use. It provides a set of tools for data processing, machine learning, and data visualization.
+PawMark is a platform for big data and AI. It is based on Apache Spark and Kubernetes. The platform is designed to be scalable and easy to use. It provides a set of tools for data processing, machine learning, and data visualization.
 
 <p align="center">
 <img src="resources/images/architecture.jpg" alt="Architecture">
