@@ -190,7 +190,9 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
         const socket = new WebSocket(`${wsBasePath}/api/kernels/${kernelId}/channels`);
         
         // Clear the cell's outputs array
-        cell.outputs = [];
+        if (cell.outputs) {
+            cell.outputs = [];
+        }
 
         // Listen for the error event
         socket.onerror = (error) => {
@@ -284,7 +286,16 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
       }
   };
 
-  export const runAllCells = async (jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus) => {
+  export const runAllCells = async (
+        jupyterBaseUrl, 
+        notebook, 
+        kernelId, 
+        setKernelId, 
+        cellStatuses, 
+        setCellStatus,
+        cellExecutedStatuses,
+        setCellExecutedStatus
+    ) => {
     console.log('Running all cells:', notebook.content.cells);
     for (let i = 0; i < notebook.content.cells.length; i++) {
         const cell = notebook.content.cells[i];
@@ -301,7 +312,9 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
             const result = await runCell(jupyterBaseUrl, cell, newKernelId, cellStatuses[i], (status) => setCellStatus(i, status));
             console.log('Execute result:', result);
         } else {
-            console.log('Skipping cell:', cell);
+            // If the cell is a markdown cell, mark it as executed
+            setCellExecutedStatus(i, true);
+            cell.isExecuted = true;
         }
     }
   };
