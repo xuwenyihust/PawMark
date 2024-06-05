@@ -40,8 +40,7 @@ function CellHeader({
               style={{ 
                 color: 'grey' }}/>
             </IconButton> 
-          } { 
-            (cellStatus === CellStatus.BUSY || 
+          } { (cellStatus === CellStatus.BUSY || 
               cellStatus === CellStatus.INITIALIZING ||
               cellStatus === CellStatus.WAITING) &&
           <Typography 
