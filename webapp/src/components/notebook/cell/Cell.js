@@ -27,7 +27,6 @@ function Cell({
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [cellExecuted, setCellExecuted] = useState(false);
-    // const [cellStatus, setCellStatus] = useState('idle');
 
     const textEditorLineHeight = 20; // adjust this to match your actual line height
     const textEditorLines = cell.source && typeof cell.source === 'string' ? 

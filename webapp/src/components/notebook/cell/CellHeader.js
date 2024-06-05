@@ -1,5 +1,6 @@
 import { Box, Select, MenuItem, Typography, Card, CardHeader, CardContent, IconButton, CircularProgress } from '@mui/material';
 import { MdArrowRight } from "react-icons/md";
+import { CellStatus } from './CellStatus';
 
 
 function CellHeader({
@@ -13,7 +14,9 @@ function CellHeader({
     <CardHeader title={
       <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box display="flex" alignItems="center">
-        {cellStatus === 'busy' || cellStatus === 'initializing' ? 
+        {cellStatus === CellStatus.BUSY || 
+          cellStatus === CellStatus.INITIALIZING ||
+          cellStatus === CellStatus.WAITING ? 
           <CircularProgress size={15} /> :
           <IconButton 
             disableRipple
@@ -37,7 +40,9 @@ function CellHeader({
               style={{ 
                 color: 'grey' }}/>
             </IconButton> 
-          } { cellStatus === 'busy' || cellStatus === 'initializing' &&
+          } { (cellStatus === CellStatus.BUSY || 
+              cellStatus === CellStatus.INITIALIZING ||
+              cellStatus === CellStatus.WAITING) &&
           <Typography 
             variant="body2"
             style={{ marginLeft: 10 }}
