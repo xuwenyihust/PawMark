@@ -299,7 +299,6 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
             console.log('Skipping cell:', cell);
         }
     }
-
     for (let i = 0; i < notebook.content.cells.length; i++) {
         const cell = notebook.content.cells[i];
         let newKernelId = kernelId;
