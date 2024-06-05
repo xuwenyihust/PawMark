@@ -1,3 +1,5 @@
+import { CellStatus } from "../../components/notebook/cell/CellStatus";
+
 export const fetchFiles = async (path = '') => {
     const url = new URL(path);
     url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
@@ -240,7 +242,7 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
                     console.log('Cell status:', message.content.execution_state);
                     setCellStatus(message.content.execution_state);
                     // If the kernel is idle, resolve the promise
-                    if (message.content.execution_state === 'idle') {
+                    if (message.content.execution_state === CellStatus.IDLE) {
                         resolve(cell.outputs);
                     }
                 }
@@ -286,17 +288,18 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
       }
   };
 
-  export const runAllCells = async (
-        jupyterBaseUrl, 
-        notebook, 
-        kernelId, 
-        setKernelId, 
-        cellStatuses, 
-        setCellStatus,
-        cellExecutedStatuses,
-        setCellExecutedStatus
-    ) => {
-    console.log('Running all cells:', notebook.content.cells);
+  export const runAllCells = async (jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus) => {
+    // Set all cell statuses to 'waiting'
+    for (let i = 0; i < notebook.content.cells.length; i++) {
+        const cell = notebook.content.cells[i];
+        if (cell.cell_type === 'code') {
+            setCellStatus(i, CellStatus.WAITING);
+            cell.outputs = [];
+        } else {
+            console.log('Skipping cell:', cell);
+        }
+    }
+
     for (let i = 0; i < notebook.content.cells.length; i++) {
         const cell = notebook.content.cells[i];
         let newKernelId = kernelId;
@@ -304,7 +307,7 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
         if (cell.cell_type === 'code') {
             // If there's no kernel ID, create a new session
             if (!kernelId) {
-                setCellStatus(i, 'initializing');
+                setCellStatus(i, CellStatus.INITIALIZING);
                 newKernelId = await createSession(jupyterBaseUrl, notebook.path);
                 setKernelId(newKernelId);
             }

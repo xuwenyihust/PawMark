@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import Cell from './cell/Cell';
+import { CellStatus } from './cell/CellStatus';
 import { updateNotebook, renameNotebook, createSession, runCell, runAllCells } from '../../api';
 import { CellStatus } from './cell/CellStatus';
 
@@ -158,7 +159,7 @@ function Notebook({
         let newKernelId = kernelId;
         // If there's no kernal ID, create a new session
         if (!kernelId) {
-            setCellStatus('initializing');
+            setCellStatus(CellStatus.INITIALIZING);
             newKernelId = await createSession(jupyterBaseUrl, notebook.path);
             setKernelId(newKernelId)
         }
