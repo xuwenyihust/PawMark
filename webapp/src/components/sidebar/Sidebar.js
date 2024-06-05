@@ -66,7 +66,8 @@ function Sidebar({
               backgroundColor: 'black',
               borderRight: '0.5px solid grey',}
             }}>
-            <Toolbar> {/* This Toolbar component pushes the content below the AppBar */}
+            <Toolbar
+              style={{ padding: 0 }}> {/* This Toolbar component pushes the content below the AppBar */}
               <Button 
                 onClick={handleLogoClick}
                 sx={{
@@ -75,10 +76,10 @@ function Sidebar({
                   padding: 0 // Removes padding that might affect layout
                 }}>
                 <Logo style={{ 
-                  marginLeft: '-40px',
+                  marginLeft: '0px',
                   marginBottom: '-10px',
-                  height: '150px', 
-                  width: '300px' }} />
+                  height: '80px', 
+                  width: '160px' }} />
               </Button>
             </Toolbar>
 

@@ -21,7 +21,9 @@ function Notebook({
     const [kernelId, setKernelId] = useState(null);
     const [isNameEditing, setIsNameEditing] = useState(false);
     const [currentName, setCurrentName] = useState(notebook.name);
-    const [cellStatuses, setCellStatuses] = useState(notebookState.content ? notebookState.content.cells.map(() => 'idle') : []);
+    // Cells
+    const [cellStatuses, setCellStatuses] = useState(notebookState.content ? notebookState.content.cells.map(() => CellStatus.IDLE) : []);
+    const [cellExecutedStatuses, setCellExecutedStatuses] = useState(notebookState.content ? notebookState.content.cells.map(cell => cell.cell_type === 'markdown') : []);
 
     const setCellStatus = (index, status) => {
         setCellStatuses(prevStatuses => {
@@ -29,7 +31,15 @@ function Notebook({
           newStatuses[index] = status;
           return newStatuses;
         });
-      };
+    };
+    
+    const setCellExecutedStatus = (index, executed) => {
+        setCellExecutedStatuses(prevStatuses => {
+          const newStatuses = [...prevStatuses];
+          newStatuses[index] = executed;
+          return newStatuses;
+        });
+    };
 
     useEffect(() => {
         if (notebook && notebook.content) {
@@ -186,6 +196,8 @@ function Notebook({
                             setKernelId={setKernelId}
                             cellStatuses={cellStatuses}
                             setCellStatus={setCellStatus}
+                            cellExecutedStatuses={cellExecutedStatuses}
+                            setCellExecutedStatus={setCellExecutedStatus}
                             isNameEditing={isNameEditing}
                             currentName={currentName}
                             isNotebookModified={isNotebookModified}
@@ -206,6 +218,8 @@ function Notebook({
                                 notebookState={notebookState}
                                 cellStatus={cellStatuses[index]}
                                 setCellStatus={status => setCellStatus(index, status)}
+                                cellExecutedStatus={cellExecutedStatuses[index]}
+                                setCellExecutedStatus={executed => setCellExecutedStatus(index, executed)}
                                 handleChangeCell={handleChangeCell}
                                 handleDeleteCell={handleDeleteCell} 
                                 handleChangeCellType={handleChangeCellType}

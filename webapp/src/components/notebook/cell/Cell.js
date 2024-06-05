@@ -18,6 +18,8 @@ function Cell({
     notebookState, 
     cellStatus,
     setCellStatus,
+    cellExecutedStatus,
+    setCellExecutedStatus,
     handleChangeCell, 
     handleDeleteCell, 
     handleChangeCellType, 
@@ -26,7 +28,6 @@ function Cell({
   }) {
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const [cellExecuted, setCellExecuted] = useState(false);
 
     const textEditorLineHeight = 20; // adjust this to match your actual line height
     const textEditorLines = cell.source && typeof cell.source === 'string' ? 
@@ -35,20 +36,20 @@ function Cell({
 
     useEffect(() => {
       if (cell.cell_type === 'code') {
-        setCellExecuted(false);
+        setCellExecutedStatus(false);
       } else if (cell.cell_type === 'markdown') {
-        setCellExecuted(true);
+        setCellExecutedStatus(true);
       }
     }, [cell.source])
     
     const handleDoubleClickMarkdownCell = (cellIndex) => {
       notebookState.content.cells[cellIndex].isExecuted = false;
-      setCellExecuted(false);
+      setCellExecutedStatus(false);
       console.log('Double clicked markdown cell:', cell.source, cell.isExecuted);
     }
 
     const handleRunMarkdownCell = (cellIndex) => {
-      setCellExecuted(true);
+      setCellExecutedStatus(true);
       notebookState.content.cells[cellIndex].isExecuted = true;
     }
 
@@ -110,7 +111,7 @@ function Cell({
                     />
                   </div>
                 ) : ( 
-                  cellExecuted ? 
+                  cellExecutedStatus ? 
                   <div onDoubleClick={() => handleDoubleClickMarkdownCell(index)}>
                     <ReactMarkdown>
                       {cell.source}

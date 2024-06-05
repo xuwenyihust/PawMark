@@ -11,6 +11,8 @@ function NotebookToolbar({
   setKernelId,
   cellStatuses,
   setCellStatus,
+  cellExecutedStatuses,
+  setCellExecutedStatus,
   isNameEditing,
   currentName,
   isNotebookModified, 
@@ -92,7 +94,7 @@ function NotebookToolbar({
                             <IconButton 
                               disableRipple 
                               onClick={() => 
-                                runAllCells(jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus)}
+                                runAllCells(jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus, cellExecutedStatuses, setCellExecutedStatus)}
                               aria-label="run" 
                                 sx={{ 
                                     width: 'auto', 
