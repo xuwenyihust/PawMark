@@ -3,7 +3,7 @@ import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, List
 import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
 import WorkspaceSidebar from './WorkspaceSidebar'; 
 import CreateSidebar from './CreateSidebar';
-
+import { ReactComponent as Logo } from '../../assets/logo_black.svg';
 
 function Sidebar({ 
       jupyterBaseUrl, 
@@ -50,7 +50,9 @@ function Sidebar({
     }
 
     return (
-      <div style={{ padding: 0, marginLeft: 240 }}>
+      <div style={{ 
+          padding: 0, 
+          marginLeft: 240 }}>
         <Drawer 
           variant="permanent"
           open={openMainDrawer}
@@ -61,6 +63,7 @@ function Sidebar({
               width: 200 },
             elevation: 0,
             sx: {
+              backgroundColor: 'black',
               borderRight: '0.5px solid grey',}
             }}>
             <Toolbar> {/* This Toolbar component pushes the content below the AppBar */}
@@ -71,11 +74,11 @@ function Sidebar({
                   color: 'inherit', // Inherits the color from the parent instead of applying button default styles
                   padding: 0 // Removes padding that might affect layout
                 }}>
-                <Typography 
-                  variant="h6" 
-                  sx={{ fontFamily: 'Roboto', fontWeight: 'bold' }}>
-                      DataPulse
-                  </Typography>
+                <Logo style={{ 
+                  marginLeft: '-40px',
+                  marginBottom: '-10px',
+                  height: '150px', 
+                  width: '300px' }} />
               </Button>
             </Toolbar>
 
