@@ -4,7 +4,6 @@ import NotebookToolbar from './NotebookToolbar';
 import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
 import { updateNotebook, renameNotebook, createSession, runCell, runAllCells } from '../../api';
-import { CellStatus } from './cell/CellStatus';
 
 
 function Notebook({ 

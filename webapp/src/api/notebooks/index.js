@@ -288,7 +288,16 @@ export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatu
       }
   };
 
-  export const runAllCells = async (jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus) => {
+  export const runAllCells = async (
+        jupyterBaseUrl, 
+        notebook, 
+        kernelId, 
+        setKernelId, 
+        cellStatuses, 
+        setCellStatus,
+        cellExecutedStatuses,
+        setCellExecutedStatus
+    ) => {
     // Set all cell statuses to 'waiting'
     for (let i = 0; i < notebook.content.cells.length; i++) {
         const cell = notebook.content.cells[i];
