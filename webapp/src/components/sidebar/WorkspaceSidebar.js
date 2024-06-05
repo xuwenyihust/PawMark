@@ -13,25 +13,9 @@ function WorkspaceSidebar({ jupyterBaseUrl,
     setCurrentPath,
     workspaceFiles}) {
 
-  // const baseUrl = `${jupyterBaseUrl}/api/contents/`
-  // const [currentPath, setCurrentPath] = useState('work');
-  // const [workspaceFiles, setWorkspaceFiles] = useState([]);
-
-  // useEffect(() => {
-  //   if (openWorkspaceDrawer) {
-  //       fetchFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
-  //           .then(setWorkspaceFiles)
-  //           .catch(error => console.error('Failed to fetch files:', error));
-  //   }
-  // }, [openWorkspaceDrawer, currentPath]);
-
   useEffect(() => {
     calculateHeight();
   }, [workspaceFiles]);
-
-  // const handleDirectoryClick = (path) => {
-  //   setCurrentPath(path);  // Update the path to fetch and display new contents
-  // };
 
   const handleBackClick = () => {
     const parentPath = currentPath.split('/').slice(0, -1).join('/');
@@ -63,8 +47,9 @@ function WorkspaceSidebar({ jupyterBaseUrl,
         overflow: 'auto'
         }}
       PaperProps={{ 
-        elevation: 1,
+        elevation: 0,
         style: { 
+          backgroundColor: 'black',
           position: 'relative',
           height: `${workspaceSideBarHeight}px`,
           width: 250, 

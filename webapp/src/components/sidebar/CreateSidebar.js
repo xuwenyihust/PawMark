@@ -22,6 +22,7 @@ function CreateSidebar({ openCreateDrawer,
       PaperProps={{ 
         elevation: 1,
         style: { 
+          backgroundColor: 'black',
           position: 'relative',
           height: '48px',
           width: 200, 
