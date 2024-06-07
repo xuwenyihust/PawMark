@@ -3,7 +3,7 @@ import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, List
 import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
 import WorkspaceSidebar from './WorkspaceSidebar'; 
 import CreateSidebar from './CreateSidebar';
-import { ReactComponent as Logo } from '../../assets/logo_black.svg';
+import { ReactComponent as Logo } from '../../assets/logo_#333.svg';
 
 function Sidebar({ 
       jupyterBaseUrl, 
@@ -63,7 +63,7 @@ function Sidebar({
               width: 200 },
             elevation: 0,
             sx: {
-              backgroundColor: 'black',
+              backgroundColor: '#333',
               borderRight: '0.5px solid grey',}
             }}>
             <Toolbar
