@@ -7,6 +7,8 @@ import 'ace-builds/src-noconflict/theme-github';
 import ReactMarkdown from 'react-markdown';
 import CellHeader from './CellHeader';
 import CellSideButtons from './CellSideButtons';
+import { CellType } from './CellType';
+import { OutputType } from './result/OutputType';
 import TextResult from './result/TextResult';
 import ErrorResult from './result/ErrorResult';
 import CodeResult from './result/CodeResult';
@@ -35,9 +37,9 @@ function Cell({
     const textEditorHeight = `${Math.max(textEditorLines, 1) * textEditorLineHeight}px`;
 
     useEffect(() => {
-      if (cell.cell_type === 'code') {
+      if (cell.cell_type === CellType.CODE) {
         setCellExecutedStatus(false);
-      } else if (cell.cell_type === 'markdown') {
+      } else if (cell.cell_type === CellType.MARKDOWN) {
         setCellExecutedStatus(true);
       }
     }, [cell.source])
@@ -54,7 +56,7 @@ function Cell({
     }
 
     const handleRunCell = (cell, cellIndex) => {
-      if (cell.cell_type === 'code') {
+      if (cell.cell_type === CellType.CODE) {
         handleRunCodeCell(cell, cellStatus, setCellStatus);
       } else {
         handleRunMarkdownCell(cellIndex);
@@ -85,7 +87,7 @@ function Cell({
                 handleRunCell={handleRunCell} 
                 handleChangeCellType={handleChangeCellType}/>
               <CardContent>
-                {cell.cell_type === 'code' ? (
+                {cell.cell_type === CellType.CODE ? (
                   <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'top' }}>
                     <AceEditor
                       mode="python"
@@ -153,11 +155,11 @@ function Cell({
         </div>      
 
         {cell.outputs && cell.outputs.length > 0 && cell.outputs.map((output, index) => 
-          output.output_type === 'execute_result' ? 
+          output.output_type === OutputType.EXECUTE_RESULT ? 
             TextResult(output) :
-              (output.output_type === 'error' ? (
+              (output.output_type === OutputType.ERROR ? (
                 ErrorResult(index, isFocused, output)
-              ) : (output.output_type === 'stream' ? (
+              ) : (output.output_type === OutputType.STREAM ? (
                 CodeResult(index, output)
               ) : null)
             )
