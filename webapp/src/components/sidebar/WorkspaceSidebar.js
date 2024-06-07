@@ -49,7 +49,7 @@ function WorkspaceSidebar({ jupyterBaseUrl,
       PaperProps={{ 
         elevation: 0,
         style: { 
-          backgroundColor: 'black',
+          backgroundColor: '#333',
           position: 'relative',
           height: `${workspaceSideBarHeight}px`,
           width: 250, 
