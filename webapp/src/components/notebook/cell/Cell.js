@@ -9,6 +9,8 @@ import CellHeader from './CellHeader';
 import CellSideButtons from './CellSideButtons';
 import { CellType } from './CellType';
 import { OutputType } from './result/OutputType';
+import CodeEditor from './content/CodeEditor';
+import MarkdownEditor from './content/MarkdownEditor';
 import TextResult from './result/TextResult';
 import ErrorResult from './result/ErrorResult';
 import CodeResult from './result/CodeResult';
@@ -42,7 +44,7 @@ function Cell({
       } else if (cell.cell_type === CellType.MARKDOWN) {
         setCellExecutedStatus(true);
       }
-    }, [cell.source])
+    }, [notebookState.path])
     
     const handleDoubleClickMarkdownCell = (cellIndex) => {
       notebookState.content.cells[cellIndex].isExecuted = false;
@@ -88,30 +90,12 @@ function Cell({
                 handleChangeCellType={handleChangeCellType}/>
               <CardContent>
                 {cell.cell_type === CellType.CODE ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'top' }}>
-                    <AceEditor
-                      mode="python"
-                      theme="github"
-                      style={{ 
-                          backgroundColor: '#f2f2f2' }}
-                      value={cell.source}
-                      onChange={newSource => handleChangeCell(newSource, index)}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
-                      name="UNIQUE_ID_OF_DIV"
-                      editorProps={{ $blockScrolling: false }}
-                      setOptions={{
-                        showLineNumbers: false,
-                        showPrintMargin: false,
-                        showGutter: false,
-                        fontSize: 14,
-                        highlightActiveLine: false,
-                        highlightGutterLine: false,
-                      }}
-                      width="100%"
-                      height={textEditorHeight}
-                    />
-                  </div>
+                  <CodeEditor 
+                    cell={cell} 
+                    cellIndex={index}
+                    textEditorHeight={textEditorHeight}
+                    handleChangeCell={handleChangeCell}
+                    setIsFocused={setIsFocused} />
                 ) : ( 
                   cellExecutedStatus ? 
                   <div onDoubleClick={() => handleDoubleClickMarkdownCell(index)}>
@@ -119,28 +103,12 @@ function Cell({
                       {cell.source}
                     </ReactMarkdown>
                   </div> :
-                  <AceEditor
-                      mode="markdown"
-                      theme="github"
-                      style={{ 
-                          backgroundColor: '#f2f2f2' }}
-                      value={cell.source}
-                      onChange={newSource => handleChangeCell(newSource, index)}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
-                      name="UNIQUE_ID_OF_DIV"
-                      editorProps={{ $blockScrolling: false }}
-                      setOptions={{
-                        showLineNumbers: false,
-                        showPrintMargin: false,
-                        showGutter: false,
-                        fontSize: 14,
-                        highlightActiveLine: false,
-                        highlightGutterLine: false,
-                      }}
-                      width="100%"
-                      height={textEditorHeight}
-                  />)}
+                  <MarkdownEditor 
+                    cell={cell} 
+                    cellIndex={index}
+                    textEditorHeight={textEditorHeight}
+                    handleChangeCell={handleChangeCell}
+                    setIsFocused={setIsFocused} />)}
               </CardContent>
           </Card>   
 
