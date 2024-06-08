@@ -76,14 +76,21 @@ function Sidebar({
                   padding: 0 // Removes padding that might affect layout
                 }}>
                 <Logo style={{ 
-                  marginLeft: '0px',
+                  marginLeft: '-8px',
                   marginBottom: '-10px',
-                  height: '80px', 
-                  width: '160px' }} />
+                  height: '60px', 
+                  width: '120px' }} />
               </Button>
             </Toolbar>
 
-            <Typography variant="body1" sx={{ fontFamily: 'Roboto', mt: 4 }}>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                fontFamily: 'Roboto, sans-serif', 
+                fontSize: '13px',
+                mt: 4, 
+                color: 'lightgrey',
+                }}>
                 OVERVIEW
             </Typography>
 
@@ -95,9 +102,20 @@ function Sidebar({
                       }
                     }}>
                   <ListItemIcon>
-                      <CgAdd style={{ color: 'white' }} />
+                      <CgAdd style={{ color: 'lightgrey' }} />
                   </ListItemIcon>
-                  <ListItemText primary="Create" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
+                  <ListItemText>
+                      <Typography 
+                        variant="body1" 
+                        sx={{ 
+                          fontFamily: 'Roboto', 
+                          fontSize: '15px',
+                          color: 'lightgrey', 
+                          marginLeft: '-30px' 
+                        }}>
+                        Create
+                      </Typography>
+                  </ListItemText>
                 </ListItem>
 
                 {openCreateDrawer && (
@@ -116,9 +134,20 @@ function Sidebar({
                     }
                   }}>
                   <ListItemIcon>
-                      <CgAlbum style={{ color: 'white' }} />
+                      <CgAlbum style={{ color: 'lightgrey' }} />
                   </ListItemIcon>
-                  <ListItemText primary="Workspace" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
+                  <ListItemText>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      fontFamily: 'Roboto', 
+                      fontSize: '15px',
+                      color: 'lightgrey', 
+                      marginLeft: '-30px' 
+                    }}>
+                    Workspace
+                  </Typography>
+                  </ListItemText>
                 </ListItem>
                 
                 { openWorkspaceDrawer && (
@@ -142,9 +171,20 @@ function Sidebar({
                     }
                   }}>
                   <ListItemIcon>
-                      <CgEye style={{ color: 'white' }} />
+                      <CgEye style={{ color: 'lightgrey' }} />
                   </ListItemIcon>
-                  <ListItemText primary="History Server" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
+                  <ListItemText>
+                    <Typography 
+                      variant="body1" 
+                      sx={{ 
+                        fontFamily: 'Roboto', 
+                        fontSize: '15px',
+                        color: 'lightgrey', 
+                        marginLeft: '-30px' 
+                      }}>
+                      History Server
+                    </Typography>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem button
@@ -154,9 +194,20 @@ function Sidebar({
                     }
                   }}>
                   <ListItemIcon>
-                      <CgCalendarToday style={{ color: 'white' }} />
+                      <CgCalendarToday style={{ color: 'lightgrey' }} />
                   </ListItemIcon>
-                  <ListItemText primary="Scheduler" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
+                  <ListItemText>
+                    <Typography 
+                      variant="body1" 
+                      sx={{ 
+                        fontFamily: 'Roboto', 
+                        fontSize: '15px',
+                        color: 'lightgrey', 
+                        marginLeft: '-30px' 
+                      }}>
+                      Scheduler
+                    </Typography>
+                  </ListItemText>
                 </ListItem>
             </List>
             
