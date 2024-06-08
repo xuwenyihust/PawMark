@@ -25,7 +25,12 @@ function NotebookToolbar({
     return (
       <Box sx={{ 
         marginLeft: 0,
-        marginBottom: 5 }}> 
+        marginBottom: 5,
+        position: 'sticky',
+        top: 0, 
+        zIndex: 1, 
+        backgroundColor: 'white' 
+      }}> 
           <AppBar 
             position="static" 
             color="default" 
