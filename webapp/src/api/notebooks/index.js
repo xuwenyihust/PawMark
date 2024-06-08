@@ -141,6 +141,25 @@ export const renameNotebook = async (basePath = '', path = '', newName = '') => 
     return data;
 };
 
+export const getSession = async (basePath = '', notebookPath = '') => {
+    try {
+        const response = await fetch(basePath + '/api/sessions', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const session = await response.json();
+        const associatedSession = session.find(session => session.notebook.path === basePath + '/' + notebookPath);
+        const kernelId = associatedSession
+            .kernel.id;
+        return kernelId;
+    } catch (error) {
+        console.error('Failed to get session:', error);
+    }
+};
+
+
 export const createSession = async (basePath = '', notebookPath = '') => {
     try {
         const response = await fetch(basePath + '/api/sessions', {
@@ -185,8 +204,14 @@ export const handleWebSocketError = async (error, baseUrl, notebook, cell, cellS
     }
   };
 
-export const runCell = async (basePath, cell, kernelId, cellStatus, setCellStatus) => {
+export const runCell = async (
+    basePath, 
+    cell, 
+    kernelId, 
+    cellStatus, 
+    setCellStatus) => {
     try {
+        setCellStatus(CellStatus.WAITING);
         // Create a WebSocket connection to the kernel's channels endpoint
         const wsBasePath = basePath.replace(/^http/, 'ws');
         const socket = new WebSocket(`${wsBasePath}/api/kernels/${kernelId}/channels`);
