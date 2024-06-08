@@ -5,7 +5,7 @@ import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-github';
 import ReactMarkdown from 'react-markdown';
-import CellHeader from './CellHeader';
+import CellHeader from './header/CellHeader';
 import CellSideButtons from './CellSideButtons';
 import { CellType } from './CellType';
 import { OutputType } from './result/OutputType';
@@ -28,7 +28,8 @@ function Cell({
     handleDeleteCell, 
     handleChangeCellType, 
     handleMoveCell, 
-    handleRunCodeCell
+    handleRunCodeCell,
+    handleCopyCell
   }) {
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
@@ -87,7 +88,8 @@ function Cell({
                 index={index} 
                 cellStatus={cellStatus} 
                 handleRunCell={handleRunCell} 
-                handleChangeCellType={handleChangeCellType}/>
+                handleChangeCellType={handleChangeCellType}
+                handleCopyCell={handleCopyCell}/>
               <CardContent>
                 {cell.cell_type === CellType.CODE ? (
                   <CodeEditor 

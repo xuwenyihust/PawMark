@@ -136,9 +136,34 @@ function Notebook({
         setIsNotebookModified(true);
         setNotebookState(prevState => {
             const newState = {...prevState};
+
+            // If the new cell type is a code cell, add an outputs field
+            if (newCellType === 'code' && newState.content.cells[cellIndex].cell_type !== 'code') {
+                newState.content.cells[cellIndex].outputs = [];
+            }
             newState.content.cells[cellIndex].cell_type = newCellType;
+
             return newState;
         });
+    }
+
+    const handleCopyCell = (cellIndex) => {
+        console.log('handleCopyCell called');
+        const cellToCopy = notebookState.content.cells[cellIndex];
+        const newCell = {
+            ...cellToCopy,
+            source: cellToCopy.source,
+            isExecuted: false,
+        };
+
+        setNotebookState(prevState => {
+            const newState = {...prevState};
+            const newCells = [...newState.content.cells];
+            newCells.splice(cellIndex + 1, 0, newCell);
+            newState.content.cells = newCells;
+            return newState;
+        });
+        setIsNotebookModified(true);
     }
 
     const handleMoveCell = (fromIndex, toIndex) => {
@@ -233,7 +258,8 @@ function Notebook({
                                 handleDeleteCell={handleDeleteCell} 
                                 handleChangeCellType={handleChangeCellType}
                                 handleMoveCell={handleMoveCell}
-                                handleRunCodeCell={handleRunCodeCell}/>
+                                handleRunCodeCell={handleRunCodeCell}
+                                handleCopyCell={handleCopyCell}/>
                             <div 
                                 style={{ 
                                     display: 'flex',

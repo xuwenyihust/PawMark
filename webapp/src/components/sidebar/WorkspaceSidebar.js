@@ -40,7 +40,7 @@ function WorkspaceSidebar({ jupyterBaseUrl,
       open={openWorkspaceDrawer}
       onClose={handleToggleWorkspaceDrawer}
       sx={{ 
-        width: 470,
+        width: 520,
         flexShrink: 0,
         height: 'auto',
         top: top,
@@ -52,16 +52,27 @@ function WorkspaceSidebar({ jupyterBaseUrl,
           backgroundColor: '#333',
           position: 'relative',
           height: `${workspaceSideBarHeight}px`,
-          width: 250, 
+          width: 270, 
           left: 220 } }}
       BackdropProps={{ style: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}>
       <List component="div" disablePadding>
         {currentPath && (
           <ListItem button onClick={handleBackClick}>
               <ListItemIcon>
-                  <CgArrowLeftR style={{ color: 'white' }} />
+                  <CgArrowLeftR style={{ color: 'lightgrey' }} />
               </ListItemIcon>
-              <ListItemText primary="Back" />
+              <ListItemText>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      fontFamily: 'Roboto', 
+                      fontSize: '15px',
+                      color: 'lightgrey', 
+                      marginLeft: '-30px' 
+                    }}>
+                    Back
+                  </Typography>
+              </ListItemText>
           </ListItem>
         )}
         {workspaceFiles.map((file, index) => {
@@ -89,13 +100,23 @@ function WorkspaceSidebar({ jupyterBaseUrl,
                     closeWorkspaceDrawer();
                   }}}>
                 <ListItemIcon>
-                  <IconComponent style={{ color: 'white' }} />
+                  <IconComponent style={{ color: 'lightgrey' }} />
                 </ListItemIcon>
-                <ListItemText primary={file.name} 
-                  sx={{ 
-                    whiteSpace: 'nowrap', 
-                    overflow: 'hidden', 
-                    textOverflow: 'ellipsis' }}/>
+                <ListItemText>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      fontFamily: 'Roboto', 
+                      fontSize: '15px',
+                      color: 'lightgrey', 
+                      marginLeft: '-30px' ,
+                      whiteSpace: 'nowrap', 
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis'
+                    }}>
+                    {file.name}
+                  </Typography>
+                </ListItemText>
             </ListItem>
           </Tooltip>
           );

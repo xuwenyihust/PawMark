@@ -14,18 +14,18 @@ function CreateSidebar({ openCreateDrawer,
       open={openCreateDrawer}
       onClose={handleToggleCreateDrawer}
       sx={{ 
-        width: 200, 
+        width: 470, 
         flexShrink: 0,
         height: 'auto',
         top: createButtonRef.current.offsetTop + createButtonRef.current.offsetParent.offsetTop
         }}
       PaperProps={{ 
-        elevation: 1,
+        elevation: 0,
         style: { 
           backgroundColor: '#333',
           position: 'relative',
           height: '48px',
-          width: 200, 
+          width: 180, 
           left: 220 } }}
       BackdropProps={{ style: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}>
       <List component="div" disablePadding>
@@ -33,12 +33,20 @@ function CreateSidebar({ openCreateDrawer,
             onClick={() => {
               closeCreateDrawer()
               onNewNotebookClick()
-            }} 
-            sx={{ pl: 4 }}>
+            }} >
               <ListItemIcon>
-                  <CgNotes style={{ color: 'white' }} />
+                  <CgNotes style={{ color: 'lightgrey' }} />
               </ListItemIcon>
-              <ListItemText primary="Notebook" sx={{ fontFamily: 'Roboto', marginLeft: '-30px' }}/>
+              <ListItemText>
+                  <Typography 
+                    variant="body1" 
+                    style={{ color: 'lightgrey' }}
+                    sx={{
+                      marginLeft: '-30px'
+                    }}>
+                    Notebook
+                  </Typography>
+              </ListItemText>
           </ListItem>
       </List>
     </Drawer>
