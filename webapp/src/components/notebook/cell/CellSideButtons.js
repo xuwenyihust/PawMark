@@ -11,13 +11,13 @@ function CellSideButtons(
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'top' }}>
       <IconButton aria-label="delete" 
         disableRipple
+        onClick={() => handleDeleteCell(index)}
         style={{ 
           height: 20,
           marginTop: 10,
           marginLeft: 0, 
           marginRight: 0 }}>
         <MdDeleteOutline 
-          onClick={() => handleDeleteCell(index)}
           size={20} 
           onMouseEnter={(e) => {
             e.currentTarget.style.color = 'black';

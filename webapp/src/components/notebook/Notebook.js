@@ -3,7 +3,7 @@ import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
-import { updateNotebook, renameNotebook, createSession, runCell, runAllCells } from '../../api';
+import { updateNotebook, renameNotebook, createSession, getSession, runCell, runAllCells } from '../../api';
 
 
 function Notebook({ 
@@ -120,12 +120,16 @@ function Notebook({
     }
 
     const handleDeleteCell = (cellIndex) => {
-        setIsNotebookModified(true);
+        console.log('handleDeleteCell called');
         setNotebookState(prevState => {
             const newState = {...prevState};
-            newState.content.cells.splice(cellIndex, 1);
+            const newCells = [...newState.content.cells];
+            newCells.splice(cellIndex, 1);
+            console.log('Deleted cell:', cellIndex, newCells);
+            newState.content.cells = newCells;
             return newState;
         });
+        setIsNotebookModified(true);
     }
 
     const handleChangeCellType = (cellIndex, newCellType) => {
@@ -156,11 +160,16 @@ function Notebook({
 
     const handleRunCodeCell = async (cell, cellStatus, setCellStatus) => {
         let newKernelId = kernelId;
-        // If there's no kernal ID, create a new session
-        if (!kernelId) {
+        
+        // Assume getSession is a function that returns a kernel ID for a given notebook path
+        let existingKernelId = await getSession(jupyterBaseUrl, notebook.path);
+
+        if (!existingKernelId) {
             setCellStatus(CellStatus.INITIALIZING);
             newKernelId = await createSession(jupyterBaseUrl, notebook.path);
             setKernelId(newKernelId)
+        } else {
+            newKernelId = existingKernelId;
         }
 
         console.log('Kernal ID:', newKernelId);

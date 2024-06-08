@@ -20,6 +20,7 @@ function CellHeader({
           <CircularProgress size={15} /> :
           <IconButton 
             disableRipple
+            onClick={() => handleRunCell(cell, index)}
             aria-label="run" 
             style={{
               height: 40,
@@ -29,7 +30,6 @@ function CellHeader({
               marginLeft: -15, 
               marginRight: 0 }}>
             <MdArrowRight 
-              onClick={() => handleRunCell(cell, index)}
               size={40} 
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = 'blue';
