@@ -3,7 +3,7 @@ import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
-import { updateNotebook, renameNotebook, createSession, getSession, runCell, runAllCells } from '../../api';
+import { updateNotebook, renameNotebook, createSession, getSession, runCell, runAllCells, runAllAboveCells } from '../../api';
 
 
 function Notebook({ 
@@ -184,6 +184,7 @@ function Notebook({
     }
 
     const handleRunCodeCell = async (cell, cellStatus, setCellStatus) => {
+        console.log('Running code cell:', cell);
         let newKernelId = kernelId;
         
         // Assume getSession is a function that returns a kernel ID for a given notebook path
@@ -259,7 +260,18 @@ function Notebook({
                                 handleChangeCellType={handleChangeCellType}
                                 handleMoveCell={handleMoveCell}
                                 handleRunCodeCell={handleRunCodeCell}
-                                handleCopyCell={handleCopyCell}/>
+                                handleCopyCell={handleCopyCell}
+                                handelRunAllAboveCells={
+                                    (index) => runAllAboveCells(
+                                            index,
+                                            jupyterBaseUrl, 
+                                            notebookState, 
+                                            kernelId, 
+                                            setKernelId, 
+                                            cellStatuses, 
+                                            setCellStatus,
+                                            cellExecutedStatuses,
+                                            setCellExecutedStatus)}/>
                             <div 
                                 style={{ 
                                     display: 'flex',

@@ -29,7 +29,8 @@ function Cell({
     handleChangeCellType, 
     handleMoveCell, 
     handleRunCodeCell,
-    handleCopyCell
+    handleCopyCell,
+    handelRunAllAboveCells
   }) {
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
@@ -89,7 +90,8 @@ function Cell({
                 cellStatus={cellStatus} 
                 handleRunCell={handleRunCell} 
                 handleChangeCellType={handleChangeCellType}
-                handleCopyCell={handleCopyCell}/>
+                handleCopyCell={handleCopyCell}
+                handelRunAllAboveCells={handelRunAllAboveCells}/>
               <CardContent>
                 {cell.cell_type === CellType.CODE ? (
                   <CodeEditor 

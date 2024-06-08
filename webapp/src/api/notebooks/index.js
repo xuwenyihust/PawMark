@@ -313,6 +313,21 @@ export const runCell = async (
       }
   };
 
+  export const runAllAboveCells = async (
+    index,
+    jupyterBaseUrl, 
+    notebook, 
+    kernelId, 
+    setKernelId, 
+    cellStatuses, 
+    setCellStatus,
+    cellExecutedStatuses,
+    setCellExecutedStatus
+  ) => {
+    console.log('notebook:', notebook);
+    runAllCells(jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus, cellExecutedStatuses, setCellExecutedStatus, index);
+  }
+
   export const runAllCells = async (
         jupyterBaseUrl, 
         notebook, 
@@ -321,10 +336,11 @@ export const runCell = async (
         cellStatuses, 
         setCellStatus,
         cellExecutedStatuses,
-        setCellExecutedStatus
+        setCellExecutedStatus,
+        endCellIndex = notebook.content.cells.length
     ) => {
     // Set all cell statuses to 'waiting'
-    for (let i = 0; i < notebook.content.cells.length; i++) {
+    for (let i = 0; i < endCellIndex; i++) {
         const cell = notebook.content.cells[i];
         if (cell.cell_type === 'code') {
             setCellStatus(i, CellStatus.WAITING);
@@ -334,7 +350,7 @@ export const runCell = async (
         }
     }
 
-    for (let i = 0; i < notebook.content.cells.length; i++) {
+    for (let i = 0; i < endCellIndex; i++) {
         const cell = notebook.content.cells[i];
         let newKernelId = kernelId;
         console.log('Running cell:', cell);

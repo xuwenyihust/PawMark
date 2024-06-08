@@ -9,9 +9,11 @@ function CellHeader({
   cell,
   index,
   cellStatus,
+  setCellExecutedStatus,
   handleRunCell,
   handleChangeCellType,
-  handleCopyCell
+  handleCopyCell,
+  handelRunAllAboveCells
 }) {
   return (
     <CardHeader title={
@@ -43,7 +45,8 @@ function CellHeader({
           <MoreButton 
             cell={cell}
             index={index}
-            handleCopyCell={handleCopyCell}/>
+            handleCopyCell={handleCopyCell}
+            handelRunAllAboveCells={handelRunAllAboveCells}/>
         </Box>
       </Box>}
       sx={{ bgcolor: '#f2f2f2', height: '5px' }}/>

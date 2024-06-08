@@ -6,7 +6,8 @@ import { Menu, MenuItem } from '@mui/material';
 const MoreButton = ({ 
   cell, 
   index,
-  handleCopyCell
+  handleCopyCell,
+  handelRunAllAboveCells
  }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,6 +51,11 @@ const MoreButton = ({
             handleCopyCell(index)
             handleClose()}}
           >Copy Cell</MenuItem>
+        <MenuItem 
+          onClick={() => {
+            handelRunAllAboveCells(index)
+            handleClose()}}
+          >Run All Above</MenuItem>
       </Menu>
     </div>
   );
