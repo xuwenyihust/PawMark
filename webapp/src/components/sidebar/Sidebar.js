@@ -76,10 +76,10 @@ function Sidebar({
                   padding: 0 // Removes padding that might affect layout
                 }}>
                 <Logo style={{ 
-                  marginLeft: '-8px',
+                  marginLeft: '-18px',
                   marginBottom: '-10px',
-                  height: '60px', 
-                  width: '120px' }} />
+                  height: '80px', 
+                  width: '160px' }} />
               </Button>
             </Toolbar>
 
@@ -98,7 +98,10 @@ function Sidebar({
                 <ListItem button ref={createButtonRef} onClick={handleToggleCreateDrawer} 
                   sx={{ 
                       '&:hover': {
-                        backgroundColor: '#555'
+                        backgroundColor: '#555',
+                      },
+                      '&:hover .MuiTypography-root': {
+                        color: 'white',
                       }
                     }}>
                   <ListItemIcon>
@@ -111,7 +114,7 @@ function Sidebar({
                           fontFamily: 'Roboto', 
                           fontSize: '15px',
                           color: 'lightgrey', 
-                          marginLeft: '-30px' 
+                          marginLeft: '-30px'
                         }}>
                         Create
                       </Typography>
@@ -131,6 +134,9 @@ function Sidebar({
                   sx={{
                     '&:hover': {
                       backgroundColor: '#555'
+                    },
+                    '&:hover .MuiTypography-root': {
+                      color: 'white',
                     }
                   }}>
                   <ListItemIcon>
@@ -168,6 +174,9 @@ function Sidebar({
                   sx={{
                     '&:hover': {
                       backgroundColor: '#555'
+                    },
+                    '&:hover .MuiTypography-root': {
+                      color: 'white',
                     }
                   }}>
                   <ListItemIcon>
@@ -191,6 +200,9 @@ function Sidebar({
                   sx={{
                     '&:hover': {
                       backgroundColor: '#555'
+                    },
+                    '&:hover .MuiTypography-root': {
+                      color: 'white',
                     }
                   }}>
                   <ListItemIcon>
