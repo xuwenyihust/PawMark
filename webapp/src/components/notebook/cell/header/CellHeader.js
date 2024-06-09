@@ -40,7 +40,8 @@ function CellHeader({
           cell.lastExecutionResult === null ? null :
           (cell.lastExecutionResult === CellExecuteResultType.SUCCESS ?
             <CgCheck style={{ color: 'green', marginLeft: 10 }}/> :
-            <CgDanger size={16} style={{ color: 'red', marginLeft: 10 }}/>)}
+            (cell.lastExecutionResult === CellExecuteResultType.ERROR ?
+              <CgDanger size={16} style={{ color: 'red', marginLeft: 10 }}/> : null))}
           {cellStatus === CellStatus.IDLE &&
             <Typography
             variant="body2"
