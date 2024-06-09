@@ -1,4 +1,7 @@
 import { CellStatus } from "../../components/notebook/cell/CellStatus";
+import { OutputType } from '../../components/notebook/cell/result/OutputType';
+import { CellExecuteResultType } from "../../components/notebook/cell/CellExecuteResultType";
+
 
 export const fetchFiles = async (path = '') => {
     const url = new URL(path);
@@ -254,42 +257,45 @@ export const runCell = async (
             allow_stdin: false,
           },
         }));
+
+        cell.lastExecutionResult = CellExecuteResultType.SUCCESS;
     
         // Wait for the execute_result message
         const result = await new Promise((resolve) => {
           socket.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            // console.log('Received message:', message);
             // Only process messages that are in response to this execution
             if (message.parent_header.msg_id === msg_id) {
-                if (message.header.msg_type === 'status') {
+                console.log('Received message:', message);
+                cell.lastExecutionTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                if (message.header.msg_type === OutputType.STATUS) {
                     // Update the cell's status
-                    console.log('Cell status:', message.content.execution_state);
                     setCellStatus(message.content.execution_state);
                     // If the kernel is idle, resolve the promise
                     if (message.content.execution_state === CellStatus.IDLE) {
                         resolve(cell.outputs);
                     }
                 }
-                else if (message.header.msg_type === 'stream') {
+                else if (message.header.msg_type === OutputType.STREAM) {
                     // Add the output to the cell's outputs array
                     cell.outputs.push({
-                        output_type: 'stream',
+                        output_type: OutputType.STREAM,
                         name: message.content.name,
                         text: message.content.text,
                     });
-                } else if (message.header.msg_type === 'execute_result') {
+                } else if (message.header.msg_type === OutputType.EXECUTE_RESULT) {
                     // Add the output to the cell's outputs array
                     cell.outputs.push({
-                        output_type: 'execute_result',
+                        output_type: OutputType.EXECUTE_RESULT,
                         data: message.content.data,
                         execution_count: message.content.execution_count,
                         metadata: message.content.metadata,
                     });
-                } else if (message.header.msg_type === 'error') {
+                } else if (message.header.msg_type === OutputType.ERROR) {
+                    cell.lastExecutionResult = CellExecuteResultType.ERROR;
                     // Add the output to the cell's outputs array
                     cell.outputs.push({
-                        output_type: 'error',
+                        output_type: OutputType.ERROR,
                         ename: message.content.ename,
                         evalue: message.content.evalue,
                         traceback: message.content.traceback,

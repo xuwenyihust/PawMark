@@ -80,7 +80,7 @@ function Cell({
                   marginBottom: 1,
                   marginLeft: 10,
                   marginRight: 1,
-                  border: isFocused ? 0.8 : 0.5,
+                  border: isFocused ? 1.0 : 0.5,
                   borderColor: isFocused ? 'black' : 'lightgrey',
                   backgroundColor: 'rgba(0, 0, 0, 0.03)',
               }}>

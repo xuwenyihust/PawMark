@@ -43,15 +43,17 @@ function Notebook({
 
     useEffect(() => {
         if (notebook && notebook.content) {
-            const notebookContentWithExecutionFlag = notebook.content.cells.map(cell => ({
+            const notebookContentWithCustomFields = notebook.content.cells.map(cell => ({
                 ...cell,
                 isExecuted: cell.cell_type === 'code' ? false : cell.cell_type === 'markdown' ? true : cell.isExecuted,
+                lastExecutionResult: null, 
+                lastExecutionTime: null,
               }));
             setNotebookState({
                 ...notebook,
                 content: {
                     ...notebook.content,
-                    cells: notebookContentWithExecutionFlag,
+                    cells: notebookContentWithCustomFields,
                 }
             });
             setCurrentName(notebook.name);
@@ -239,7 +241,16 @@ function Notebook({
                             handleClickNotebookName={handleClickNotebookName}
                             handleChangeNotebookName={handleChangeNotebookName}
                             handleSaveNotebookName={handleSaveNotebookName}
-                            runAllCells={runAllCells}
+                            runAllCells={
+                                () => runAllCells(
+                                    jupyterBaseUrl, 
+                                    notebookState, 
+                                    kernelId, 
+                                    setKernelId, 
+                                    cellStatuses, 
+                                    setCellStatus,
+                                    cellExecutedStatuses,
+                                    setCellExecutedStatus)}
                             saveNotebook={handleUpdateNotebook}
                             deleteNotebook={handleDeleteNotebook}/>
                     }

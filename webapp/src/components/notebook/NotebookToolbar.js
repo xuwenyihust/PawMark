@@ -5,14 +5,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { Box, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 
 function NotebookToolbar({
-  jupyterBaseUrl,
-  notebook, 
-  kernelId,
-  setKernelId,
-  cellStatuses,
-  setCellStatus,
-  cellExecutedStatuses,
-  setCellExecutedStatus,
   isNameEditing,
   currentName,
   isNotebookModified, 
@@ -99,7 +91,7 @@ function NotebookToolbar({
                             <IconButton 
                               disableRipple 
                               onClick={() => 
-                                runAllCells(jupyterBaseUrl, notebook, kernelId, setKernelId, cellStatuses, setCellStatus, cellExecutedStatuses, setCellExecutedStatus)}
+                                runAllCells()}
                               aria-label="run" 
                                 sx={{ 
                                     width: 'auto', 
