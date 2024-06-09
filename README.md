@@ -19,7 +19,7 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 <img src="resources/images/architecture.jpg" alt="Architecture">
 </p>
 
-## Quick Start
+## Setup
 
 ### Docker Compose
 <details>
@@ -134,6 +134,7 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 | Scala        | 2.12    |
 | Java         | 17      |
 | Python       | 3.11    |
+| IPython      | 8.16.1  |
 | Apache Spark | 3.5.0   |
 | Delta Lake   | 3.0.0   |
 | Airflow      | 2.9.1   |
@@ -142,7 +143,7 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 
 
 ## License
-This project is licensed under the terms of the MIT license.
+This project is licensed under the terms of the Apache-2.0 license.
 
 ## Reference
 - [Running Apache Spark on Kubernetes](https://medium.com/empathyco/running-apache-spark-on-kubernetes-2e64c73d0bb2)
