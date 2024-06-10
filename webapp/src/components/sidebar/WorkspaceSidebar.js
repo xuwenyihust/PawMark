@@ -40,21 +40,40 @@ function WorkspaceSidebar({ jupyterBaseUrl,
       open={openWorkspaceDrawer}
       onClose={handleToggleWorkspaceDrawer}
       sx={{ 
-        width: 520,
+        width: 350,
+        left: 220.5,
+        zIndex: 1,
         flexShrink: 0,
         height: 'auto',
-        top: top,
-        overflow: 'auto'
+        overflow: 'auto',
+        borderLeft: '0.5px solid #333',
         }}
       PaperProps={{ 
         elevation: 0,
         style: { 
           backgroundColor: '#333',
-          position: 'relative',
-          height: `${workspaceSideBarHeight}px`,
-          width: 270, 
-          left: 220 } }}
-      BackdropProps={{ style: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}>
+          position: 'absolute',
+          height: '100%',
+          width: 300, 
+          left: 0 } }}
+        BackdropProps={{ 
+          style: { backgroundColor: 'transparent', zIndex: -10 } }}
+      >
+
+      <Typography
+        variant="h6"
+        sx={{
+          fontFamily: 'Roboto',
+          fontSize: '15px',
+          color: 'lightgrey',
+          fontWeight: 'bold',
+          marginLeft: '20px',
+          marginTop: '20px',
+          marginBottom: '20px'
+        }}>
+        Workspace
+      </Typography>
+
       <List component="div" disablePadding>
         {currentPath && (
           <ListItem button onClick={handleBackClick}>

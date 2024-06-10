@@ -95,8 +95,12 @@ function Sidebar({
             </Typography>
 
             <List>
-                <ListItem button ref={createButtonRef} onClick={handleToggleCreateDrawer} 
-                  sx={{ 
+                <ListItem button ref={createButtonRef} onClick={ () => {
+                  handleToggleCreateDrawer()
+                  setOpenWorkspaceDrawer(false);
+                }} 
+                  sx={{
+                    backgroundColor: openCreateDrawer ? '#555' : 'transparent',
                       '&:hover': {
                         backgroundColor: '#555',
                       },
@@ -105,7 +109,7 @@ function Sidebar({
                       }
                     }}>
                   <ListItemIcon>
-                      <CgAdd style={{ color: 'lightgrey' }} />
+                      <CgAdd style={{ color: openCreateDrawer ? 'white' : 'lightgrey' }} />
                   </ListItemIcon>
                   <ListItemText>
                       <Typography 
@@ -113,7 +117,7 @@ function Sidebar({
                         sx={{ 
                           fontFamily: 'Roboto', 
                           fontSize: '15px',
-                          color: 'lightgrey', 
+                          color: openCreateDrawer ? 'white' : 'lightgrey', 
                           marginLeft: '-30px'
                         }}>
                         Create
@@ -130,8 +134,12 @@ function Sidebar({
                     onNewNotebookClick={onNewNotebookClick}/>
                 )}
 
-                <ListItem button ref={workspaceButtonRef} onClick={handleToggleWorkspaceDrawer} 
+                <ListItem button ref={workspaceButtonRef} onClick={() => {
+                  handleToggleWorkspaceDrawer();
+                  setOpenCreateDrawer(false);
+                }} 
                   sx={{
+                    backgroundColor: openWorkspaceDrawer ? '#555' : 'transparent',
                     '&:hover': {
                       backgroundColor: '#555'
                     },
@@ -140,7 +148,7 @@ function Sidebar({
                     }
                   }}>
                   <ListItemIcon>
-                      <CgAlbum style={{ color: 'lightgrey' }} />
+                      <CgAlbum style={{ color: openWorkspaceDrawer ? 'white' : 'lightgrey' }} />
                   </ListItemIcon>
                   <ListItemText>
                   <Typography 
@@ -148,7 +156,7 @@ function Sidebar({
                     sx={{ 
                       fontFamily: 'Roboto', 
                       fontSize: '15px',
-                      color: 'lightgrey', 
+                      color: openWorkspaceDrawer ? 'white' : 'lightgrey', 
                       marginLeft: '-30px' 
                     }}>
                     Workspace
@@ -170,7 +178,10 @@ function Sidebar({
                   workspaceFiles={workspaceFiles}/>
                 )}
 
-                <ListItem button onClick={onHistoryServerClick}
+                <ListItem button onClick={() => {
+                    onHistoryServerClick(); 
+                    setOpenWorkspaceDrawer(false); 
+                    setOpenCreateDrawer(false);}}
                   sx={{
                     '&:hover': {
                       backgroundColor: '#555'
@@ -196,7 +207,10 @@ function Sidebar({
                   </ListItemText>
                 </ListItem>
 
-                <ListItem button
+                <ListItem button onClick={() => {
+                    setOpenWorkspaceDrawer(false); 
+                    setOpenCreateDrawer(false);}
+                  }
                   sx={{
                     '&:hover': {
                       backgroundColor: '#555'

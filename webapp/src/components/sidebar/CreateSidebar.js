@@ -15,6 +15,7 @@ function CreateSidebar({ openCreateDrawer,
       onClose={handleToggleCreateDrawer}
       sx={{ 
         width: 470, 
+        zIndex: 1,
         flexShrink: 0,
         height: 'auto',
         top: createButtonRef.current.offsetTop + createButtonRef.current.offsetParent.offsetTop
@@ -23,11 +24,13 @@ function CreateSidebar({ openCreateDrawer,
         elevation: 0,
         style: { 
           backgroundColor: '#333',
-          position: 'relative',
+          position: 'absolute',
           height: '48px',
           width: 180, 
           left: 220 } }}
-      BackdropProps={{ style: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}>
+          BackdropProps={{ 
+            style: { backgroundColor: 'transparent', zIndex: -10 } }}
+        >
       <List component="div" disablePadding>
           <ListItem button 
             onClick={() => {
