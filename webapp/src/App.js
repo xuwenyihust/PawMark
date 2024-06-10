@@ -3,7 +3,7 @@ import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/notebook/Notebook';
 import HistoryServer from './components/HistoryServer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createNotebook, deleteNotebook, fetchNotebook, fetchFiles } from './api/notebooks';
+import { createDirectory, createNotebook, deleteNotebook, fetchNotebook, fetchFiles } from './api/notebooks';
 import config from './config';
 
 const theme = createTheme({
@@ -43,6 +43,8 @@ const App = () => {
   const [openWorkspaceDrawer, setOpenWorkspaceDrawer] = useState(false);
   const [currentPath, setCurrentPath] = useState('work');
   const [workspaceFiles, setWorkspaceFiles] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+
 
   // Workspace
   useEffect(() => {
@@ -52,7 +54,7 @@ const App = () => {
             .catch(error => console.error('Failed to fetch files:', error));
         console.log('Fetched workspace files:', workspaceFiles);
     }
-  }, [openWorkspaceDrawer, currentPath, notebookState]);
+  }, [openWorkspaceDrawer, currentPath, notebookState, refreshKey]);
 
   const handleDirectoryClick = (path) => {
     setCurrentPath(path);  // Update the path to fetch and display new contents
@@ -124,7 +126,6 @@ const App = () => {
   return (
       <ThemeProvider theme={theme}>
         <Sidebar 
-          jupyterBaseUrl={config.jupyterBaseUrl} 
           onNewNotebookClick={handleNewNotebookClick} 
           onExistinNotebookClick={handleExistingNotebookClick}
           onHistoryServerClick={handleHistoryServerClick} 
@@ -133,7 +134,10 @@ const App = () => {
           setOpenWorkspaceDrawer={setOpenWorkspaceDrawer}
           currentPath={currentPath}
           setCurrentPath={setCurrentPath}
-          workspaceFiles={workspaceFiles}/>
+          refreshKey={refreshKey}
+          setRefreshKey={setRefreshKey}
+          workspaceFiles={workspaceFiles}
+          createDirectory={(directoryPath) => createDirectory(baseUrl, directoryPath)}/>
         <Notebook 
           jupyterBaseUrl={config.jupyterBaseUrl}
           showNotebook={showNotebook}

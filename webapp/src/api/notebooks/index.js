@@ -32,6 +32,19 @@ export const fetchNotebook = async (path = '') => {
   return data;
 }
 
+export const createDirectory = async (basePath = '', directoryPath = '') => {
+    console.log("Creating directory at path:", `${basePath}${directoryPath}`);
+    const response = await fetch(`${basePath}${directoryPath}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'directory'
+        }),
+      });
+};
+
 export const createNotebook = async (path = '') => {
     const timestamp = Date.now();
     const notebookName = `notebook-${timestamp}.ipynb`;
