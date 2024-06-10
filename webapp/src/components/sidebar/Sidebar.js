@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
 import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
-import WorkspaceSidebar from './WorkspaceSidebar'; 
+import WorkspaceSidebar from './workspace/WorkspaceSidebar'; 
 import CreateSidebar from './CreateSidebar';
 import { ReactComponent as Logo } from '../../assets/logo_#333.svg';
 
 function Sidebar({ 
-      jupyterBaseUrl, 
       onNewNotebookClick, 
       onExistinNotebookClick, 
       onHistoryServerClick,
@@ -15,7 +14,10 @@ function Sidebar({
       setOpenWorkspaceDrawer,
       currentPath,
       setCurrentPath,
-      workspaceFiles }) {
+      refreshKey,
+      setRefreshKey,
+      workspaceFiles,
+      createDirectory }) {
     const [openMainDrawer, setOpenMainDrawer] = useState(true);
 
     const handleLogoClick = async () => {
@@ -166,16 +168,17 @@ function Sidebar({
                 
                 { openWorkspaceDrawer && (
                   <WorkspaceSidebar 
-                  jupyterBaseUrl={jupyterBaseUrl}
-                  openWorkspaceDrawer={openWorkspaceDrawer} 
-                  closeWorkspaceDrawer={closeWorkspaceDrawer}
-                  top={workspaceButtonRef.current.offsetTop + workspaceButtonRef.current.offsetParent.offsetTop} 
-                  handleToggleWorkspaceDrawer={handleToggleWorkspaceDrawer}
-                  onExistinNotebookClick={onExistinNotebookClick} 
-                  handleDirectoryClick={handleDirectoryClick}
-                  currentPath={currentPath}
-                  setCurrentPath={setCurrentPath}
-                  workspaceFiles={workspaceFiles}/>
+                    openWorkspaceDrawer={openWorkspaceDrawer} 
+                    closeWorkspaceDrawer={closeWorkspaceDrawer}
+                    handleToggleWorkspaceDrawer={handleToggleWorkspaceDrawer}
+                    onExistinNotebookClick={onExistinNotebookClick} 
+                    handleDirectoryClick={handleDirectoryClick}
+                    currentPath={currentPath}
+                    setCurrentPath={setCurrentPath}
+                    refreshKey={refreshKey}
+                    setRefreshKey={setRefreshKey}
+                    workspaceFiles={workspaceFiles}
+                    createDirectory={createDirectory}/>
                 )}
 
                 <ListItem button onClick={() => {

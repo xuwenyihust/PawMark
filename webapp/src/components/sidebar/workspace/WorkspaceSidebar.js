@@ -1,37 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
+import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Tooltip, Box } from '@mui/material';
 import { CgFileDocument, CgFolder, CgArrowLeftR } from "react-icons/cg";
+import WorkspaceSidebarHeader from './WorkspaceSidebarHeader';
 
-function WorkspaceSidebar({ jupyterBaseUrl, 
+function WorkspaceSidebar({ 
     openWorkspaceDrawer, 
     closeWorkspaceDrawer, 
-    top, 
     handleToggleWorkspaceDrawer, 
     onExistinNotebookClick,
     handleDirectoryClick,
     currentPath,
     setCurrentPath,
-    workspaceFiles}) {
-
-  useEffect(() => {
-    calculateHeight();
-  }, [workspaceFiles]);
+    refreshKey,
+    setRefreshKey,
+    workspaceFiles,
+    createDirectory}) {
 
   const handleBackClick = () => {
     const parentPath = currentPath.split('/').slice(0, -1).join('/');
     setCurrentPath(parentPath || 'work');  // Navigate to parent directory or root if at top level
   };
-
-  const itemHeight = 48; // Height of one ListItem
-  const [workspaceSideBarHeight, setWorkspaceSideBarHeight] = useState(0);
-
-  const calculateHeight = () => {
-    // only the directories and notebooks will be counted in the height
-    const directoriesAndNotebooks = workspaceFiles.filter(item => item.type === 'directory' || item.type === 'notebook'); // Replace with your actual condition
-    const itemCount = directoriesAndNotebooks.length;
-    const height = (itemCount + 1) * itemHeight;
-    setWorkspaceSideBarHeight(height);
-  }
 
   return (
     <Drawer
@@ -40,12 +28,11 @@ function WorkspaceSidebar({ jupyterBaseUrl,
       open={openWorkspaceDrawer}
       onClose={handleToggleWorkspaceDrawer}
       sx={{ 
-        width: 350,
+        width: 300,
         left: 220.5,
         zIndex: 1,
         flexShrink: 0,
         height: 'auto',
-        overflow: 'auto',
         borderLeft: '0.5px solid #333',
         }}
       PaperProps={{ 
@@ -60,19 +47,12 @@ function WorkspaceSidebar({ jupyterBaseUrl,
           style: { backgroundColor: 'transparent', zIndex: -10 } }}
       >
 
-      <Typography
-        variant="h6"
-        sx={{
-          fontFamily: 'Roboto',
-          fontSize: '15px',
-          color: 'lightgrey',
-          fontWeight: 'bold',
-          marginLeft: '20px',
-          marginTop: '20px',
-          marginBottom: '20px'
-        }}>
-        Workspace
-      </Typography>
+      <WorkspaceSidebarHeader
+        currentPath={currentPath}
+        setCurrentPath={setCurrentPath}
+        refreshKey={refreshKey}
+        setRefreshKey={setRefreshKey}
+        createDirectory={createDirectory} />
 
       <List component="div" disablePadding>
         {currentPath && (

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
-import { CgAdd, CgNotes, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
+import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
+import { CgFolderAdd, CgNotes } from "react-icons/cg";
 
 function CreateSidebar({ openCreateDrawer, 
     closeCreateDrawer,
@@ -14,11 +14,12 @@ function CreateSidebar({ openCreateDrawer,
       open={openCreateDrawer}
       onClose={handleToggleCreateDrawer}
       sx={{ 
-        width: 470, 
+        width: 180, 
         zIndex: 1,
         flexShrink: 0,
         height: 'auto',
-        top: createButtonRef.current.offsetTop + createButtonRef.current.offsetParent.offsetTop
+        left: 220,
+        top: createButtonRef.current.offsetTop + createButtonRef.current.offsetParent.offsetTop,
         }}
       PaperProps={{ 
         elevation: 0,
@@ -27,7 +28,8 @@ function CreateSidebar({ openCreateDrawer,
           position: 'absolute',
           height: '48px',
           width: 180, 
-          left: 220 } }}
+          paddingLeft: 0,
+          left: 0 } }}
           BackdropProps={{ 
             style: { backgroundColor: 'transparent', zIndex: -10 } }}
         >
@@ -36,16 +38,26 @@ function CreateSidebar({ openCreateDrawer,
             onClick={() => {
               closeCreateDrawer()
               onNewNotebookClick()
-            }} >
+            }} 
+            sx={{
+                '&:hover': {
+                  backgroundColor: '#555',
+                },
+                '&:hover .MuiTypography-root': {
+                  color: 'white',
+                }
+              }}>
               <ListItemIcon>
-                  <CgNotes style={{ color: 'lightgrey' }} />
+                  <CgNotes style={{ 
+                    color: 'lightgrey',
+                    marginLeft: '10px'  }} />
               </ListItemIcon>
               <ListItemText>
                   <Typography 
                     variant="body1" 
                     style={{ color: 'lightgrey' }}
                     sx={{
-                      marginLeft: '-30px'
+                      marginLeft: '-10px'
                     }}>
                     Notebook
                   </Typography>
