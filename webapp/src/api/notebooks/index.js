@@ -71,9 +71,13 @@ export const deleteItem = async (basePath = '', item = '') => {
     }
 }
 
-export const createNotebook = async (path = '') => {
-    const timestamp = Date.now();
-    const notebookName = `notebook-${timestamp}.ipynb`;
+export const createNotebook = async (path = '', notebookName='') => {
+    if (notebookName === '') {
+        const timestamp = Date.now();
+        notebookName = `notebook-${timestamp}.ipynb`;
+    } else {
+        notebookName = `${notebookName}.ipynb`;
+    }
     const notebookPath = `${path}/${notebookName}`;
   
     const initCells = [

@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box, Dialog, DialogActions, TextField, DialogContent, DialogTitle } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { CgFileDocument, CgFolder, CgArrowLeftR, CgChevronDown } from "react-icons/cg";
+import { CgChevronDown } from "react-icons/cg";
+import { createNotebook } from '../../../api';
+import config from '../../../config';
 
 
 const WorkspaceSidebarHeader = ({
@@ -12,7 +14,11 @@ const WorkspaceSidebarHeader = ({
   setRefreshKey,
   createDirectory
 }) => {
+  const baseUrl = `${config.jupyterBaseUrl}/api/contents/`
+
   const [anchorEl, setAnchorEl] = useState(null);
+  const [createNotebookDialogOpen, setCreateNotebookDialogOpen] = useState(false);
+  const [notebookName, setNotebookName] = useState('');
 
   const handleCreateClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +27,15 @@ const WorkspaceSidebarHeader = ({
   const handleCreateClose = () => {
     setAnchorEl(null);
   };
+
+  const handleCreateNotebook = () => {
+    console.log('Creating notebook:', notebookName);
+    console.log('Current path:', `${baseUrl}${currentPath}`);
+    createNotebook(`${baseUrl}${currentPath}`, notebookName);
+    setCreateNotebookDialogOpen(false);
+    handleCreateClose();
+    setRefreshKey(oldKey => oldKey + 1);
+  }
 
   return (
     <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -50,6 +65,7 @@ const WorkspaceSidebarHeader = ({
             height: '30px'
             }}>Create
         </Button>
+
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -65,6 +81,7 @@ const WorkspaceSidebarHeader = ({
             },
           }}
         >
+          {/* Create Folder */}
           <MenuItem 
             onClick={() => {
               handleCreateClose();
@@ -73,9 +90,57 @@ const WorkspaceSidebarHeader = ({
               setRefreshKey(oldKey => oldKey + 1);
             }}
             style={{ color: 'lightgrey' }}>Folder</MenuItem>
+
+          {/* Create Notebook */}
           <MenuItem 
-            onClick={handleCreateClose}
+            onClick={() => {
+              setCreateNotebookDialogOpen(true);
+              setRefreshKey(oldKey => oldKey + 1);
+            }}
             style={{ color: 'lightgrey' }}>Notebook</MenuItem>
+
+          <Dialog 
+            open={createNotebookDialogOpen} 
+            sx={{
+              '.MuiPaper-root': { 
+                backgroundColor: '#222',
+                color: 'lightgrey',
+                width: '300px'
+              }
+            }}
+            >
+            <DialogTitle>Create Notebook</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Notebook Name"
+                type="text"
+                fullWidth
+                value={notebookName}
+                sx={{ 
+                  '.MuiInputBase-root': { color: 'lightgrey' },
+                  '.MuiFormLabel-root': { color: 'grey' },
+                  '.MuiInputLabel-root': { color: 'grey' },
+                  '.MuiOutlinedInput-root': {
+                    '& fieldset': { borderColor: '#eee' },
+                    '&:hover fieldset': { borderColor: '#ddd' },
+                    '&.Mui-focused fieldset': { borderColor: '#ddd' },
+                  },
+                }}
+                onChange={(e) => setNotebookName(e.target.value)}
+              />
+            </DialogContent>
+        <DialogActions>
+          <Button onClick={() => {
+            setCreateNotebookDialogOpen(false);
+            handleCreateClose();}}>Cancel</Button>
+          <Button onClick={() => {
+            handleCreateNotebook();
+            }}>Create</Button>
+        </DialogActions>
+      </Dialog>
+
         </Menu>
       </Box>
   );
