@@ -45,6 +45,17 @@ export const createDirectory = async (basePath = '', directoryPath = '') => {
       });
 };
 
+export const deleteItem = async (basePath = '', itemPath = '') => {
+    console.log("Deleting item at path:", basePath + '/' + itemPath);
+    try {
+    const response = await fetch(basePath + itemPath, {
+        method: 'DELETE'
+    });
+    } catch (error) {
+        console.error('Failed to delete item:', error);
+    }
+}
+
 export const createNotebook = async (path = '') => {
     const timestamp = Date.now();
     const notebookName = `notebook-${timestamp}.ipynb`;

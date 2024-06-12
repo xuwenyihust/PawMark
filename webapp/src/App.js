@@ -11,9 +11,9 @@ const theme = createTheme({
       MuiDrawer: {
           styleOverrides: {
               paper: {
-                  backgroundColor: '#333', // Dark grey
+                  backgroundColor: '#222', // Dark background color
                   color: '#fff', // White text color
-                  paddingLeft: '20px',
+                  // paddingLeft: '20px',
                   width: '200px',
                   justifyContent: 'left',
               },
@@ -44,7 +44,6 @@ const App = () => {
   const [currentPath, setCurrentPath] = useState('work');
   const [workspaceFiles, setWorkspaceFiles] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
-
 
   // Workspace
   useEffect(() => {

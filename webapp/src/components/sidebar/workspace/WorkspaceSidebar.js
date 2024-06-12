@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Tooltip, Box } from '@mui/material';
-import { CgFileDocument, CgFolder, CgArrowLeftR } from "react-icons/cg";
+import { CgFileDocument, CgFolder } from "react-icons/cg";
 import WorkspaceSidebarHeader from './WorkspaceSidebarHeader';
+import Back from './Back';
+import Item from './Item';
 
 function WorkspaceSidebar({ 
+    itemHeight,
     openWorkspaceDrawer, 
     closeWorkspaceDrawer, 
     handleToggleWorkspaceDrawer, 
@@ -15,6 +18,8 @@ function WorkspaceSidebar({
     setRefreshKey,
     workspaceFiles,
     createDirectory}) {
+
+  const workspaceSidebarWidth = 300; 
 
   const handleBackClick = () => {
     const parentPath = currentPath.split('/').slice(0, -1).join('/');
@@ -28,8 +33,8 @@ function WorkspaceSidebar({
       open={openWorkspaceDrawer}
       onClose={handleToggleWorkspaceDrawer}
       sx={{ 
-        width: 300,
-        left: 220.5,
+        width: workspaceSidebarWidth,
+        left: 200,
         zIndex: 1,
         flexShrink: 0,
         height: 'auto',
@@ -38,14 +43,12 @@ function WorkspaceSidebar({
       PaperProps={{ 
         elevation: 0,
         style: { 
-          backgroundColor: '#333',
           position: 'absolute',
           height: '100%',
-          width: 300, 
+          width: workspaceSidebarWidth, 
           left: 0 } }}
         BackdropProps={{ 
-          style: { backgroundColor: 'transparent', zIndex: -10 } }}
-      >
+          style: { backgroundColor: 'transparent', zIndex: -10 } }}>
 
       <WorkspaceSidebarHeader
         currentPath={currentPath}
@@ -54,25 +57,13 @@ function WorkspaceSidebar({
         setRefreshKey={setRefreshKey}
         createDirectory={createDirectory} />
 
-      <List component="div" disablePadding>
+      <List component="div" 
+        sx={{
+          marginLeft: '10px'
+        }}
+        disablePadding>
         {currentPath && (
-          <ListItem button onClick={handleBackClick}>
-              <ListItemIcon>
-                  <CgArrowLeftR style={{ color: 'lightgrey' }} />
-              </ListItemIcon>
-              <ListItemText>
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
-                      fontFamily: 'Roboto', 
-                      fontSize: '15px',
-                      color: 'lightgrey', 
-                      marginLeft: '-30px' 
-                    }}>
-                    Back
-                  </Typography>
-              </ListItemText>
-          </ListItem>
+          <Back handleBackClick={handleBackClick}/>
         )}
         {workspaceFiles.map((file, index) => {
           if (file.type === 'file') {
@@ -87,37 +78,15 @@ function WorkspaceSidebar({
           }
 
           return (
-          <Tooltip title={file.name} key={index} arrow> 
-            <ListItem 
-              button 
-              key={index}
-              onClick={() => {
-                  if (file.type === 'directory') {
-                    handleDirectoryClick(file.path)
-                  } else if (file.type === 'notebook') {
-                    onExistinNotebookClick(file.path)
-                    closeWorkspaceDrawer();
-                  }}}>
-                <ListItemIcon>
-                  <IconComponent style={{ color: 'lightgrey' }} />
-                </ListItemIcon>
-                <ListItemText>
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
-                      fontFamily: 'Roboto', 
-                      fontSize: '15px',
-                      color: 'lightgrey', 
-                      marginLeft: '-30px' ,
-                      whiteSpace: 'nowrap', 
-                      overflow: 'hidden', 
-                      textOverflow: 'ellipsis'
-                    }}>
-                    {file.name}
-                  </Typography>
-                </ListItemText>
-            </ListItem>
-          </Tooltip>
+            <Item 
+              file={file} 
+              index={index}
+              handleDirectoryClick={handleDirectoryClick}
+              onExistinNotebookClick={onExistinNotebookClick}
+              closeWorkspaceDrawer={closeWorkspaceDrawer}
+              IconComponent={IconComponent}
+              refreshKey={refreshKey}
+              setRefreshKey={setRefreshKey}/>
           );
         })}
       </List>

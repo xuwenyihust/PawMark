@@ -3,7 +3,7 @@ import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, List
 import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
 import WorkspaceSidebar from './workspace/WorkspaceSidebar'; 
 import CreateSidebar from './CreateSidebar';
-import { ReactComponent as Logo } from '../../assets/logo_#333.svg';
+import { ReactComponent as Logo } from '../../assets/logo_#222.svg';
 
 function Sidebar({ 
       onNewNotebookClick, 
@@ -18,6 +18,9 @@ function Sidebar({
       setRefreshKey,
       workspaceFiles,
       createDirectory }) {
+
+    const itemHeight = 35;
+
     const [openMainDrawer, setOpenMainDrawer] = useState(true);
 
     const handleLogoClick = async () => {
@@ -53,8 +56,7 @@ function Sidebar({
 
     return (
       <div style={{ 
-          padding: 0, 
-          marginLeft: 240 }}>
+          padding: 0}}>
         <Drawer 
           variant="permanent"
           open={openMainDrawer}
@@ -65,7 +67,6 @@ function Sidebar({
               width: 200 },
             elevation: 0,
             sx: {
-              backgroundColor: '#333',
               borderRight: '0.5px solid grey',}
             }}>
             <Toolbar
@@ -78,10 +79,10 @@ function Sidebar({
                   padding: 0 // Removes padding that might affect layout
                 }}>
                 <Logo style={{ 
-                  marginLeft: '-18px',
+                  marginLeft: '0px',
                   marginBottom: '-10px',
-                  height: '80px', 
-                  width: '160px' }} />
+                  height: '60px', 
+                  width: '120px' }} />
               </Button>
             </Toolbar>
 
@@ -89,14 +90,18 @@ function Sidebar({
               variant="body1" 
               sx={{ 
                 fontFamily: 'Roboto, sans-serif', 
-                fontSize: '13px',
+                fontSize: '12px',
                 mt: 4, 
-                color: 'lightgrey',
+                color: 'grey',
+                marginLeft: '22px'
                 }}>
                 OVERVIEW
             </Typography>
 
-            <List>
+            <List 
+              sx={{
+                marginLeft: '5px',
+              }}>
                 <ListItem button ref={createButtonRef} onClick={ () => {
                   handleToggleCreateDrawer()
                   setOpenWorkspaceDrawer(false);
@@ -108,7 +113,8 @@ function Sidebar({
                       },
                       '&:hover .MuiTypography-root': {
                         color: 'white',
-                      }
+                      },
+                      height: `${itemHeight}px`
                     }}>
                   <ListItemIcon>
                       <CgAdd style={{ color: openCreateDrawer ? 'white' : 'lightgrey' }} />
@@ -129,6 +135,7 @@ function Sidebar({
 
                 {openCreateDrawer && (
                   <CreateSidebar 
+                    itemHeight={itemHeight}
                     openCreateDrawer={openCreateDrawer}
                     closeCreateDrawer={closeCreateDrawer}
                     handleToggleCreateDrawer={handleToggleCreateDrawer}
@@ -147,7 +154,8 @@ function Sidebar({
                     },
                     '&:hover .MuiTypography-root': {
                       color: 'white',
-                    }
+                    },
+                    height: `${itemHeight}px`
                   }}>
                   <ListItemIcon>
                       <CgAlbum style={{ color: openWorkspaceDrawer ? 'white' : 'lightgrey' }} />
@@ -168,6 +176,7 @@ function Sidebar({
                 
                 { openWorkspaceDrawer && (
                   <WorkspaceSidebar 
+                    itemHeight={itemHeight}
                     openWorkspaceDrawer={openWorkspaceDrawer} 
                     closeWorkspaceDrawer={closeWorkspaceDrawer}
                     handleToggleWorkspaceDrawer={handleToggleWorkspaceDrawer}
@@ -191,7 +200,8 @@ function Sidebar({
                     },
                     '&:hover .MuiTypography-root': {
                       color: 'white',
-                    }
+                    },
+                    height: `${itemHeight}px`
                   }}>
                   <ListItemIcon>
                       <CgEye style={{ color: 'lightgrey' }} />
@@ -220,7 +230,8 @@ function Sidebar({
                     },
                     '&:hover .MuiTypography-root': {
                       color: 'white',
-                    }
+                    },
+                    height: `${itemHeight}px`
                   }}>
                   <ListItemIcon>
                       <CgCalendarToday style={{ color: 'lightgrey' }} />
