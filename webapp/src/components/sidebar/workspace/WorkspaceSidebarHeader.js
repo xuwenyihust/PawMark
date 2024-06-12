@@ -41,6 +41,7 @@ const WorkspaceSidebarHeader = ({
           endIcon={<CgChevronDown />}
           onClick={handleCreateClick}
           style={{ 
+            fontFamily: 'Roboto',
             color: 'lightgrey', 
             marginRight: '20px',
             marginTop: '18px',
@@ -57,7 +58,7 @@ const WorkspaceSidebarHeader = ({
             elevation: 0,
             style: { 
               width: '100px',
-              backgroundColor: '#333',
+              backgroundColor: '#222',
               borderBottom: '1px solid grey',
               borderLeft: '1px solid grey',
               borderRight: '1px solid grey',

@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
 import { CgFolderAdd, CgNotes } from "react-icons/cg";
 
-function CreateSidebar({ openCreateDrawer, 
+function CreateSidebar({ 
+    itemHeight,
+    openCreateDrawer, 
     closeCreateDrawer,
     handleToggleCreateDrawer, 
     createButtonRef, 
@@ -18,22 +20,22 @@ function CreateSidebar({ openCreateDrawer,
         zIndex: 1,
         flexShrink: 0,
         height: 'auto',
-        left: 220,
+        left: 200,
         top: createButtonRef.current.offsetTop + createButtonRef.current.offsetParent.offsetTop,
         }}
       PaperProps={{ 
         elevation: 0,
         style: { 
-          backgroundColor: '#333',
           position: 'absolute',
-          height: '48px',
+          height: `${itemHeight}px`,
           width: 180, 
-          paddingLeft: 0,
-          left: 0 } }}
+          paddingLeft: 0
+        } }}
           BackdropProps={{ 
             style: { backgroundColor: 'transparent', zIndex: -10 } }}
         >
-      <List component="div" disablePadding>
+      <List component="div" 
+        disablePadding>
           <ListItem button 
             onClick={() => {
               closeCreateDrawer()
@@ -45,7 +47,8 @@ function CreateSidebar({ openCreateDrawer,
                 },
                 '&:hover .MuiTypography-root': {
                   color: 'white',
-                }
+                },
+                marginTop: '-5px',
               }}>
               <ListItemIcon>
                   <CgNotes style={{ 

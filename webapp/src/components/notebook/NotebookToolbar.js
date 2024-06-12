@@ -1,6 +1,5 @@
 import React from 'react';
-import { MdOutlineSave, MdDeleteOutline } from "react-icons/md";
-import { CgPlayButtonR } from "react-icons/cg";
+import { BsFloppy, BsTrash, BsCaretRightSquare } from "react-icons/bs";
 import Tooltip from '@mui/material/Tooltip';
 import { Box, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 
@@ -14,9 +13,12 @@ function NotebookToolbar({
   runAllCells,
   saveNotebook, 
   deleteNotebook}) {
+
+    const headerIconSize = 12;
+
     return (
       <Box sx={{ 
-        marginLeft: 0,
+        marginLeft: -3,
         marginBottom: 5,
         position: 'sticky',
         top: 0, 
@@ -64,7 +66,10 @@ function NotebookToolbar({
                         )
                       }
                       {/* Buttons */}
-                      <Box sx={{ display: 'flex', mt: 0 }}>
+                      <Box sx={{ 
+                        display: 'flex', 
+                        marginLeft: -0.6,
+                        mt: 0 }}>
 
                           {/* Save Button */}
                             <Tooltip title="Save Changes">
@@ -72,17 +77,17 @@ function NotebookToolbar({
                               disableRipple
                               onClick={saveNotebook} aria-label="save" 
                                 sx={{ 
-                                    width: 'auto', 
+                                    width: 'auto',
                                     mt: 0.5 }}>
-                                <MdOutlineSave 
-                                  size={18} 
+                                <BsFloppy 
+                                  size={headerIconSize} 
                                   onMouseEnter={(e) => {
                                     e.currentTarget.style.color = 'black';
                                   }}
                                   onMouseLeave={(e) => {
-                                    e.currentTarget.style.color = 'grey';
+                                    e.currentTarget.style.color = 'black';
                                   }}
-                                  style={{ color: 'grey' }}/>
+                                  style={{ color: 'black' }}/>
                             </IconButton>
                           </Tooltip>
 
@@ -96,15 +101,15 @@ function NotebookToolbar({
                                 sx={{ 
                                     width: 'auto', 
                                     mt: 0.5 }}>
-                                <CgPlayButtonR 
-                                  size={16} 
+                                <BsCaretRightSquare 
+                                  size={headerIconSize} 
                                   onMouseEnter={(e) => {
                                     e.currentTarget.style.color = 'black';
                                   }}
                                   onMouseLeave={(e) => {
-                                    e.currentTarget.style.color = 'grey';
+                                    e.currentTarget.style.color = 'black';
                                   }}
-                                  style={{ color: 'grey' }}/>
+                                  style={{ color: 'black' }}/>
                             </IconButton>
                           </Tooltip>
 
@@ -116,15 +121,15 @@ function NotebookToolbar({
                                 sx={{ 
                                     width: 'auto', 
                                     mt: 0.5 }}>
-                                <MdDeleteOutline 
-                                  size={18} 
+                                <BsTrash 
+                                  size={headerIconSize} 
                                   onMouseEnter={(e) => {
                                     e.currentTarget.style.color = 'black';
                                   }}
                                   onMouseLeave={(e) => {
-                                    e.currentTarget.style.color = 'grey';
+                                    e.currentTarget.style.color = 'black';
                                   }}
-                                  style={{ color: 'grey' }}/>
+                                  style={{ color: 'black' }}/>
                             </IconButton>
                           </Tooltip>
                       </Box>
