@@ -77,7 +77,7 @@ const MoreButton = ({
               handleMoreClose();
               console.log('Delete:', file);
               // Add your delete logic here
-              deleteItem(baseUrl, file.path);
+              deleteItem(baseUrl, file);
               setRefreshKey(oldKey => oldKey + 1);
             }}>
               Delete

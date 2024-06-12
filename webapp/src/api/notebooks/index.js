@@ -4,6 +4,7 @@ import { CellExecuteResultType } from "../../components/notebook/cell/CellExecut
 
 
 export const fetchFiles = async (path = '') => {
+    console.log("Fetching files at path:", path);
     const url = new URL(path);
     url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
     const response = await fetch(url, {
@@ -45,14 +46,28 @@ export const createDirectory = async (basePath = '', directoryPath = '') => {
       });
 };
 
-export const deleteItem = async (basePath = '', itemPath = '') => {
-    console.log("Deleting item at path:", basePath + '/' + itemPath);
-    try {
-    const response = await fetch(basePath + itemPath, {
-        method: 'DELETE'
-    });
-    } catch (error) {
-        console.error('Failed to delete item:', error);
+export const deleteItem = async (basePath = '', item = '') => {
+    const itemPath = basePath + item.path;
+    if (item.type === 'notebook') {
+        return deleteNotebook(itemPath);
+    } else {
+        let folderItems = [];
+        await fetchFiles(itemPath)
+            .then((data) => {
+                folderItems = data;
+            })
+        if (folderItems.length > 0) {
+            alert('Directory is not empty');
+        } else {
+            console.log("Deleting item at path:", itemPath);
+            try {
+                const response = await fetch(itemPath, {
+                    method: 'DELETE'
+                });
+            } catch (error) {
+                alert(`Failed to delete directory: ${error.message}`);
+            }
+        }
     }
 }
 
