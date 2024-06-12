@@ -50,6 +50,8 @@ const MoreButton = ({
           onClose={handleMoreClose}
           PaperProps={{ style: { backgroundColor: '#222' } }}
         >
+
+        {/* Delete Button */}
         <MenuItem 
           sx={{ color: 'lightgrey' }}
           onClick={() => {
@@ -85,6 +87,7 @@ const MoreButton = ({
           </DialogActions>
         </Dialog>
 
+        {/* Rename Button */}
         <MenuItem 
           sx={{ color: 'lightgrey' }}
           onClick={() => {}}>
