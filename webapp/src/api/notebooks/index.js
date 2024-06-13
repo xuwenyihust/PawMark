@@ -49,7 +49,7 @@ export const createDirectory = async (basePath = '', directoryPath = '') => {
 export const deleteItem = async (basePath = '', item = '') => {
     const itemPath = basePath + item.path;
     if (item.type === 'notebook') {
-        return deleteNotebook(itemPath);
+        deleteNotebook(itemPath);
     } else {
         let folderItems = [];
         await fetchFiles(itemPath)
@@ -112,18 +112,18 @@ export const createNotebook = async (path = '', notebookName='') => {
     };
 
     const response = await fetch(notebookPath, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(notebookData)
-        });
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(notebookData)
+    });
 
-        if (!response.ok) {
-            throw new Error('Failed to create notebook');
-        }
-        const data = await response.json();
-        return data;
+    if (!response.ok) {
+        throw new Error('Failed to create notebook');
+    }
+    const data = await response.json();
+    return data;
 };
 
 export const deleteNotebook = async (path = '') => {

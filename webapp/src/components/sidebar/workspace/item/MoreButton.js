@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { CgMoreVerticalAlt } from "react-icons/cg";
 import { Button, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import config from '../../../config';
-import { deleteItem } from '../../../api';
+import config from '../../../../config';
+import { deleteItem } from '../../../../api';
 
 const MoreButton = ({
   file,
@@ -22,6 +22,16 @@ const MoreButton = ({
   const handleMoreClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDelete = async (baseUrl, file) => {
+    console.log('Delete:', file);
+    try {
+      await deleteItem(baseUrl, file);
+    } catch (error) {
+      console.error('Failed to delete item:', error);
+    }
+    setRefreshKey(oldKey => oldKey + 1);
+  }
 
   return (
     <div>
@@ -78,9 +88,7 @@ const MoreButton = ({
               setDeleteDialogOpen(false);
               handleMoreClose();
               console.log('Delete:', file);
-              // Add your delete logic here
-              deleteItem(baseUrl, file);
-              setRefreshKey(oldKey => oldKey + 1);
+              handleDelete(baseUrl, file);
             }}>
               Delete
             </Button>
