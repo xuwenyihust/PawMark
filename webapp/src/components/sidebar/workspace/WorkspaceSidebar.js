@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Tooltip, Box } from '@mui/material';
 import { CgFileDocument, CgFolder } from "react-icons/cg";
-import WorkspaceSidebarHeader from './WorkspaceSidebarHeader';
+import WorkspaceSidebarHeader from './header/WorkspaceSidebarHeader';
 import Back from './Back';
-import Item from './Item';
+import Item from './item/Item';
 
 function WorkspaceSidebar({ 
     itemHeight,
@@ -55,7 +55,8 @@ function WorkspaceSidebar({
         setCurrentPath={setCurrentPath}
         refreshKey={refreshKey}
         setRefreshKey={setRefreshKey}
-        createDirectory={createDirectory} />
+        createDirectory={createDirectory} 
+        workspaceFiles={workspaceFiles}/>
 
       <List component="div" 
         sx={{
