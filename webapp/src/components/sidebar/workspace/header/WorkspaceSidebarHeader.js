@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Button, Typography, Box, Dialog, DialogActions, TextField, DialogContent, DialogTitle } from '@mui/material';
-import { createNotebook } from '../../../../api';
+import { Typography, Box } from '@mui/material';
 import config from '../../../../config';
 import CreateButton from './CreateButton';
-import Directory from '../../../../models/Directory';
+import DirectoryModel from '../../../../models/DirectoryModel';
+import NotebookModel from '../../../../models/NotebookModel';
 
 
 const WorkspaceSidebarHeader = ({
@@ -30,10 +30,10 @@ const WorkspaceSidebarHeader = ({
 
   const handleCreateNotebook = () => {
     console.log('Already have notebooks:', workspaceFiles);
-    const directory = new Directory(currentPath, workspaceFiles);
-    if (directory.isUniqueNotebookName(notebookName)) {
+    const directoryModel = new DirectoryModel(currentPath, workspaceFiles);
+    if (directoryModel.isUniqueNotebookName(notebookName)) {
       console.log('Creating notebook:', notebookName);
-      createNotebook(`${baseUrl}${currentPath}`, notebookName);
+      NotebookModel.createNotebook(`${baseUrl}${currentPath}`, notebookName);
       setCreateNotebookDialogOpen(false);
       handleCreateClose();
       setRefreshKey(oldKey => oldKey + 1);
