@@ -3,7 +3,8 @@ import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
-import { updateNotebook, renameNotebook, createSession, getSession, runCell, runAllCells, runAllAboveCells } from '../../api';
+import { createSession, getSession, runCell, runAllCells, runAllAboveCells } from '../../api';
+import NotebookModel from '../../models/NotebookModel';
 
 
 function Notebook({ 
@@ -72,7 +73,7 @@ function Notebook({
         console.log('Saving notebook name:', currentName);
         setIsNameEditing(false);
         setCurrentName(currentName);
-        renameNotebook(baseUrl, notebook.path, currentName).then((data) => {
+        NotebookModel.renameNotebook(baseUrl, notebook.path, currentName).then((data) => {
             console.log('Notebook name saved:', data);
         }).catch((error) => {
             console.error('Failed to save notebook name:', error);
@@ -80,7 +81,7 @@ function Notebook({
     }
 
     const handleUpdateNotebook = () => {
-        updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
+        NotebookModel.updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
             setIsNotebookModified(false)
         }).catch((error) => {
             console.error('Failed to save notebook:', error);

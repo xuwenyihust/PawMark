@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CgMoreVerticalAlt } from "react-icons/cg";
 import { Button, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import config from '../../../../config';
-import { deleteItem } from '../../../../api';
+import DirectoryModel from '../../../../models/DirectoryModel';
 
 const MoreButton = ({
   file,
@@ -26,7 +26,7 @@ const MoreButton = ({
   const handleDelete = async (baseUrl, file) => {
     console.log('Delete:', file);
     try {
-      await deleteItem(baseUrl, file);
+      await DirectoryModel.deleteItem(baseUrl, file);
     } catch (error) {
       console.error('Failed to delete item:', error);
     }

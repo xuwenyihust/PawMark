@@ -3,8 +3,9 @@ import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/notebook/Notebook';
 import HistoryServer from './components/HistoryServer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createDirectory, createNotebook, deleteNotebook, fetchNotebook, fetchFiles } from './api/notebooks';
 import config from './config';
+import NotebookModel from './models/NotebookModel';
+import DirectoryModel from './models/DirectoryModel';
 
 const theme = createTheme({
   components: {
@@ -13,7 +14,6 @@ const theme = createTheme({
               paper: {
                   backgroundColor: '#222', // Dark background color
                   color: '#fff', // White text color
-                  // paddingLeft: '20px',
                   width: '200px',
                   justifyContent: 'left',
               },
@@ -48,7 +48,7 @@ const App = () => {
   // Workspace
   useEffect(() => {
     if (openWorkspaceDrawer) {
-        fetchFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
+        DirectoryModel.getFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
             .then(setWorkspaceFiles)
             .catch(error => console.error('Failed to fetch files:', error));
         console.log('Fetched workspace files:', workspaceFiles);
@@ -75,9 +75,9 @@ const App = () => {
 
   const handleNewNotebookClick = () => {
     if (handleUnsavedChanges()) {
-      createNotebook(`${baseUrl}work`).then((data) => {
+      NotebookModel.createNotebook(`${baseUrl}work`).then((data) => {
         const notebookPath = `${baseUrl}${data.path}`
-        fetchNotebook(notebookPath).then((data) => {
+        NotebookModel.fetchNotebook(notebookPath).then((data) => {
           setNotebook(data);
           setShowHistoryServer(false);
           setShowNotebook(true);
@@ -93,7 +93,7 @@ const App = () => {
 
   const handleExistingNotebookClick = (path) => {
     if (handleUnsavedChanges()) {
-      fetchNotebook(`${baseUrl}${path}`).then((data) => {
+      NotebookModel.fetchNotebook(`${baseUrl}${path}`).then((data) => {
         console.log('Fetched notebook:', data);
         setNotebook(data);
         setShowHistoryServer(false);
@@ -106,7 +106,7 @@ const App = () => {
 
   const handleDeleteNotebook = () => {
     if (window.confirm('Are you sure you want to delete this notebook?')) {
-      deleteNotebook(baseUrl + notebook.path).then((data) => {
+      NotebookModel.deleteNotebook(baseUrl + notebook.path).then((data) => {
         setNotebookState({}); // Clear notebook content
         console.log('Notebook deleted:', notebookState);
     }).catch((error) => {
@@ -136,7 +136,7 @@ const App = () => {
           refreshKey={refreshKey}
           setRefreshKey={setRefreshKey}
           workspaceFiles={workspaceFiles}
-          createDirectory={(directoryPath) => createDirectory(baseUrl, directoryPath)}/>
+          createDirectory={(directoryPath) => DirectoryModel.createDirectory(baseUrl, directoryPath)}/>
         <Notebook 
           jupyterBaseUrl={config.jupyterBaseUrl}
           showNotebook={showNotebook}
