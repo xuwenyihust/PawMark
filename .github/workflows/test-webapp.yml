@@ -1,0 +1,22 @@
+name: Test Web App
+
+on:
+  push:
+    paths:
+      - 'webapp/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: webapp
+
+      - name: Run tests
+        run: npx jest
+        working-directory: webapp
