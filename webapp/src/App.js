@@ -138,7 +138,6 @@ const App = () => {
           workspaceFiles={workspaceFiles}
           createDirectory={(directoryPath) => DirectoryModel.createDirectory(baseUrl, directoryPath)}/>
         <Notebook 
-          jupyterBaseUrl={config.jupyterBaseUrl}
           showNotebook={showNotebook}
           notebook={notebook}
           notebookState={notebookState}

@@ -3,12 +3,11 @@ import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
-import { createSession, getSession, runCell, runAllCells, runAllAboveCells } from '../../api';
 import NotebookModel from '../../models/NotebookModel';
+import config from '../../config';
 
 
 function Notebook({ 
-    jupyterBaseUrl, 
     showNotebook, 
     notebook,
     notebookState,
@@ -17,6 +16,7 @@ function Notebook({
     setIsNotebookModified,
     handleDeleteNotebook }) {
 
+    const jupyterBaseUrl= `${config.jupyterBaseUrl}`
     const baseUrl = `${jupyterBaseUrl}/api/contents/`
 
     const [kernelId, setKernelId] = useState(null);
@@ -191,11 +191,11 @@ function Notebook({
         let newKernelId = kernelId;
         
         // Assume getSession is a function that returns a kernel ID for a given notebook path
-        let existingKernelId = await getSession(jupyterBaseUrl, notebook.path);
+        setCellStatus(CellStatus.INITIALIZING);
+        let existingKernelId = await NotebookModel.getSession(jupyterBaseUrl, notebook.path);
 
         if (!existingKernelId) {
-            setCellStatus(CellStatus.INITIALIZING);
-            newKernelId = await createSession(jupyterBaseUrl, notebook.path);
+            newKernelId = await NotebookModel.createSession(jupyterBaseUrl, notebook.path);
             setKernelId(newKernelId)
         } else {
             newKernelId = existingKernelId;
@@ -204,7 +204,7 @@ function Notebook({
         console.log('Kernal ID:', newKernelId);
         try {
             // Call the API to run the cell
-            const result = await runCell(jupyterBaseUrl, cell, newKernelId, cellStatus, setCellStatus);
+            const result = await NotebookModel.runCell(jupyterBaseUrl, cell, newKernelId, cellStatus, setCellStatus);
 
             // Check if the result contains a newKernelId
             if (result.newKernelId) {
@@ -228,7 +228,6 @@ function Notebook({
                 <div>
                     {notebookState.name && 
                         <NotebookToolbar 
-                            jupyterBaseUrl={jupyterBaseUrl}
                             notebook={notebookState} 
                             kernelId={kernelId}
                             setKernelId={setKernelId}
@@ -243,7 +242,7 @@ function Notebook({
                             handleChangeNotebookName={handleChangeNotebookName}
                             handleSaveNotebookName={handleSaveNotebookName}
                             runAllCells={
-                                () => runAllCells(
+                                () => NotebookModel.runAllCells(
                                     jupyterBaseUrl, 
                                     notebookState, 
                                     kernelId, 
@@ -274,7 +273,7 @@ function Notebook({
                                 handleRunCodeCell={handleRunCodeCell}
                                 handleCopyCell={handleCopyCell}
                                 handelRunAllAboveCells={
-                                    (index) => runAllAboveCells(
+                                    (index) => NotebookModel.runAllAboveCells(
                                             index,
                                             jupyterBaseUrl, 
                                             notebookState, 
