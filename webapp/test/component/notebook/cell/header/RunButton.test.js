@@ -6,6 +6,7 @@ import RunButton from '../../../../../src/components/notebook/cell/header/RunBut
 test('calls onClick prop when clicked', () => {
   const handleClick = jest.fn();
   render(<RunButton onClick={handleClick} />);
+  
   // userEvent.click(screen.getByLabelText(/run/i));
   // expect(handleClick).toHaveBeenCalledTimes(1);
 });
