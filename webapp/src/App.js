@@ -31,9 +31,9 @@ const theme = createTheme({
 });
 
 const App = () => {
-  const [showHistoryServer, setShowHistoryServer] = useState(false);
-
   const baseUrl = `${config.jupyterBaseUrl}/api/contents/`
+  
+  const [showHistoryServer, setShowHistoryServer] = useState(false);
 
   const [showNotebook, setShowNotebook] = useState(false);
   const [notebook, setNotebook] = useState({});
@@ -133,10 +133,8 @@ const App = () => {
           setOpenWorkspaceDrawer={setOpenWorkspaceDrawer}
           currentPath={currentPath}
           setCurrentPath={setCurrentPath}
-          refreshKey={refreshKey}
           setRefreshKey={setRefreshKey}
-          workspaceFiles={workspaceFiles}
-          createDirectory={(directoryPath) => DirectoryModel.createDirectory(baseUrl, directoryPath)}/>
+          workspaceFiles={workspaceFiles}/>
         <Notebook 
           showNotebook={showNotebook}
           notebook={notebook}

@@ -6,7 +6,6 @@ import Back from './Back';
 import Item from './item/Item';
 
 function WorkspaceSidebar({ 
-    itemHeight,
     openWorkspaceDrawer, 
     closeWorkspaceDrawer, 
     handleToggleWorkspaceDrawer, 
@@ -14,10 +13,8 @@ function WorkspaceSidebar({
     handleDirectoryClick,
     currentPath,
     setCurrentPath,
-    refreshKey,
     setRefreshKey,
-    workspaceFiles,
-    createDirectory}) {
+    workspaceFiles}) {
 
   const workspaceSidebarWidth = 300; 
 
@@ -53,9 +50,7 @@ function WorkspaceSidebar({
       <WorkspaceSidebarHeader
         currentPath={currentPath}
         setCurrentPath={setCurrentPath}
-        refreshKey={refreshKey}
         setRefreshKey={setRefreshKey}
-        createDirectory={createDirectory} 
         workspaceFiles={workspaceFiles}/>
 
       <List component="div" 
@@ -86,7 +81,6 @@ function WorkspaceSidebar({
               onExistinNotebookClick={onExistinNotebookClick}
               closeWorkspaceDrawer={closeWorkspaceDrawer}
               IconComponent={IconComponent}
-              refreshKey={refreshKey}
               setRefreshKey={setRefreshKey}/>
           );
         })}
