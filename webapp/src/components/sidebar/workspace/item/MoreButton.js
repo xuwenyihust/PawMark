@@ -6,7 +6,6 @@ import DirectoryModel from '../../../../models/DirectoryModel';
 
 const MoreButton = ({
   file,
-  refreshKey,
   setRefreshKey
  }) => {
   const baseUrl = `${config.jupyterBaseUrl}/api/contents/`

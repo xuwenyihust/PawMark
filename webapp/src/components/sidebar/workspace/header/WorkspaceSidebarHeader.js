@@ -9,16 +9,18 @@ import NotebookModel from '../../../../models/NotebookModel';
 const WorkspaceSidebarHeader = ({
   currentPath,
   setCurrentPath,
-  refreshKey,
   setRefreshKey,
-  createDirectory,
   workspaceFiles
 }) => {
   const baseUrl = `${config.jupyterBaseUrl}/api/contents/`
 
   const [anchorEl, setAnchorEl] = useState(null);
+
   const [createNotebookDialogOpen, setCreateNotebookDialogOpen] = useState(false);
   const [notebookName, setNotebookName] = useState('');
+
+  const [createFolderDialogOpen, setCreateFolderDialogOpen] = useState(false);
+  const [folderName, setFolderName] = useState('');
 
   const handleCreateClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,8 +30,21 @@ const WorkspaceSidebarHeader = ({
     setAnchorEl(null);
   };
 
+  const handleCreateFolder = () => {
+    const directoryModel = new DirectoryModel(currentPath, workspaceFiles);
+    if (directoryModel.isUniqueFolderName(folderName)) {
+      console.log('Creating folder:', folderName);
+      DirectoryModel.createDirectory(`${baseUrl}${currentPath}`, folderName);
+      setCreateFolderDialogOpen(false);
+      handleCreateClose();
+      setRefreshKey(oldKey => oldKey + 1);
+    } else {
+      console.error('Folder name already exists:', folderName);
+      alert('Folder name already exists. Please choose a different name.');
+    }
+  };
+
   const handleCreateNotebook = () => {
-    console.log('Already have notebooks:', workspaceFiles);
     const directoryModel = new DirectoryModel(currentPath, workspaceFiles);
     if (directoryModel.isUniqueNotebookName(notebookName)) {
       console.log('Creating notebook:', notebookName);
@@ -60,9 +75,6 @@ const WorkspaceSidebarHeader = ({
         </Typography>
 
         <CreateButton
-          createDirectory={createDirectory}
-          currentPath={currentPath}
-          refreshKey={refreshKey}
           setRefreshKey={setRefreshKey}
           anchorEl={anchorEl}
           handleCreateClick={handleCreateClick}
@@ -71,7 +83,12 @@ const WorkspaceSidebarHeader = ({
           setCreateNotebookDialogOpen={setCreateNotebookDialogOpen}
           notebookName={notebookName}
           setNotebookName={setNotebookName}
-          handleCreateNotebook={handleCreateNotebook}/>
+          handleCreateNotebook={handleCreateNotebook}
+          createFolderDialogOpen={createFolderDialogOpen}
+          setCreateFolderDialogOpen={setCreateFolderDialogOpen}
+          folderName={folderName}
+          setFolderName={setFolderName}
+          handleCreateFolder={handleCreateFolder}/>
         
       </Box>
   );

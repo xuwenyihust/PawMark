@@ -22,6 +22,9 @@ class DirectoryModel {
       return this.getNotebooks().every(notebook => notebook.name !== (name + '.ipynb'));
     }
   }
+  isUniqueFolderName(name) {
+    return this.getDirectories().every(directory => directory.name !== name);
+  }
 
   static async getFiles(path = '') {
     console.log("Fetching files at path:", path);
@@ -38,10 +41,10 @@ class DirectoryModel {
     return data.content; // Assuming the API returns a 'content' array
   }
 
-  static async createDirectory(basePath = '', directoryPath='') {
-    console.log("Creating directory at path:", `${basePath}${directoryPath}`);
-    const response = await fetch(`${basePath}${directoryPath}`, {
-        method: 'POST',
+  static async createDirectory(path='', directoryName='') {
+    console.log("Creating directory at path:", `${path}/${directoryName}`);
+    const response = await fetch(`${path}/${directoryName}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

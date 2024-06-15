@@ -1,13 +1,12 @@
-import { Button, Dialog, DialogActions, TextField, DialogContent, DialogTitle } from '@mui/material';
+import { Button } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { CgChevronDown } from "react-icons/cg";
+import CreateNotebookDialog from './CreateNotebookDialog';
+import CreateFolderDialog from './CreateFolderDialog';
 
 
 const CreateButton = ({ 
-  createDirectory,
-  currentPath,
-  refreshKey,
   setRefreshKey,
   anchorEl,
   handleCreateClick,
@@ -16,7 +15,12 @@ const CreateButton = ({
   setCreateNotebookDialogOpen,
   notebookName,
   setNotebookName,
-  handleCreateNotebook
+  handleCreateNotebook,
+  createFolderDialogOpen,
+  setCreateFolderDialogOpen,
+  folderName,
+  setFolderName,
+  handleCreateFolder,
  }) => {
   return (
     <div>
@@ -47,17 +51,24 @@ const CreateButton = ({
             borderLeft: '1px solid grey',
             borderRight: '1px solid grey',
           },
-        }}
-      >
+        }}>
+
         {/* Create Folder */}
         <MenuItem 
           onClick={() => {
-            handleCreateClose();
-            createDirectory(currentPath);
-            // refresh the workspace to reflect the new directory
+            setCreateFolderDialogOpen(true);
             setRefreshKey(oldKey => oldKey + 1);
           }}
           style={{ color: 'lightgrey' }}>Folder</MenuItem>
+        
+        <CreateFolderDialog 
+          createFolderDialogOpen={createFolderDialogOpen}
+          setCreateFolderDialogOpen={setCreateFolderDialogOpen}
+          folderName={folderName}
+          setFolderName={setFolderName}
+          handleCreateClose={handleCreateClose}
+          handleCreateFolder={handleCreateFolder}
+        />
 
         {/* Create Notebook */}
         <MenuItem 
@@ -67,48 +78,14 @@ const CreateButton = ({
           }}
           style={{ color: 'lightgrey' }}>Notebook</MenuItem>
 
-        <Dialog 
-          open={createNotebookDialogOpen} 
-          sx={{
-            '.MuiPaper-root': { 
-              backgroundColor: '#222',
-              color: 'lightgrey',
-              width: '300px'
-            }
-          }}
-          >
-          <DialogTitle>Create Notebook</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Notebook Name"
-              type="text"
-              fullWidth
-              value={notebookName}
-              sx={{ 
-                '.MuiInputBase-root': { color: 'lightgrey' },
-                '.MuiFormLabel-root': { color: 'grey' },
-                '.MuiInputLabel-root': { color: 'grey' },
-                '.MuiOutlinedInput-root': {
-                  '& fieldset': { borderColor: '#eee' },
-                  '&:hover fieldset': { borderColor: '#ddd' },
-                  '&.Mui-focused fieldset': { borderColor: '#ddd' },
-                },
-              }}
-              onChange={(e) => setNotebookName(e.target.value)}
-            />
-          </DialogContent>
-      <DialogActions>
-        <Button onClick={() => {
-          setCreateNotebookDialogOpen(false);
-          handleCreateClose();}}>Cancel</Button>
-        <Button onClick={() => {
-          handleCreateNotebook();
-          }}>Create</Button>
-      </DialogActions>
-    </Dialog>
-
+        <CreateNotebookDialog 
+          createNotebookDialogOpen={createNotebookDialogOpen}
+          setCreateNotebookDialogOpen={setCreateNotebookDialogOpen}
+          notebookName={notebookName}
+          setNotebookName={setNotebookName}
+          handleCreateClose={handleCreateClose}
+          handleCreateNotebook={handleCreateNotebook}
+        />
       </Menu>
     </div>
   );

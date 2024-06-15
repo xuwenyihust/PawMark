@@ -8,7 +8,6 @@ const Item = ({
     onExistinNotebookClick,
     closeWorkspaceDrawer,
     IconComponent,
-    refreshKey,
     setRefreshKey
   }) => {
   return (
@@ -45,7 +44,6 @@ const Item = ({
       </ListItem>
       <MoreButton 
         file={file}
-        refreshKey={refreshKey}
         setRefreshKey={setRefreshKey}/>
     </Box>
   );

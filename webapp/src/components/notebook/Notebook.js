@@ -3,6 +3,7 @@ import { Button, Tooltip } from '@mui/material';
 import NotebookToolbar from './NotebookToolbar';
 import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
+import { CellType } from './cell/CellType';
 import NotebookModel from '../../models/NotebookModel';
 import config from '../../config';
 
@@ -96,14 +97,14 @@ function Notebook({
             return newState;
     });}
 
-    const handleCreateCell = (type = 'code', index) => {
+    const handleCreateCell = (type = CellType.CODE, index) => {
         const newCell = {
             cell_type: type,
             metadata: {},
             source: "",
         };
 
-        if (type === 'code') {
+        if (type === CellType.CODE) {
             newCell.execution_count = null;
             newCell.outputs = [];
         }
@@ -228,13 +229,6 @@ function Notebook({
                 <div>
                     {notebookState.name && 
                         <NotebookToolbar 
-                            notebook={notebookState} 
-                            kernelId={kernelId}
-                            setKernelId={setKernelId}
-                            cellStatuses={cellStatuses}
-                            setCellStatus={setCellStatus}
-                            cellExecutedStatuses={cellExecutedStatuses}
-                            setCellExecutedStatus={setCellExecutedStatus}
                             isNameEditing={isNameEditing}
                             currentName={currentName}
                             isNotebookModified={isNotebookModified}

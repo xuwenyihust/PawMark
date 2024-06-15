@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
 import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
 import WorkspaceSidebar from './workspace/WorkspaceSidebar'; 
-import CreateSidebar from './CreateSidebar';
+import CreateSidebar from './create/CreateSidebar';
 import { ReactComponent as Logo } from '../../assets/logo_#222.svg';
 
 function Sidebar({ 
@@ -14,14 +14,10 @@ function Sidebar({
       setOpenWorkspaceDrawer,
       currentPath,
       setCurrentPath,
-      refreshKey,
       setRefreshKey,
-      workspaceFiles,
-      createDirectory }) {
+      workspaceFiles}) {
 
     const itemHeight = 35;
-
-    const [openMainDrawer, setOpenMainDrawer] = useState(true);
 
     const handleLogoClick = async () => {
       try {
@@ -59,7 +55,6 @@ function Sidebar({
           padding: 0}}>
         <Drawer 
           variant="permanent"
-          open={openMainDrawer}
           sx={{ 
             transition: 'width 0.3s' }}
           PaperProps={{ 
@@ -102,6 +97,8 @@ function Sidebar({
               sx={{
                 marginLeft: '5px',
               }}>
+
+                {/* Create */}
                 <ListItem button ref={createButtonRef} onClick={ () => {
                   handleToggleCreateDrawer()
                   setOpenWorkspaceDrawer(false);
@@ -143,6 +140,7 @@ function Sidebar({
                     onNewNotebookClick={onNewNotebookClick}/>
                 )}
 
+                {/* Workspace */}
                 <ListItem button ref={workspaceButtonRef} onClick={() => {
                   handleToggleWorkspaceDrawer();
                   setOpenCreateDrawer(false);
@@ -176,7 +174,6 @@ function Sidebar({
                 
                 { openWorkspaceDrawer && (
                   <WorkspaceSidebar 
-                    itemHeight={itemHeight}
                     openWorkspaceDrawer={openWorkspaceDrawer} 
                     closeWorkspaceDrawer={closeWorkspaceDrawer}
                     handleToggleWorkspaceDrawer={handleToggleWorkspaceDrawer}
@@ -184,12 +181,11 @@ function Sidebar({
                     handleDirectoryClick={handleDirectoryClick}
                     currentPath={currentPath}
                     setCurrentPath={setCurrentPath}
-                    refreshKey={refreshKey}
                     setRefreshKey={setRefreshKey}
-                    workspaceFiles={workspaceFiles}
-                    createDirectory={createDirectory}/>
+                    workspaceFiles={workspaceFiles}/>
                 )}
 
+                {/* History Server */}
                 <ListItem button onClick={() => {
                     onHistoryServerClick(); 
                     setOpenWorkspaceDrawer(false); 
@@ -220,6 +216,7 @@ function Sidebar({
                   </ListItemText>
                 </ListItem>
 
+                {/* Scheduler */}
                 <ListItem button onClick={() => {
                     setOpenWorkspaceDrawer(false); 
                     setOpenCreateDrawer(false);}
