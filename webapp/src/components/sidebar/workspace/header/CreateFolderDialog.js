@@ -17,7 +17,6 @@ const CreateFolderDialog = ({
         '.MuiPaper-root': { 
           backgroundColor: '#222',
           color: 'lightgrey',
-          width: '300px'
         }
       }}
       >
