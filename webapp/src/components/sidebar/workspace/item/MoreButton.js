@@ -1,17 +1,21 @@
 import { useState } from 'react';
 import { CgMoreVerticalAlt } from "react-icons/cg";
-import { Button, Menu, MenuItem, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import config from '../../../../config';
 import DirectoryModel from '../../../../models/DirectoryModel';
+import DeleteDialog from './DeleteDialog';
+import RenameDialog from './RenameDialog';
 
 const MoreButton = ({
   file,
+  currentPath,
   setRefreshKey
  }) => {
   const baseUrl = `${config.jupyterBaseUrl}/api/contents/`
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
 
   const handleMoreClicked = (event, file) => {
     console.log('More clicked:', file);
@@ -28,6 +32,15 @@ const MoreButton = ({
       await DirectoryModel.deleteItem(baseUrl, file);
     } catch (error) {
       console.error('Failed to delete item:', error);
+    }
+    setRefreshKey(oldKey => oldKey + 1);
+  }
+
+  const handleRename = async (baseUrl, file, newName) => {
+    try {
+      await DirectoryModel.renameItem(baseUrl + currentPath + '/'  + file.name, currentPath + '/' + newName);
+    } catch (error) {
+      console.error('Failed to rename item:', error);
     }
     setRefreshKey(oldKey => oldKey + 1);
   }
@@ -68,37 +81,30 @@ const MoreButton = ({
           }}>
             Delete
         </MenuItem>
-        <Dialog
-          open={deleteDialogOpen}>
-          <DialogTitle>
-            Confirm Delete
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete {file.name}?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => {
-              setDeleteDialogOpen(false)}}>
-              Cancel
-            </Button>
-            <Button onClick={() => {
-              setDeleteDialogOpen(false);
-              handleMoreClose();
-              console.log('Delete:', file);
-              handleDelete(baseUrl, file);
-            }}>
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DeleteDialog
+          baseUrl={baseUrl}
+          file={file}
+          deleteDialogOpen={deleteDialogOpen}
+          setDeleteDialogOpen={setDeleteDialogOpen}
+          handleMoreClose={handleMoreClose}
+          handleDelete={handleDelete}/>
 
         {/* Rename Button */}
         <MenuItem 
           sx={{ color: 'lightgrey' }}
-          onClick={() => {}}>
-            Rename</MenuItem>
+          onClick={() => {
+            setRenameDialogOpen(true);
+          }}>
+            Rename
+        </MenuItem>
+        <RenameDialog 
+          baseUrl={baseUrl}
+          file={file}
+          renameDialogOpen={renameDialogOpen}
+          setRenameDialogOpen={setRenameDialogOpen}
+          handleMoreClose={handleMoreClose}
+          handleRename={handleRename}/>
+
       </Menu>
     </div> 
   );

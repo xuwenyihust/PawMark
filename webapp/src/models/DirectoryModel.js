@@ -42,7 +42,6 @@ class DirectoryModel {
   }
 
   static async createDirectory(path='', directoryName='') {
-    console.log("Creating directory at path:", `${path}/${directoryName}`);
     const response = await fetch(`${path}/${directoryName}`, {
         method: 'PUT',
         headers: {
@@ -50,6 +49,18 @@ class DirectoryModel {
         },
         body: JSON.stringify({
           type: 'directory'
+        }),
+      });
+  }
+
+  static async renameItem(oldPath='', newPath='') {
+    const response = await fetch(oldPath, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          path: newPath
         }),
       });
   }

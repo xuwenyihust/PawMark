@@ -17,7 +17,6 @@ const CreateNotebookDialog = ({
         '.MuiPaper-root': { 
           backgroundColor: '#222',
           color: 'lightgrey',
-          width: '300px'
         }
       }}
       >

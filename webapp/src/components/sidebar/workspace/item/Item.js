@@ -4,6 +4,7 @@ import MoreButton from './MoreButton';
 const Item = ({ 
     file,
     index,
+    currentPath,
     handleDirectoryClick,
     onExistinNotebookClick,
     closeWorkspaceDrawer,
@@ -44,6 +45,7 @@ const Item = ({
       </ListItem>
       <MoreButton 
         file={file}
+        currentPath={currentPath}
         setRefreshKey={setRefreshKey}/>
     </Box>
   );
