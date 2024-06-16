@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Tooltip } from '@mui/material';
-import NotebookToolbar from './NotebookToolbar';
+import NotebookHeader from './header/NotebookHeader';
 import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
 import { CellType } from './cell/CellType';
@@ -60,6 +60,7 @@ function Notebook({
             });
             setCurrentName(notebook.name);
         }
+        setKernelId(null);
     }, [notebook]);
 
     const handleClickNotebookName = () => {
@@ -228,7 +229,8 @@ function Notebook({
             {showNotebook && (
                 <div>
                     {notebookState.name && 
-                        <NotebookToolbar 
+                        <NotebookHeader 
+                            kernelId={kernelId}
                             isNameEditing={isNameEditing}
                             currentName={currentName}
                             isNotebookModified={isNotebookModified}
