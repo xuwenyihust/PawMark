@@ -7,6 +7,22 @@ class NotebookModel {
   constructor() {
   }
 
+  static getNameWithoutExtension(name = '') {
+    if (name.endsWith('.ipynb')) {
+      return name.substring(0, name.length - 6);
+    } else {
+      return name;
+    }
+  }
+
+  static getNameWithExtension(name = '') {
+    if (name.endsWith('.ipynb')) {
+      return name;
+    } else {
+      return name + '.ipynb';
+    }
+  }
+
   static async getSession(basePath = '', notebookPath = '') {
     try {
         const response = await fetch(basePath + '/api/sessions', {

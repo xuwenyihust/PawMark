@@ -68,7 +68,7 @@ function Notebook({
     }
 
     const handleChangeNotebookName = (event) => {
-        setCurrentName(event.target.value);
+        setCurrentName(NotebookModel.getNameWithExtension(event.target.value));
     }
 
     const handleSaveNotebookName = () => {
