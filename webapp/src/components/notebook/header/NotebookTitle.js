@@ -1,4 +1,5 @@
-import { Box, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import { Typography } from '@mui/material';
+import NotebookModel from '../../../models/NotebookModel';
 
 
 const NotebookTitle = ({
@@ -15,7 +16,7 @@ const NotebookTitle = ({
       {isNameEditing ? (
         <input 
             type="text"
-            value={currentName}
+            value={NotebookModel.getNameWithoutExtension(currentName)}
             onChange={handleChangeNotebookName}
             onBlur={handleSaveNotebookName}
             autoFocus
@@ -29,7 +30,7 @@ const NotebookTitle = ({
         <Typography variant="h6" 
           sx={{ fontWeight: 'bold' }}
           onClick={handleClickNotebookName}>
-          {currentName} 
+          {NotebookModel.getNameWithoutExtension(currentName)} 
           {isNotebookModified && 
             <span style={{ 
                 fontSize: '14px',

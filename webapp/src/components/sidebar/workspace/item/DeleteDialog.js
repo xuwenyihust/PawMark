@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import NotebookModel from '../../../../models/NotebookModel';
 
 
 const DeleteDialog = ({ 
@@ -27,7 +28,7 @@ const DeleteDialog = ({
           style={{
             color: 'lightgrey'
           }}>
-          Are you sure you want to delete {file.name}?
+          Are you sure you want to delete {NotebookModel.getNameWithoutExtension(file.name)}?
         </DialogContentText>
       </DialogContent>
       <DialogActions>

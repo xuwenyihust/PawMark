@@ -1,5 +1,6 @@
 import { Typography, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material';
 import MoreButton from './MoreButton';
+import NotebookModel from '../../../../models/NotebookModel';
 
 const Item = ({ 
     file,
@@ -39,7 +40,7 @@ const Item = ({
                 textOverflow: 'ellipsis',
                 maxWidth: '180px'
               }}>
-              {file.name}
+              {NotebookModel.getNameWithoutExtension(file.name)}
             </Typography>
           </ListItemText>
       </ListItem>

@@ -1,5 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
+import NotebookModel from '../../../../models/NotebookModel';
 
 const RenameDialog = ({
   baseUrl, 
@@ -33,7 +34,7 @@ const RenameDialog = ({
           style={{
             color: 'lightgrey'
           }}>
-          Please enter the new name for: {file.name}
+          Please enter the new name for: {NotebookModel.getNameWithoutExtension(file.name)}
         </DialogContentText>
         <TextField
           autoFocus
@@ -70,8 +71,7 @@ const RenameDialog = ({
           onClick={() => {
             setRenameDialogOpen(false);
             handleMoreClose();
-            console.log('Rename from:', file.name, 'to:', newName);
-            handleRename(baseUrl, file, newName);
+            handleRename(baseUrl, file, NotebookModel.getNameWithExtension(newName));
           }}>
           Confirm
         </Button>
