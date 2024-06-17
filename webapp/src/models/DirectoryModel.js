@@ -27,7 +27,6 @@ class DirectoryModel {
   }
 
   static async getFiles(path = '') {
-    console.log("Fetching files at path:", path);
     const url = new URL(path);
     url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
     const response = await fetch(url, {
@@ -41,6 +40,18 @@ class DirectoryModel {
     return data.content; // Assuming the API returns a 'content' array
   }
 
+  static async getAllItems(path = '') {
+    const items = await this.getFiles(path);
+    const promises = items.map(async (item) => {
+      if (item.type === 'directory') {
+        item.children = await this.getAllItems(`${path}/${item.name}`);
+      }
+      return item;
+    });
+    return Promise.all(promises);
+  }
+
+  
   static async createDirectory(path='', directoryName='') {
     const response = await fetch(`${path}/${directoryName}`, {
         method: 'PUT',

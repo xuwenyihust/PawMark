@@ -5,6 +5,7 @@ import NotebookToolbar from './NotebookToolbar';
 import NotebookKernel from './NotebookKernel';
 
 function NotebookHeader({
+  notebook,
   kernelId,
   isNameEditing,
   currentName,
@@ -47,6 +48,7 @@ function NotebookHeader({
 
                     {/* Buttons */}
                     <NotebookToolbar 
+                      notebook={notebook}
                       runAllCells={runAllCells}
                       saveNotebook={saveNotebook}
                       deleteNotebook={deleteNotebook}
