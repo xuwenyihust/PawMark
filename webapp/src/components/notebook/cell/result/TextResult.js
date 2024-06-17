@@ -66,7 +66,7 @@ function TextResult(output) {
                 marginBottom: 1,
                 marginRight: 1,
               }}>
-              {output.data['text/plain']}
+              <pre>{output.data['text/plain']}</pre>
             </Typography>
           </Card>
         }
