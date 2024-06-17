@@ -230,6 +230,7 @@ function Notebook({
                 <div>
                     {notebookState.name && 
                         <NotebookHeader 
+                            notebook={notebook}
                             kernelId={kernelId}
                             isNameEditing={isNameEditing}
                             currentName={currentName}

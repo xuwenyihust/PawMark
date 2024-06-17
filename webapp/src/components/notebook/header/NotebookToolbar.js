@@ -1,13 +1,15 @@
 import { VscSave, VscRunAll, VscTrash } from "react-icons/vsc";
 import Tooltip from '@mui/material/Tooltip';
 import { Box, IconButton } from '@mui/material';
+import MoveButton from "./move/MoveButton";
 
 const NotebookToolbar = ({ 
+  notebook,
   runAllCells, 
   saveNotebook, 
   deleteNotebook
 }) => {
-  const headerIconSize = 12;
+  const headerIconSize = 13;
 
   return (
     <Box sx={{ 
@@ -56,6 +58,10 @@ const NotebookToolbar = ({
                 style={{ color: 'black' }}/>
           </IconButton>
         </Tooltip>
+
+        <MoveButton 
+          notebook={notebook}
+          headerIconSize={headerIconSize}/>
 
         {/* Delete Button */}
         <Tooltip title="Delete Notebook">
