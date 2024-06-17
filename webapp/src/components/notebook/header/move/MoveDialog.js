@@ -82,7 +82,6 @@ const MoveDialog = ({
         <Button 
           style={{ color: 'lightgrey' }}
           onClick={() => {
-            // console.log(destinationDirectory + '/' + notebook.name);
             NotebookModel.moveNotebook(baseUrl, notebook.path, destinationDirectory + '/' + notebook.name);
             setMoveDialogOpen(false);
           }}>
