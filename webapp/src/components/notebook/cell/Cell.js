@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent } from '@mui/material';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-python';
@@ -47,6 +47,22 @@ function Cell({
         setCellExecutedStatus(true);
       }
     }, [notebookState.path])
+
+    const handleKeyDown = useCallback((event) => {
+      if (event.key === 'Enter' && event.ctrlKey && isFocused) {
+        // Run the cell
+        handleRunCell(cell, index);
+      }
+    }, [isFocused]);
+    
+    useEffect(() => {
+      window.addEventListener('keydown', handleKeyDown);
+    
+      // Clean up the event listener when the component is unmounted
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [handleKeyDown]);
     
     const handleDoubleClickMarkdownCell = (cellIndex) => {
       notebookState.content.cells[cellIndex].isExecuted = false;
