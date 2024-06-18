@@ -5,6 +5,7 @@ import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-github';
 import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 import CellHeader from './header/CellHeader';
 import CellSideButtons from './CellSideButtons';
 import { CellType } from './CellType';
@@ -119,9 +120,14 @@ function Cell({
                 ) : ( 
                   cellExecutedStatus ? 
                   <div onDoubleClick={() => handleDoubleClickMarkdownCell(index)}>
-                    <ReactMarkdown>
-                      {cell.source}
-                    </ReactMarkdown>
+                    <ReactMarkdown 
+                      remarkPlugins={[gfm]} 
+                      children={cell.source}
+                      components={{
+                        // table: ({node, ...props}) => <table style={{border: '0.2px solid black'}} {...props} />,
+                        th: ({node, ...props}) => <th style={{border: '0.2px solid lightgrey', padding: '5px'}} {...props} />,
+                        td: ({node, ...props}) => <td style={{border: '0.2px solid lightgrey', padding: '5px'}} {...props} />,
+                      }}/>
                   </div> :
                   <MarkdownEditor 
                     cell={cell} 
