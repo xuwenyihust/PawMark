@@ -60,7 +60,10 @@ function Notebook({
             });
             setCurrentName(notebook.name);
         }
-        setKernelId(null);
+        NotebookModel.getSession(jupyterBaseUrl, notebook.path)
+            .then((kernelId) => {
+                setKernelId(kernelId);
+            });
     }, [notebook]);
 
     const handleClickNotebookName = () => {
@@ -258,6 +261,7 @@ function Notebook({
                             <Cell
                                 cell={cell}
                                 index={index}
+                                key={index}
                                 notebookState={notebookState}
                                 cellStatus={cellStatuses[index]}
                                 setCellStatus={status => setCellStatus(index, status)}

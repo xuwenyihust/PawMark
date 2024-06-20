@@ -18,7 +18,6 @@ class StringUtils {
     }
 
     const res = [header, separator, ...markdownRows].join('\n');
-    console.log('Converted Jupyter table to markdown table:', res);
     return res;
   }
 }
