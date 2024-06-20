@@ -38,6 +38,7 @@ class NotebookModel {
         return kernelId;
     } catch (error) {
         console.error('Failed to get session:', error);
+        return null;
     }
   };
 
