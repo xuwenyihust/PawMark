@@ -3,10 +3,12 @@ import { Box, AppBar, Toolbar } from '@mui/material';
 import NotebookTitle from './NotebookTitle';
 import NotebookToolbar from './NotebookToolbar';
 import NotebookKernel from './NotebookKernel';
+import SparkApplicationId from './SparkApplicationId';
 
 function NotebookHeader({
   notebook,
   kernelId,
+  sparkAppId,
   isNameEditing,
   currentName,
   isNotebookModified, 
@@ -56,8 +58,17 @@ function NotebookHeader({
                 </Box>
               </Box>
 
-              <NotebookKernel
-                kernelId={kernelId}/>
+              <Box sx={{ 
+                  display: 'flex',
+                  marginLeft: 'auto', 
+                  marginTop: 3,
+                  justifyContent: 'flex-end' }}>
+                <SparkApplicationId 
+                  sparkAppId={sparkAppId}/>
+
+                <NotebookKernel
+                  kernelId={kernelId}/>
+              </Box>
 
             </Toolbar>
         </AppBar>
