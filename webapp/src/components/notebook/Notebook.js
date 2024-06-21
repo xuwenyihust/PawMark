@@ -245,6 +245,7 @@ function Notebook({
                             notebook={notebook}
                             kernelId={kernelId}
                             sparkAppId={sparkAppId}
+                            setSparkAppId={setSparkAppId}
                             isNameEditing={isNameEditing}
                             currentName={currentName}
                             isNotebookModified={isNotebookModified}

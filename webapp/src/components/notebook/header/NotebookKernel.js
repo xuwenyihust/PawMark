@@ -7,7 +7,8 @@ import NotebookModel from '../../../models/NotebookModel';
 import config from '../../../config';
 
 const NotebookKernel = ({
-  kernelId
+  kernelId,
+  setSparkAppId
 }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -18,6 +19,7 @@ const NotebookKernel = ({
     try {
       setIsRestarting(true);
       setMenuOpen(false);
+      setSparkAppId(null);
       await NotebookModel.restartKernel(config.jupyterBaseUrl, kernelId);
       setIsRestarting(false);
     } catch (error) {

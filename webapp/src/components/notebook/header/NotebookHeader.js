@@ -9,6 +9,7 @@ function NotebookHeader({
   notebook,
   kernelId,
   sparkAppId,
+  setSparkAppId,
   isNameEditing,
   currentName,
   isNotebookModified, 
@@ -67,7 +68,8 @@ function NotebookHeader({
                   sparkAppId={sparkAppId}/>
 
                 <NotebookKernel
-                  kernelId={kernelId}/>
+                  kernelId={kernelId}
+                  setSparkAppId={setSparkAppId}/>
               </Box>
 
             </Toolbar>

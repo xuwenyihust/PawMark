@@ -4,13 +4,13 @@ class StringUtils {
   }
 
   static isJupyterTable(str) {
-    const regex = /\+\-{3,}\+/;
+    const regex = /\+\-{3,}\+|\|-\{3,}\|/;
     return regex.test(str);
   }
 
   static convertJupyterTableToMarkdownTable = (str) => {
     const rows = str.split('\n').filter(row => row.startsWith('|'));
-    const markdownRows = rows.map(row => row.split('|').slice(1, -1).join('|'));
+    const markdownRows = rows.map(row => row.trim().split(/\s*\|\s*/).join('|'));
     const header = markdownRows.shift();
     let separator = header.replace(/[^|]/g, '-');
     if (!separator.includes('|')) {
