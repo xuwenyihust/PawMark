@@ -73,7 +73,7 @@ def set_env():
 
     display(Markdown(msg))
 
-class DataPulseSparkSession:
+class PawMarkSparkSession:
 
     def __init__(self, spark_session):
         self._spark_session = spark_session
@@ -100,7 +100,7 @@ class DataPulseSparkSession:
         """
 
 def create_spark_dev():
-    spark = DataPulseSparkSession(SparkSession.builder \
+    spark = PawMarkSparkSession(SparkSession.builder \
         .appName("PySpark Example") \
         .master("spark://spark-master:7077") \
         .config("spark.jars.packages", "io.delta:delta-spark_2.12:3.0.0") \
