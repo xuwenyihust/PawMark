@@ -1,4 +1,5 @@
 import { Tooltip, Box, Button } from '@mui/material';
+import { JupyterKernelIcon } from '@datalayer/icons-react';
 
 
 const NotebookKernel = ({
@@ -8,21 +9,23 @@ const NotebookKernel = ({
   return (
     <Box sx={{ 
         display: 'flex', 
-        marginLeft: 'auto', 
-        marginTop: 3,
-        justifyContent: 'flex-end' }}>
+        marginLeft: 'auto' }}>
       {
         kernelId === null ? 
           <Button 
-            variant="outlined" 
+            variant="contained" 
             size="small"
-            color="error">
+            startIcon={<JupyterKernelIcon />}
+            color="error"
+            style={{ fontSize: '10px', padding: '3px 6px' }}>
             Not Connected
           </Button> : 
           <Tooltip title={kernelId}>
             <Button 
-              variant="outlined" 
-              size="small">
+              variant="contained" 
+              size="small"
+              startIcon={<JupyterKernelIcon />}
+              style={{ fontSize: '10px', padding: '3px 6px' }}>
               Connected
             </Button>
           </Tooltip>
