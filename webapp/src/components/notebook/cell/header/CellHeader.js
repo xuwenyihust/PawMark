@@ -20,35 +20,45 @@ function CellHeader({
     <CardHeader title={
       <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box display="flex" alignItems="center">
-        {cellStatus === CellStatus.BUSY || 
-          cellStatus === CellStatus.INITIALIZING ||
-          cellStatus === CellStatus.WAITING ? 
-          <CircularProgress size={15} /> :
-          <RunButton 
-            cell={cell} 
-            index={index} 
-            handleRunCell={handleRunCell}/>
-          } { (cellStatus === CellStatus.BUSY || 
-              cellStatus === CellStatus.INITIALIZING ||
-              cellStatus === CellStatus.WAITING) ?
-          <Typography 
-            variant="body2"
-            style={{ marginLeft: 10 }}
-            color="textSecondary">
-            {cellStatus}
-          </Typography> :
-          cell.lastExecutionResult === null ? null :
-          (cell.lastExecutionResult === CellExecuteResultType.SUCCESS ?
-            <CgCheck style={{ color: 'green', marginLeft: 10 }}/> :
-            (cell.lastExecutionResult === CellExecuteResultType.ERROR ?
-              <CgDanger size={16} style={{ color: 'red', marginLeft: 10 }}/> : null))}
-          {cellStatus === CellStatus.IDLE &&
+          {
+            cellStatus === CellStatus.BUSY || 
+            cellStatus === CellStatus.INITIALIZING ||
+            cellStatus === CellStatus.WAITING ? 
+            <CircularProgress size={15} /> :
+            <RunButton 
+              cell={cell} 
+              index={index} 
+              handleRunCell={handleRunCell}/>
+          } 
+          
+          { 
+            (cellStatus === CellStatus.BUSY || 
+                cellStatus === CellStatus.INITIALIZING ||
+                cellStatus === CellStatus.WAITING) ?
+            <Typography 
+              variant="body2"
+              style={{ marginLeft: 10 }}
+              color="textSecondary">
+              {cellStatus}
+            </Typography> :
+            cell.lastExecutionResult === null ? null :
+            (cell.lastExecutionResult === CellExecuteResultType.SUCCESS ?
+              <CgCheck style={{ color: 'green', marginLeft: 10 }}/> :
+              (cell.lastExecutionResult === CellExecuteResultType.ERROR ?
+                <CgDanger size={16} style={{ color: 'red', marginLeft: 10 }}/> : null))    
+          }
+
+          { (cellStatus === CellStatus.BUSY || 
+                cellStatus === CellStatus.INITIALIZING ||
+                cellStatus === CellStatus.WAITING) ? null :
             <Typography
-            variant="body2"
-            color="textSecondary"
-            style={{ marginLeft: 10 }}>
-            {cell.lastExecutionTime}
-          </Typography>}
+              variant="body2"
+              color="textSecondary"
+              style={{ marginLeft: 10 }}>
+              {cell.lastExecutionTime}
+            </Typography>
+          }
+
         </Box>
         <Box display="flex" justifyContent="flex-end">
           <TypeSelect 

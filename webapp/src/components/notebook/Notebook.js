@@ -50,8 +50,8 @@ function Notebook({
             const notebookContentWithCustomFields = notebook.content.cells.map(cell => ({
                 ...cell,
                 isExecuted: cell.cell_type === 'code' ? false : cell.cell_type === 'markdown' ? true : cell.isExecuted,
-                lastExecutionResult: null, 
-                lastExecutionTime: null,
+                lastExecutionResult: cell.lastExecutionResult === null? null : cell.lastExecutionResult, 
+                lastExecutionTime: cell.lastExecutionTime === null? null : cell.lastExecutionTime
               }));
             setNotebookState({
                 ...notebook,
