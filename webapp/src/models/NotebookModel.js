@@ -188,7 +188,7 @@ class NotebookModel {
   
     updatedContent.cells = updatedContent.cells.map(cell => {
       const updatedCell = { ...cell };
-      delete updatedCell.isExecuted;
+      // delete updatedCell.isExecuted;
       return updatedCell;
       });
   
