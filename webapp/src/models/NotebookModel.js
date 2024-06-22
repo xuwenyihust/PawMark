@@ -322,7 +322,7 @@ class NotebookModel {
           const message = JSON.parse(event.data);
           // Only process messages that are in response to this execution
           if (message.parent_header.msg_id === msg_id) {
-              console.log('Received message:', message);
+              // console.log('Received message:', message);
               cell.lastExecutionTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
               if (message.header.msg_type === OutputType.STATUS) {
                   // Update the cell's status
@@ -356,7 +356,15 @@ class NotebookModel {
                       evalue: message.content.evalue,
                       traceback: message.content.traceback,
                   });
-              }}
+              } else if (message.header.msg_type === OutputType.DISPLAY_DATA) {
+                  // Add the output to the cell's outputs array
+                  cell.outputs.push({
+                      output_type: OutputType.DISPLAY_DATA,
+                      data: message.content.data,
+                      metadata: message.content.metadata,
+                  });
+              }
+            }
         };
       });
     
