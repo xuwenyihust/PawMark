@@ -42,9 +42,9 @@ function CodeResult(index, output) {
                 remarkPlugins={[gfm]} 
                 children={StringUtils.convertJupyterTableToMarkdownTable(output.text)}
                 components={{
-                  // table: ({node, ...props}) => <table style={{border: '0.2px solid lightgrey'}} {...props} />,
-                  th: ({node, ...props}) => <th style={{border: '0.2px solid lightgrey', padding: '5px'}} {...props} />,
-                  td: ({node, ...props}) => <td style={{border: '0.2px solid lightgrey', padding: '5px'}} {...props} />,
+                  table: ({node, ...props}) => <table style={{borderCollapse: 'collapse'}} {...props} />,
+                  th: ({node, ...props}) => <th style={{border: '0.2px solid lightblue', padding: '3px'}} {...props} />,
+                  td: ({node, ...props}) => <td style={{border: '0.2px solid lightblue', padding: '3px'}} {...props} />,
                 }} />
             ) : (
               output.text

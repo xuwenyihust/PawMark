@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent } from '@mui/material';
-import AceEditor from 'react-ace';
+import { Card, CardContent, Typography } from '@mui/material';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-github';
@@ -15,6 +14,7 @@ import MarkdownEditor from './content/MarkdownEditor';
 import TextResult from './result/TextResult';
 import ErrorResult from './result/ErrorResult';
 import CodeResult from './result/CodeResult';
+import DisplayResult from './result/DisplayResult';
 
 
 function Cell({ 
@@ -155,7 +155,9 @@ function Cell({
                 ErrorResult(index, isFocused, output)
               ) : (output.output_type === OutputType.STREAM ? (
                 CodeResult(index, output)
-              ) : null)
+              ) : (output.output_type === OutputType.DISPLAY_DATA ? (
+                DisplayResult(output)
+              ) : null))
             )
         )}
       </div>
