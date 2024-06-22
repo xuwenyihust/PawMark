@@ -3,4 +3,5 @@ export const OutputType = {
   ERROR: 'error',
   STREAM: 'stream',
   STATUS: 'status',
+  DISPLAY_DATA: 'display_data',
 };

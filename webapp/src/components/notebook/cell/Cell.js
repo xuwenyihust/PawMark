@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent } from '@mui/material';
-import AceEditor from 'react-ace';
+import { Card, CardContent, Typography } from '@mui/material';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-github';
 import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 import CellHeader from './header/CellHeader';
 import CellSideButtons from './CellSideButtons';
 import { CellType } from './CellType';
@@ -14,6 +14,7 @@ import MarkdownEditor from './content/MarkdownEditor';
 import TextResult from './result/TextResult';
 import ErrorResult from './result/ErrorResult';
 import CodeResult from './result/CodeResult';
+import DisplayResult from './result/DisplayResult';
 
 
 function Cell({ 
@@ -119,9 +120,14 @@ function Cell({
                 ) : ( 
                   cellExecutedStatus ? 
                   <div onDoubleClick={() => handleDoubleClickMarkdownCell(index)}>
-                    <ReactMarkdown>
-                      {cell.source}
-                    </ReactMarkdown>
+                    <ReactMarkdown 
+                      remarkPlugins={[gfm]} 
+                      children={cell.source}
+                      components={{
+                        // table: ({node, ...props}) => <table style={{border: '0.2px solid black'}} {...props} />,
+                        th: ({node, ...props}) => <th style={{border: '0.2px solid lightgrey', padding: '5px'}} {...props} />,
+                        td: ({node, ...props}) => <td style={{border: '0.2px solid lightgrey', padding: '5px'}} {...props} />,
+                      }}/>
                   </div> :
                   <MarkdownEditor 
                     cell={cell} 
@@ -149,7 +155,9 @@ function Cell({
                 ErrorResult(index, isFocused, output)
               ) : (output.output_type === OutputType.STREAM ? (
                 CodeResult(index, output)
-              ) : null)
+              ) : (output.output_type === OutputType.DISPLAY_DATA ? (
+                DisplayResult(output)
+              ) : null))
             )
         )}
       </div>

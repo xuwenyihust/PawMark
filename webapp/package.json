@@ -3,8 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-react": "^2.2.1",
+    "@coreui/react": "^5.1.0",
+    "@datalayer/icons-react": "^0.3.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@jupyter/web-components": "^0.16.1",
+    "@jupyterlab/ui-components": "^4.2.2",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.3.0",
     "@mui/x-tree-view": "^7.7.0",
@@ -27,6 +33,7 @@
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "remark-gfm": "^4.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

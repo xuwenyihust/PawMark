@@ -77,6 +77,7 @@ function WorkspaceSidebar({
             <Item 
               file={file} 
               index={index}
+              key={index}
               currentPath={currentPath}
               handleDirectoryClick={handleDirectoryClick}
               onExistinNotebookClick={onExistinNotebookClick}

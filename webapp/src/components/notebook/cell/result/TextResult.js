@@ -34,7 +34,9 @@ function TextResult(output) {
         }}>
           <Typography 
             sx={{
-              marginLeft: 2}}
+              marginLeft: 0,
+              border: 0
+            }}
             dangerouslySetInnerHTML={{ __html: output.data['text/html'] }} />
         </Card>
         :

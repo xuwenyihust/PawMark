@@ -23,6 +23,32 @@ class NotebookModel {
     }
   }
 
+  static async restartKernel(basePath = '', kernelId = '') {
+    try {
+        await fetch(`${basePath}/api/kernels/${kernelId}/restart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        let status;
+        do {
+          const response = await fetch(`${basePath}/api/kernels/${kernelId}`);
+          const data = await response.json();
+          status = data.execution_state;
+          if (status === 'busy') {
+            // Wait for a second before checking again
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        } while (status === 'busy');
+
+        console.log('Kernel restart completed');
+      } catch (error) {
+        console.error('Failed to restart kernel:', error);
+      }
+  };
+
   static async getSession(basePath = '', notebookPath = '') {
     try {
         const response = await fetch(basePath + '/api/sessions', {
@@ -38,6 +64,7 @@ class NotebookModel {
         return kernelId;
     } catch (error) {
         console.error('Failed to get session:', error);
+        return null;
     }
   };
 
@@ -295,7 +322,7 @@ class NotebookModel {
           const message = JSON.parse(event.data);
           // Only process messages that are in response to this execution
           if (message.parent_header.msg_id === msg_id) {
-              console.log('Received message:', message);
+              // console.log('Received message:', message);
               cell.lastExecutionTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
               if (message.header.msg_type === OutputType.STATUS) {
                   // Update the cell's status
@@ -329,7 +356,15 @@ class NotebookModel {
                       evalue: message.content.evalue,
                       traceback: message.content.traceback,
                   });
-              }}
+              } else if (message.header.msg_type === OutputType.DISPLAY_DATA) {
+                  // Add the output to the cell's outputs array
+                  cell.outputs.push({
+                      output_type: OutputType.DISPLAY_DATA,
+                      data: message.content.data,
+                      metadata: message.content.metadata,
+                  });
+              }
+            }
         };
       });
     

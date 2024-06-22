@@ -1,10 +1,14 @@
 import { Card, Typography } from '@mui/material';
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
+import StringUtils from '../../../../utils/StringUtils';
 
 
 function CodeResult(index, output) {
+  const isTable = StringUtils.isJupyterTable(output.text);
+
   return (
     <Card
-      key={index}
       elevation={0}
       sx={{
         width: '85%',
@@ -32,8 +36,21 @@ function CodeResult(index, output) {
           marginBottom: 1,
           marginRight: 1,
         }}>
-        {output.text}
-      </Typography>
+          {
+            isTable ? (
+              <ReactMarkdown
+                remarkPlugins={[gfm]} 
+                children={StringUtils.convertJupyterTableToMarkdownTable(output.text)}
+                components={{
+                  table: ({node, ...props}) => <table style={{borderCollapse: 'collapse'}} {...props} />,
+                  th: ({node, ...props}) => <th style={{border: '0.2px solid lightblue', padding: '3px'}} {...props} />,
+                  td: ({node, ...props}) => <td style={{border: '0.2px solid lightblue', padding: '3px'}} {...props} />,
+                }} />
+            ) : (
+              output.text
+            )
+          }
+        </Typography>
     </Card>
   );
 }

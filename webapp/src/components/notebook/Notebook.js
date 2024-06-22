@@ -5,6 +5,7 @@ import Cell from './cell/Cell';
 import { CellStatus } from './cell/CellStatus';
 import { CellType } from './cell/CellType';
 import NotebookModel from '../../models/NotebookModel';
+import SparkModel from '../../models/SparkModel';
 import config from '../../config';
 
 
@@ -21,6 +22,7 @@ function Notebook({
     const baseUrl = `${jupyterBaseUrl}/api/contents/`
 
     const [kernelId, setKernelId] = useState(null);
+    const [sparkAppId, setSparkAppId] = useState(null);
     const [isNameEditing, setIsNameEditing] = useState(false);
     const [currentName, setCurrentName] = useState(notebook.name);
     // Cells
@@ -60,7 +62,11 @@ function Notebook({
             });
             setCurrentName(notebook.name);
         }
-        setKernelId(null);
+        NotebookModel.getSession(jupyterBaseUrl, notebook.path)
+            .then((kernelId) => {
+                setKernelId(kernelId);
+            });
+        setSparkAppId(null);
     }, [notebook]);
 
     const handleClickNotebookName = () => {
@@ -203,7 +209,6 @@ function Notebook({
             newKernelId = existingKernelId;
         }
 
-        console.log('Kernal ID:', newKernelId);
         try {
             // Call the API to run the cell
             const result = await NotebookModel.runCell(jupyterBaseUrl, cell, newKernelId, cellStatus, setCellStatus);
@@ -219,6 +224,13 @@ function Notebook({
             // And set the cell as executed
             cell.isExecuted = true;
             console.log('Execute result:', result);
+
+            // Check if contains a spark app id
+            if (result[0] && result[0].data && result[0].data['text/html'] && SparkModel.isSparkInfo(result[0].data['text/html'])) {
+                setSparkAppId(SparkModel.extractSparkAppId(result[0].data['text/html']));
+            }
+            console.log('Spark app id:', sparkAppId);
+
         } catch (error) {
             console.error('Failed to execute cell:', error);
         }
@@ -232,6 +244,8 @@ function Notebook({
                         <NotebookHeader 
                             notebook={notebook}
                             kernelId={kernelId}
+                            sparkAppId={sparkAppId}
+                            setSparkAppId={setSparkAppId}
                             isNameEditing={isNameEditing}
                             currentName={currentName}
                             isNotebookModified={isNotebookModified}
@@ -258,6 +272,7 @@ function Notebook({
                             <Cell
                                 cell={cell}
                                 index={index}
+                                key={index}
                                 notebookState={notebookState}
                                 cellStatus={cellStatuses[index]}
                                 setCellStatus={status => setCellStatus(index, status)}
