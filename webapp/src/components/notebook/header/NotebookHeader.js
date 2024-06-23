@@ -16,6 +16,7 @@ function NotebookHeader({
   handleClickNotebookName,
   handleChangeNotebookName,
   handleSaveNotebookName,
+  clearOutputs,
   runAllCells,
   saveNotebook, 
   deleteNotebook}) {
@@ -69,7 +70,8 @@ function NotebookHeader({
 
                 <NotebookKernel
                   kernelId={kernelId}
-                  setSparkAppId={setSparkAppId}/>
+                  setSparkAppId={setSparkAppId}
+                  clearOutputs={clearOutputs}/>
               </Box>
 
             </Toolbar>

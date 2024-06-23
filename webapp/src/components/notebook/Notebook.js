@@ -69,6 +69,20 @@ function Notebook({
         setSparkAppId(null);
     }, [notebook]);
 
+    const clearOutputs = () => {
+        setNotebookState(prevState => {
+            const newState = {...prevState};
+            newState.content.cells.forEach(cell => {
+                if (cell.cell_type === 'code') {
+                    cell.outputs = [];
+                    cell.lastExecutionResult = null;
+                    cell.lastExecutionTime = null;
+                }
+            });
+            return newState;
+        });
+    }
+
     const handleClickNotebookName = () => {
         setIsNameEditing(true);
     }
@@ -252,6 +266,7 @@ function Notebook({
                             handleClickNotebookName={handleClickNotebookName}
                             handleChangeNotebookName={handleChangeNotebookName}
                             handleSaveNotebookName={handleSaveNotebookName}
+                            clearOutputs={clearOutputs}
                             runAllCells={
                                 () => NotebookModel.runAllCells(
                                     jupyterBaseUrl, 

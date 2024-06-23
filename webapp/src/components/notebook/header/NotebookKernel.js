@@ -8,7 +8,8 @@ import config from '../../../config';
 
 const NotebookKernel = ({
   kernelId,
-  setSparkAppId
+  setSparkAppId,
+  clearOutputs
 }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -25,6 +26,11 @@ const NotebookKernel = ({
     } catch (error) {
       console.error('Failed to restart kernel:', error);
     }
+  }
+
+  const handleRestartKernelAndClearOutputs = async () => {
+    clearOutputs();
+    handleRestartKernel();
   }
 
   return (
@@ -77,10 +83,18 @@ const NotebookKernel = ({
           <MenuItem 
             style={{
               fontSize: '12px',
-              width: '115px',
+              width: '220px',
             }}
             onClick={handleRestartKernel}>
               Restart Kernel
+          </MenuItem>
+          <MenuItem 
+            style={{
+              fontSize: '12px',
+              width: '220px',
+            }}
+            onClick={handleRestartKernelAndClearOutputs}>
+              Restart Kernel and Clear Outputs
           </MenuItem>
         </Menu>
     </Box>
