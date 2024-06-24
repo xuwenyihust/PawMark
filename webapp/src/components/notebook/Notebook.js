@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NotebookHeader from './header/NotebookHeader';
 import Code from './content/Code';
+import Runs from './content/Runs';
 import { ContentType } from './content/ContentType';
 import { CellStatus } from './content/cell/CellStatus';
 import { CellType } from './content/cell/CellType';
@@ -310,7 +311,8 @@ function Notebook({
                                     setCellExecutedStatus)}
                             saveNotebook={handleUpdateNotebook}
                             deleteNotebook={handleDeleteNotebook}
-                            /> : <div>666</div>
+                            /> : 
+                        <Runs />
                     }
         
                 </Box>

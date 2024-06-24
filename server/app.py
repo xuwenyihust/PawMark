@@ -16,12 +16,7 @@ def handle_request():
     data = {"message": "Hello from Flask!"}
     return jsonify(data)
 
-# @app.route('/execute_notebook', methods=['POST'])
-# def execute_notebook():
-#     notebook_path = request.json.get('notebook_path')
-#     # Assuming you have set up Jupyter to accept API requests
-#     response = requests.post(f'http://jupyter-server:8888/api/notebooks/{notebook_path}/execute')
-#     return jsonify(response.json())
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)

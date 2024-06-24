@@ -6,7 +6,7 @@ const Back = ({ handleBackClick }) => {
   return (
     <ListItem button onClick={handleBackClick}>
       <ListItemIcon>
-          <CgArrowLeftR style={{ color: 'lightgrey' }} />
+          <CgArrowLeftR style={{ color: 'white' }} />
       </ListItemIcon>
       <ListItemText>
           <Typography 
@@ -14,7 +14,7 @@ const Back = ({ handleBackClick }) => {
             sx={{ 
               fontFamily: 'Roboto', 
               fontSize: '15px',
-              color: 'lightgrey', 
+              color: 'white', 
               marginLeft: '-30px'
             }}>
             Back

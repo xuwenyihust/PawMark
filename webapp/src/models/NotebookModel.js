@@ -1,6 +1,7 @@
 import { CellStatus } from '../components/notebook/content/cell/CellStatus';
 import { OutputType } from '../components/notebook/content/cell/result/OutputType';
 import { CellExecuteResultType } from "../components/notebook/content/cell/CellExecuteResultType";
+import { v4 as uuidv4 } from 'uuid';
 
 
 class NotebookModel {
@@ -183,14 +184,17 @@ class NotebookModel {
   }; 
   
   static async updateNotebook(path = '', content = {}) {
-    console.log("Updating notebook at path with content:", path, content);
     const updatedContent = { ...content };
   
     updatedContent.cells = updatedContent.cells.map(cell => {
       const updatedCell = { ...cell };
-      // delete updatedCell.isExecuted;
       return updatedCell;
       });
+
+    // Check if notebook content.metadata has uuid
+    if (!updatedContent.metadata.hasOwnProperty('uuid')) {
+      updatedContent.metadata.uuid = uuidv4();
+    }
   
     const response = await fetch(path, {
           method: 'PUT',

@@ -38,7 +38,7 @@ const Code = ({
         deleteNotebook={deleteNotebook}/>
 
       <Box sx={{ 
-          width: '100%',
+          width: '95%',
           display: 'flex', 
           flexDirection: 'column',
           marginTop: '50px',
