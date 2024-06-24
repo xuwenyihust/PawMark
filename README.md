@@ -131,6 +131,7 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 ## Versions
 <details>
 <summary>Details</summary>
+
 | Component    | Version |
 |--------------|---------|
 | Scala        | 2.12    |
@@ -142,6 +143,7 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 | Airflow      | 2.9.1   |
 | Postgres     | 13      |
 | React        | 18.3.1  |
+
 </details>
 
 ## License

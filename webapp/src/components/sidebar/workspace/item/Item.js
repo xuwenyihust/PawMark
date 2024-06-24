@@ -25,7 +25,7 @@ const Item = ({
               closeWorkspaceDrawer();
             }}}>
           <ListItemIcon>
-            <IconComponent style={{ color: 'lightgrey' }} />
+            <IconComponent style={{ color: 'white' }} />
           </ListItemIcon>
           <ListItemText>
             <Typography 
@@ -33,7 +33,7 @@ const Item = ({
               sx={{ 
                 fontFamily: 'Roboto', 
                 fontSize: '15px',
-                color: 'lightgrey', 
+                color: 'white', 
                 marginLeft: '-30px' ,
                 whiteSpace: 'nowrap', 
                 overflow: 'hidden', 
