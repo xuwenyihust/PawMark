@@ -1,6 +1,6 @@
-import { CellStatus } from '../components/notebook/cell/CellStatus';
-import { OutputType } from '../components/notebook/cell/result/OutputType';
-import { CellExecuteResultType } from "../components/notebook/cell/CellExecuteResultType";
+import { CellStatus } from '../components/notebook/content/cell/CellStatus';
+import { OutputType } from '../components/notebook/content/cell/result/OutputType';
+import { CellExecuteResultType } from "../components/notebook/content/cell/CellExecuteResultType";
 
 
 class NotebookModel {

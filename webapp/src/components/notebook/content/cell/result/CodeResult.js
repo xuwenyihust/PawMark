@@ -1,7 +1,7 @@
 import { Card, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
-import StringUtils from '../../../../utils/StringUtils';
+import StringUtils from '../../../../../utils/StringUtils';
 
 
 function CodeResult(index, output) {

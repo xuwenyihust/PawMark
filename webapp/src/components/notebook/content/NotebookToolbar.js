@@ -1,7 +1,7 @@
 import { VscSave, VscRunAll, VscTrash } from "react-icons/vsc";
 import Tooltip from '@mui/material/Tooltip';
-import { Box, IconButton } from '@mui/material';
-import MoveButton from "./move/MoveButton";
+import { Card, IconButton } from '@mui/material';
+import MoveButton from "../header/move/MoveButton";
 
 const NotebookToolbar = ({ 
   notebook,
@@ -12,10 +12,16 @@ const NotebookToolbar = ({
   const headerIconSize = 13;
 
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      marginLeft: -0.6,
-      mt: 0 }}>
+    <Card 
+        style={{
+          width: '30px',
+          marginLeft: '-20px',
+          marginRight: '0px',
+          marginBottom: '-50px',
+          paddingTop: '10px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
 
         {/* Save Button */}
         <Tooltip title="Save Changes">
@@ -82,7 +88,8 @@ const NotebookToolbar = ({
                 style={{ color: 'black' }}/>
           </IconButton>
         </Tooltip>
-    </Box>
+    {/* </Box> */}
+    </Card>
   )
 }
 

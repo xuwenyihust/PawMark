@@ -36,7 +36,8 @@ const NotebookKernel = ({
   return (
     <Box sx={{ 
         display: 'flex', 
-        marginLeft: 'auto' }}>
+        marginLeft: 'auto',
+        marginRight: '10px' }}>
       {
         kernelId === null ? 
           <Button 
