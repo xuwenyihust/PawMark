@@ -4,7 +4,7 @@ function Runs() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5002/test')
+    fetch('http://localhost:5002/notebook')
       .then(response => response.json())
       .then(data => setData(data))
       .catch(error => console.error('Error:', error));

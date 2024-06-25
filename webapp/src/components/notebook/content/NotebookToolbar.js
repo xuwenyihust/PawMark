@@ -15,6 +15,7 @@ const NotebookToolbar = ({
     <Card 
         style={{
           width: '30px',
+          minHeight: '1000px',
           marginLeft: '-20px',
           marginRight: '0px',
           marginBottom: '-50px',

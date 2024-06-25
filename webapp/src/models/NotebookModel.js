@@ -129,58 +129,22 @@ class NotebookModel {
   }
 
   static async createNotebook(path = '', notebookName='') {
-    if (notebookName === '') {
-        const timestamp = Date.now();
-        notebookName = `notebook-${timestamp}.ipynb`;
-    } else {
-        notebookName = `${notebookName}.ipynb`;
-    }
-    const notebookPath = `${path}/${notebookName}`;
-  
-    const initCells = [
-        { 
-            cell_type: 'markdown', 
-            metadata: {},
-            source: '# My Notebook' },
-        { 
-            cell_type: 'code', 
-            execution_count: 1,
-            metadata: {},
-            outputs: [],
-            source: '# SparkSession: spark is already created\nspark' },
-    ];
-
-    const notebookData = {
-        type: 'notebook',
-        content: {
-            cells: initCells,
-            metadata: {
-                kernelspec: {
-                    name: 'python3',
-                    display_name: 'Python 3'
-                },
-                language_info: {
-                    name: 'python'
-                }
-            },
-            nbformat: 4,
-            nbformat_minor: 4
-        }
-    };
-
-    const response = await fetch(notebookPath, {
-        method: 'PUT',
+    const response = await fetch("http://localhost:5002/notebook/create", {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(notebookData)
+        body: JSON.stringify({
+          'notebookName': notebookName,
+        })
     });
 
     if (!response.ok) {
         throw new Error('Failed to create notebook');
+    } else {
+        const data = await response.json();
+        return data;
     }
-    const data = await response.json();
-    return data;
   }; 
   
   static async updateNotebook(path = '', content = {}) {
