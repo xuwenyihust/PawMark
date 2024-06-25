@@ -1,13 +1,23 @@
-from flask import jsonify
+from app.models.notebook import NotebookModel
 from datetime import datetime
 import requests
-import uuid
+from database import db
+import json
 import os
 
-class Notebook(object):
+class Notebook:
 
-  def __init__(self) -> None:
-    self.jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+  @staticmethod
+  def get_all_notebooks():
+    notebooks = NotebookModel.query.all()
+
+    # Convert the notebooks to dictionaries
+    notebooks_dict = [notebook.to_dict() for notebook in notebooks]
+
+    # Now you can serialize notebooks_dict
+    notebooks_json = json.dumps(notebooks_dict)
+
+    return notebooks_json
 
   @staticmethod
   def create_notebook(notebook_name: str = None) -> None:
@@ -75,8 +85,7 @@ class Notebook(object):
             },
             "language_info": {
                 "name": 'python'
-            },
-            "uuid": str(uuid.uuid4())
+            }
         },
         "nbformat": 4,
         "nbformat_minor": 4
@@ -88,5 +97,14 @@ class Notebook(object):
       json=data
     )
 
+    notebook = NotebookModel(
+      name=notebook_name,
+      path=f'work/{notebook_name}'
+    )
+
+    db.session.add(notebook)
+    db.session.commit()
+
     return response.json()
 
+  
