@@ -76,7 +76,6 @@ const App = () => {
   const handleNewNotebookClick = () => {
     if (handleUnsavedChanges()) {
       NotebookModel.createNotebook(`${baseUrl}work`).then((data) => {
-        console.log('Created new notebook:', data);
         const notebookPath = `${baseUrl}${data.path}`
         NotebookModel.fetchNotebook(notebookPath).then((data) => {
           setNotebook(data);

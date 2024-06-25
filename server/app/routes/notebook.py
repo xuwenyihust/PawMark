@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models.notebook import Notebook
+from app.services.notebook import Notebook
 
 notebook_blueprint = Blueprint('notebook', __name__)
 
@@ -10,6 +10,10 @@ def notebook():
            "message": "notebook endpoint"
         }
     )
+
+@notebook_blueprint.route('/notebook/all', methods=['GET'])
+def get_all_notebooks():
+    return Notebook.get_all_notebooks()
 
 @notebook_blueprint.route('/notebook/create', methods=['POST'])
 def create_notebook():
