@@ -1,4 +1,5 @@
 from app.models.notebook import NotebookModel
+from flask import jsonify
 from datetime import datetime
 import requests
 from database import db
@@ -107,4 +108,27 @@ class Notebook:
 
     return response.json()
 
+  @staticmethod
+  def delete_notebook_by_path(notebook_path: str = None):
+    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+
+    path = f"{jupyter_server_path}/api/contents/{notebook_path}"
+    response = requests.delete(path)
+
+    if response.status_code != 204:
+        return jsonify({'message': 'Notebook not found in jupyter server'}), 404
+
+    notebook = NotebookModel.query.filter_by(path=notebook_path).first()
+
+    if notebook is None:
+        # If no notebook was found with the given path, return a 404 error
+        return jsonify({'message': 'Notebook not found in DB'}), 404
+
+    # Delete the notebook
+    db.session.delete(notebook)
+
+    # Commit the transaction
+    db.session.commit()
+
+    return jsonify({'message': 'Notebook deleted'}), 200
   

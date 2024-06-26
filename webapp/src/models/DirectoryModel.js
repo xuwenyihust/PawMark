@@ -79,7 +79,7 @@ class DirectoryModel {
   static async deleteItem(basePath = '', item = '') {
     const itemPath = basePath + item.path;
     if (item.type === 'notebook') {
-        NotebookModel.deleteNotebook(itemPath);
+        NotebookModel.deleteNotebook(item.path);
     } else {
         let folderItems = [];
         await DirectoryModel.getFiles(itemPath)
