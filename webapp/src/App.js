@@ -76,7 +76,7 @@ const App = () => {
   const handleNewNotebookClick = () => {
     if (handleUnsavedChanges()) {
       NotebookModel.createNotebook(`${baseUrl}work`, '').then((data) => {
-        const notebookPath = `${baseUrl}${data.path}`
+        const notebookPath = `${data.path}`
         NotebookModel.fetchNotebook(notebookPath).then((data) => {
           setNotebook(data);
           setShowHistoryServer(false);
@@ -93,7 +93,7 @@ const App = () => {
 
   const handleExistingNotebookClick = (path) => {
     if (handleUnsavedChanges()) {
-      NotebookModel.fetchNotebook(`${baseUrl}${path}`).then((data) => {
+      NotebookModel.fetchNotebook(`${path}`).then((data) => {
         console.log('Fetched notebook:', data);
         setNotebook(data);
         setShowHistoryServer(false);

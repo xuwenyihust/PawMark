@@ -19,6 +19,15 @@ class Notebook:
     notebooks_json = json.dumps(notebooks_dict)
 
     return notebooks_json
+  
+  @staticmethod
+  def get_notebook_by_path(notebook_path: str = None):
+    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+
+    path = f"{jupyter_server_path}/api/contents/{notebook_path}"
+    response = requests.get(path)
+
+    return response.json()
 
   @staticmethod
   def create_notebook(notebook_name: str = None) -> None:
