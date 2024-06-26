@@ -128,8 +128,8 @@ class NotebookModel {
     return data;
   }
 
-  static async createNotebook(path = '', notebookName='') {
-    const response = await fetch("http://localhost:5002/notebook/create", {
+  static async createNotebook(path = '', notebookName = '') {
+    const response = await fetch("http://localhost:5002/notebook", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -146,6 +146,22 @@ class NotebookModel {
         return data;
     }
   }; 
+
+  static async deleteNotebook(path = '') {
+    const response = await fetch("http://localhost:5002/notebook/" + path, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to create notebook');
+    } else {
+        const data = await response.json();
+        return data;
+    }
+  };
   
   static async updateNotebook(path = '', content = {}) {
     const updatedContent = { ...content };
@@ -175,19 +191,6 @@ class NotebookModel {
           throw new Error('Failed to update notebook');
       }
       const data = await response.json();
-      return data;
-  };
-
-  static async deleteNotebook(path = '') {
-    console.log("Deleting notebook at path:", path);
-    const response = await fetch(path, {
-          method: 'DELETE'
-      });
-  
-      if (!response.ok) {
-          throw new Error('Failed to delete notebook');
-      }
-      const data = response.status !== 204 ? await response.json() : {};
       return data;
   };
 

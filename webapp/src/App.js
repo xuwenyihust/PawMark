@@ -75,7 +75,7 @@ const App = () => {
 
   const handleNewNotebookClick = () => {
     if (handleUnsavedChanges()) {
-      NotebookModel.createNotebook(`${baseUrl}work`).then((data) => {
+      NotebookModel.createNotebook(`${baseUrl}work`, '').then((data) => {
         const notebookPath = `${baseUrl}${data.path}`
         NotebookModel.fetchNotebook(notebookPath).then((data) => {
           setNotebook(data);
@@ -106,7 +106,7 @@ const App = () => {
 
   const handleDeleteNotebook = () => {
     if (window.confirm('Are you sure you want to delete this notebook?')) {
-      NotebookModel.deleteNotebook(baseUrl + notebook.path).then((data) => {
+      NotebookModel.deleteNotebook(notebook.path).then((data) => {
         setNotebookState({}); // Clear notebook content
         console.log('Notebook deleted:', notebookState);
     }).catch((error) => {

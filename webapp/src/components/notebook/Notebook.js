@@ -282,7 +282,8 @@ function Notebook({
                     }
 
                     {
-                        contentType === ContentType.CODE ? 
+                        notebookState.name && 
+                        (contentType === ContentType.CODE ? 
                         <Code
                             notebook={notebook}
                             notebookState={notebookState}
@@ -312,7 +313,7 @@ function Notebook({
                             saveNotebook={handleUpdateNotebook}
                             deleteNotebook={handleDeleteNotebook}
                             /> : 
-                        <Runs />
+                        <Runs />)
                     }
         
                 </Box>
