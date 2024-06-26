@@ -114,16 +114,16 @@ class NotebookModel {
   };
 
   static async fetchNotebook(path = '') {
-    const url = new URL(path);
-    url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
-    const response = await fetch(url, {
+    const response = await fetch("http://localhost:5002/notebook/" + path, {
         method: 'GET',
-        redirect: "follow",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
     });
 
+    if (!response.ok) {
+        throw new Error('Failed to fetch notebook');
+    }
     const data = await response.json();
     return data;
   }

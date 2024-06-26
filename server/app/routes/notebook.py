@@ -15,6 +15,10 @@ def notebook():
 def get_all_notebooks():
     return Notebook.get_all_notebooks()
 
+@notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['GET'])
+def get_notebook_by_path(notebook_path):
+    return Notebook.get_notebook_by_path(notebook_path=notebook_path)
+
 @notebook_blueprint.route('/notebook', methods=['POST'])
 def create_notebook():
     data = request.get_json()
