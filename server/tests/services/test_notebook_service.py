@@ -20,11 +20,12 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_get_all_notebooks(self):
     with self.app.app_context():
-      notebook = NotebookModel(name='Test Notebook', path='/path/to/notebook')
-      db.session.add(notebook)
+      notebook_0 = NotebookModel(name='Notebook0', path='/path/to/notebook0')
+      db.session.add(notebook_0)
       db.session.commit()
 
       notebooks = Notebook.get_all_notebooks()
+      print(notebooks)
       self.assertEqual(len(notebooks), 1)
-      self.assertEqual(notebooks[0].name, 'Test Notebook')
-      self.assertEqual(notebooks[0].path, '/path/to/notebook')
+      self.assertEqual(notebooks[0].name, 'Notebook0')
+      self.assertEqual(notebooks[0].path, '/path/to/notebook0')
