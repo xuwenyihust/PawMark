@@ -36,9 +36,9 @@ const MoreButton = ({
     setRefreshKey(oldKey => oldKey + 1);
   }
 
-  const handleRename = async (baseUrl, file, newName) => {
+  const handleRename = async (file, newName) => {
     try {
-      await DirectoryModel.renameItem(baseUrl + currentPath + '/'  + file.name, currentPath + '/' + newName);
+      await DirectoryModel.renameItem(currentPath + '/'  + file.name, currentPath + '/' + newName);
     } catch (error) {
       console.error('Failed to rename item:', error);
     }
@@ -104,7 +104,6 @@ const MoreButton = ({
           setRenameDialogOpen={setRenameDialogOpen}
           handleMoreClose={handleMoreClose}
           handleRename={handleRename}/>
-
       </Menu>
     </div> 
   );

@@ -83,7 +83,7 @@ class Notebook:
 
     Notebook.create_notebook(notebook_name)
 
-    path = f"{jupyter_server_path}/api/contents/work/{notebook_name}"
+    path = f"{jupyter_server_path}/api/contents/{notebook_name}"
     data = {
       "type": "notebook",
       "content": {
@@ -109,7 +109,7 @@ class Notebook:
 
     notebook = NotebookModel(
       name=notebook_name,
-      path=f'work/{notebook_name}'
+      path=notebook_name
     )
 
     db.session.add(notebook)
@@ -127,17 +127,20 @@ class Notebook:
     if response.status_code != 204:
         return jsonify({'message': 'Notebook not found in jupyter server'}), 404
 
-    notebook = NotebookModel.query.filter_by(path=notebook_path).first()
+    try:
+      notebook = NotebookModel.query.filter_by(path=notebook_path).first()
 
-    if notebook is None:
-        # If no notebook was found with the given path, return a 404 error
-        return jsonify({'message': 'Notebook not found in DB'}), 404
+      if notebook is None:
+          # If no notebook was found with the given path, return a 404 error
+          return jsonify({'message': 'Notebook not found in DB'}), 404
 
-    # Delete the notebook
-    db.session.delete(notebook)
+      # Delete the notebook
+      db.session.delete(notebook)
 
-    # Commit the transaction
-    db.session.commit()
+      # Commit the transaction
+      db.session.commit()
+    except Exception as e:
+      return jsonify({'message': 'Notebook not found in DB'}), 404
 
     return jsonify({'message': 'Notebook deleted'}), 200
   
@@ -163,6 +166,9 @@ class Notebook:
     # Rename the notebook
     notebook.name = new_notebook_name
     notebook.path = f'work/{new_notebook_name}'
-    db.session.commit()
+    try:
+      db.session.commit()
+    except Exception as e:
+      return jsonify({'message': 'Notebook not found in DB'}), 404
 
     return jsonify({'message': 'Notebook renamed'}), 200

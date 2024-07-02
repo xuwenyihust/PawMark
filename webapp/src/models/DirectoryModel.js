@@ -50,28 +50,36 @@ class DirectoryModel {
     });
     return Promise.all(promises);
   }
-
   
-  static async createDirectory(path='', directoryName='') {
-    const response = await fetch(`${path}/${directoryName}`, {
-        method: 'PUT',
+  static async createDirectory(path = '', directoryName = '') {
+    console.log("Creating directory at path:", path + '/' + directoryName);
+    const response = await fetch("http://localhost:5002/directory", {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          type: 'directory'
-        }),
-      });
-  }
+          'directoryPath': path + '/' + directoryName,
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to create directory');
+    } else {
+        const data = await response.json();
+        return data;
+    }
+  }; 
 
   static async renameItem(oldPath='', newPath='') {
-    const response = await fetch(oldPath, {
+    console.log("Renaming item at path:", oldPath, "to", newPath);
+    const response = await fetch("http://localhost:5002/directory/" + oldPath, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          path: newPath
+          newPath: newPath
         }),
       });
   }
