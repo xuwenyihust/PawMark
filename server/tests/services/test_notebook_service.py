@@ -4,6 +4,7 @@ from run import create_app
 from database import db
 from app.models.notebook import NotebookModel
 from app.services.notebook import Notebook
+import json
 
 class NotebookServiceTestCase(unittest.TestCase):
 
@@ -22,11 +23,15 @@ class NotebookServiceTestCase(unittest.TestCase):
     with self.app.app_context():
       notebook_0 = NotebookModel(name='Notebook0', path='/path/to/notebook0')
       db.session.add(notebook_0)
+
+      notebook_1 = NotebookModel(name='Notebook1', path='/path/to/notebook1')
+      db.session.add(notebook_1)
+
       db.session.commit()
 
-      notebooks = Notebook.get_all_notebooks()
-      print(notebooks)
-      print(len(notebooks))
-      self.assertEqual(len(notebooks), 1)
+      notebooks = json.loads(Notebook.get_all_notebooks())
+      self.assertEqual(len(notebooks), 2)
       self.assertEqual(notebooks[0].name, 'Notebook0')
       self.assertEqual(notebooks[0].path, '/path/to/notebook0')
+      self.assertEqual(notebooks[1].name, 'Notebook1')
+      self.assertEqual(notebooks[1].path, '/path/to/notebook1')
