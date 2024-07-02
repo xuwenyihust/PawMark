@@ -18,6 +18,8 @@ services:
     container_name: server
     ports:
       - "5002:5002"
+    env:
+      - ENV=testing
     pull_policy: always
     deploy:
       resources:
