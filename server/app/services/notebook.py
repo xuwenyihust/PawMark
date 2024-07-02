@@ -42,6 +42,7 @@ class Notebook:
     except Exception as e:
       return jsonify({'message': 'Error getting notebook from DB: ' + str(e)}), 404
 
+    logger.info(f"Response: {response.json()}")
     return response.json()
 
   @staticmethod
