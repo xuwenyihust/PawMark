@@ -13,6 +13,18 @@ services:
           cpus: "1" 
           memory: 1g
 
+  server:
+    image: wenyixu101/server:latest
+    container_name: server
+    ports:
+      - "5002:5002"
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
   notebook:
     image: wenyixu101/notebook:latest
     container_name: notebook
