@@ -4,13 +4,18 @@ from datetime import datetime
 import requests
 from database import db
 from flask import current_app as app
-import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Directory:
 
   @staticmethod
   def create_directory(directory_path: str = None) -> None:
+    logger.info(f"Creating directory with path: {directory_path}")
+
     jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
 
     path = f"{jupyter_api_path}/{directory_path}"
     data = {
@@ -24,11 +29,14 @@ class Directory:
 
     notebook = DirectoryModel(
       name=directory_path,
-      path=f'work/{directory_path}'
+      path=directory_path
     )
 
-    db.session.add(notebook)
-    db.session.commit()
+    try:
+      db.session.add(notebook)
+      db.session.commit()
+    except Exception as e:
+      return jsonify({'message': 'Error creating directory in DB: ' + str(e)}), 404
 
     return response.json()
 
