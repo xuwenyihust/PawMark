@@ -141,3 +141,28 @@ class Notebook:
 
     return jsonify({'message': 'Notebook deleted'}), 200
   
+  @staticmethod
+  def rename_notebook_by_path(notebook_path: str = None, new_notebook_name: str = None):
+    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+
+    path = f"{jupyter_server_path}/api/contents/{notebook_path}"
+    response = requests.patch(
+      path,
+      json={"path": f"work/{new_notebook_name}"}
+    )
+
+    if response.status_code != 200:
+        return jsonify({'message': 'Failed to rename in jupyter server'}), 404
+
+    notebook = NotebookModel.query.filter_by(path=notebook_path).first()
+
+    if notebook is None:
+        # If no notebook was found with the given path, return a 404 error
+        return jsonify({'message': 'Notebook not found in DB'}), 404
+
+    # Rename the notebook
+    notebook.name = new_notebook_name
+    notebook.path = f'work/{new_notebook_name}'
+    db.session.commit()
+
+    return jsonify({'message': 'Notebook renamed'}), 200

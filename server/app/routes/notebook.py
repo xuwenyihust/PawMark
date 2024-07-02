@@ -1,7 +1,10 @@
 from flask import Blueprint, jsonify, request
 from app.services.notebook import Notebook
+import logging
 
 notebook_blueprint = Blueprint('notebook', __name__)
+
+logging.basicConfig(level=logging.INFO)
 
 @notebook_blueprint.route('/notebook')
 def notebook():
@@ -27,4 +30,11 @@ def create_notebook():
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['DELETE'])
 def delete_notebook(notebook_path):
+    logging.info(f"Deleting notebook with path: {notebook_path}")
     return Notebook.delete_notebook_by_path(notebook_path=notebook_path)
+
+@notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['PATCH'])
+def rename_notebook(notebook_path):
+    data = request.get_json()
+    new_notebook_name = data.get('newName', None)
+    return Notebook.rename_notebook_by_path(notebook_path=notebook_path, new_notebook_name=new_notebook_name)

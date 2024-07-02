@@ -106,7 +106,7 @@ const App = () => {
 
   const handleDeleteNotebook = () => {
     if (window.confirm('Are you sure you want to delete this notebook?')) {
-      NotebookModel.deleteNotebook(notebook.path).then((data) => {
+      NotebookModel.deleteNotebook(notebookState.path).then((data) => {
         setNotebookState({}); // Clear notebook content
         console.log('Notebook deleted:', notebookState);
     }).catch((error) => {
