@@ -3,6 +3,7 @@ from flask_cors import CORS
 from run import create_app
 from database import db
 from app.models.notebook import NotebookModel
+from app.services.notebook import Notebook
 
 class NotebookServiceTestCase(unittest.TestCase):
 
@@ -23,6 +24,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       db.session.add(notebook)
       db.session.commit()
 
-      response = self.client.get('/notebook/all')
-      self.assertEqual(response.status_code, 200)
-      self.assertEqual(response.json, [{'id': notebook.id, 'name': 'Test Notebook', 'path': '/path/to/notebook'}])
+      notebooks = Notebook.get_all_notebooks()
+      self.assertEqual(len(notebooks), 1)
+      self.assertEqual(notebooks[0].name, 'Test Notebook')
+      self.assertEqual(notebooks[0].path, '/path/to/notebook')
