@@ -27,11 +27,11 @@ class Notebook:
   def get_notebook_by_path(notebook_path: str = None):
     logger.info(f"Getting notebook with path: {notebook_path}")
 
-    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
-    logger.info(f"Jupyter Server Path: {jupyter_server_path}")
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    logger.info(f"Jupyter API Path: {jupyter_api_path}")
 
     try:
-      path = f"{jupyter_server_path}/api/contents/{notebook_path}"
+      path = f"{jupyter_api_path}/{notebook_path}"
       response = requests.get(path)
     except Exception as e:
       return jsonify({'message': 'Error getting notebook from Jupyter Server: ' + str(e)}), 404
@@ -45,10 +45,18 @@ class Notebook:
     return response.json()
 
   @staticmethod
-  def create_notebook(notebook_name: str = None) -> None:
-    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
+  def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
+    if not notebook_name or notebook_name == "":
+      notebook_name = f"notebook_{datetime.now().strftime('%Y%m%d%H%M%S')}.ipynb"
+    if not notebook_path or notebook_path == "":
+      notebook_path = f"work"
 
-    path = f"{jupyter_server_path}/api/contents/work/{notebook_name}"
+    logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path}")
+
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
+
+    path = f"{jupyter_api_path}/{jupyter_default_path}/{notebook_name}"
     data = {
       "type": "notebook",
       "content": {
@@ -67,16 +75,31 @@ class Notebook:
       }
     }
 
-    response = requests.put(
-      path,
-      json=data
-    )
+    try:
+      response = requests.put(
+        path,
+        json=data
+      )
+    except Exception as e:
+      return jsonify({'message': 'Error creating notebook in Jupyter Server: ' + str(e)}), 404
+
+    try:
+      notebook = NotebookModel(
+        name=notebook_name,
+        path=f'{notebook_path}/{notebook_name}'
+      )
+
+      db.session.add(notebook)
+      db.session.commit()
+    except Exception as e:
+      return jsonify({'message': 'Error creating notebook in DB: ' + str(e)}), 404
 
     return response.json()
 
   @staticmethod
   def create_notebook_with_init_cells(notebook_name: str = None) -> None:
-    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
 
     if not notebook_name or notebook_name == "":
       notebook_name = f"notebook_{datetime.now().strftime('%Y%m%d%H%M%S')}.ipynb"
@@ -98,7 +121,7 @@ class Notebook:
 
     Notebook.create_notebook(notebook_name)
 
-    path = f"{jupyter_server_path}/api/contents/{notebook_name}"
+    path = f"{jupyter_api_path}/{jupyter_default_path}/{notebook_name}"
     data = {
       "type": "notebook",
       "content": {
@@ -122,21 +145,13 @@ class Notebook:
       json=data
     )
 
-    notebook = NotebookModel(
-      name=notebook_name,
-      path=notebook_name
-    )
-
-    db.session.add(notebook)
-    db.session.commit()
-
     return response.json()
 
   @staticmethod
   def delete_notebook_by_path(notebook_path: str = None):
-    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
 
-    path = f"{jupyter_server_path}/api/contents/{notebook_path}"
+    path = f"{jupyter_api_path}/{notebook_path}"
     response = requests.delete(path)
 
     if response.status_code != 204:
@@ -161,9 +176,9 @@ class Notebook:
   
   @staticmethod
   def rename_notebook_by_path(notebook_path: str = None, new_notebook_name: str = None):
-    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
 
-    path = f"{jupyter_server_path}/api/contents/{notebook_path}"
+    path = f"{jupyter_api_path}/{notebook_path}"
     response = requests.patch(
       path,
       json={"path": f"work/{new_notebook_name}"}

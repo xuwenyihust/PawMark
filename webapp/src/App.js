@@ -75,7 +75,7 @@ const App = () => {
 
   const handleNewNotebookClick = () => {
     if (handleUnsavedChanges()) {
-      NotebookModel.createNotebook(`work`, '').then((data) => {
+      NotebookModel.createNotebook('', '').then((data) => {
         const notebookPath = `${data.path}`
         NotebookModel.fetchNotebook(notebookPath).then((data) => {
           setNotebook(data);

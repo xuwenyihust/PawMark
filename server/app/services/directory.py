@@ -10,9 +10,9 @@ class Directory:
 
   @staticmethod
   def create_directory(directory_path: str = None) -> None:
-    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
 
-    path = f"{jupyter_server_path}/api/contents/{directory_path}"
+    path = f"{jupyter_api_path}/{directory_path}"
     data = {
       "type": "directory"
     }
@@ -34,9 +34,9 @@ class Directory:
 
   @staticmethod
   def rename_directory_by_path(directory_path: str = None, new_directory_path: str = None):
-    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
 
-    path = f"{jupyter_server_path}/api/contents/{directory_path}"
+    path = f"{jupyter_api_path}/{directory_path}"
     response = requests.patch(
       path,
       json={"path": f"{new_directory_path}"}
