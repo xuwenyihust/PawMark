@@ -1,4 +1,3 @@
-# test_notebook_model.py
 import unittest
 from flask_cors import CORS
 from run import create_app
