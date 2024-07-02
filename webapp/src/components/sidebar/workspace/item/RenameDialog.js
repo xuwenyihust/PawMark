@@ -68,10 +68,12 @@ const RenameDialog = ({
         </Button>
         <Button 
           style={{ color: 'lightgrey' }}
-          onClick={() => {
+          onClick={(event) => {
             setRenameDialogOpen(false);
             handleMoreClose();
-            handleRename(baseUrl, file, NotebookModel.getNameWithExtension(newName));
+            file.type === 'directory' ? 
+              handleRename(file, newName) : 
+              handleRename(file, NotebookModel.getNameWithExtension(newName));
           }}>
           Confirm
         </Button>

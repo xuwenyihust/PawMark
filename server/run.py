@@ -2,8 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from database import db
 from app.routes.notebook import notebook_blueprint
-
-
+from app.routes.directory import directory_blueprint
 
 
 def create_app():
@@ -21,6 +20,7 @@ def create_app():
 app = create_app()
 
 app.register_blueprint(notebook_blueprint)
+app.register_blueprint(directory_blueprint)
 
 
 if __name__ == '__main__':
