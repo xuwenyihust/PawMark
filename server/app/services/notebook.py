@@ -46,17 +46,11 @@ class Notebook:
 
   @staticmethod
   def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
-    if not notebook_name or notebook_name == "":
-      notebook_name = f"notebook_{datetime.now().strftime('%Y%m%d%H%M%S')}.ipynb"
-    if not notebook_path or notebook_path == "":
-      notebook_path = f"work"
-
     logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path}")
 
     jupyter_api_path = app.config['JUPYTER_API_PATH']
-    jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
 
-    path = f"{jupyter_api_path}/{jupyter_default_path}/{notebook_name}"
+    path = f"{jupyter_api_path}/{notebook_path}/{notebook_name}"
     data = {
       "type": "notebook",
       "content": {
@@ -97,14 +91,17 @@ class Notebook:
     return response.json()
 
   @staticmethod
-  def create_notebook_with_init_cells(notebook_name: str = None) -> None:
+  def create_notebook_with_init_cells(notebook_name: str = None, notebook_path: str = None) -> None:
+    logger.info(f"Creating notebook with init cells with name: {notebook_name} under path: {notebook_path}")
+
     jupyter_api_path = app.config['JUPYTER_API_PATH']
     jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
 
     if not notebook_name or notebook_name == "":
       notebook_name = f"notebook_{datetime.now().strftime('%Y%m%d%H%M%S')}.ipynb"
-    else:
-      notebook_name = f"{notebook_name}.ipynb"
+    if not notebook_path or notebook_path == "":
+      notebook_path = jupyter_default_path
+
 
     cells = [
       { 
@@ -119,9 +116,9 @@ class Notebook:
         "source": '# SparkSession: spark is already created\nspark' },
     ]
 
-    Notebook.create_notebook(notebook_name)
+    Notebook.create_notebook(notebook_name, notebook_path)
 
-    path = f"{jupyter_api_path}/{jupyter_default_path}/{notebook_name}"
+    path = f"{jupyter_api_path}/{notebook_path}/{notebook_name}"
     data = {
       "type": "notebook",
       "content": {
