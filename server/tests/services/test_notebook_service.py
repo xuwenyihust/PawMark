@@ -31,7 +31,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       notebooks = json.loads(Notebook.get_all_notebooks())
       self.assertEqual(len(notebooks), 2)
-      self.assertEqual(notebooks[0].name, 'Notebook0')
-      self.assertEqual(notebooks[0].path, '/path/to/notebook0')
-      self.assertEqual(notebooks[1].name, 'Notebook1')
-      self.assertEqual(notebooks[1].path, '/path/to/notebook1')
+      self.assertEqual(notebooks[0]['name'], 'Notebook0')
+      self.assertEqual(notebooks[0]['path'], '/path/to/notebook0')
+      self.assertEqual(notebooks[1]['name'], 'Notebook1')
+      self.assertEqual(notebooks[1]['path'], '/path/to/notebook1')
