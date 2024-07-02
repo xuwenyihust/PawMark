@@ -36,3 +36,5 @@ jobs:
         run: |
           python -m unittest discover tests
         working-directory: server
+        env:
+          ENV: testing

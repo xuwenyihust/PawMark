@@ -6,7 +6,6 @@ from app.routes.notebook import notebook_blueprint
 from app.routes.directory import directory_blueprint
 from config import DevelopmentConfig, ProductionConfig, TestingConfig
 
-
 def create_app():
     app = Flask(__name__)
     if os.environ.get('ENV', 'development') == 'development':
