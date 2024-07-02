@@ -5,11 +5,14 @@ import requests
 from database import db
 import json
 import os
+from flask import current_app as app
 
 class Notebook:
 
   @staticmethod
   def get_all_notebooks():
+    print(app.config('JUPYTER_SERVER_PATH'))
+
     notebooks = NotebookModel.query.all()
 
     # Convert the notebooks to dictionaries
@@ -61,7 +64,7 @@ class Notebook:
 
   @staticmethod
   def create_notebook_with_init_cells(notebook_name: str = None) -> None:
-    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH")
 
     if not notebook_name or notebook_name == "":
       notebook_name = f"notebook_{datetime.now().strftime('%Y%m%d%H%M%S')}.ipynb"
@@ -119,7 +122,7 @@ class Notebook:
 
   @staticmethod
   def delete_notebook_by_path(notebook_path: str = None):
-    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH")
 
     path = f"{jupyter_server_path}/api/contents/{notebook_path}"
     response = requests.delete(path)
@@ -146,7 +149,7 @@ class Notebook:
   
   @staticmethod
   def rename_notebook_by_path(notebook_path: str = None, new_notebook_name: str = None):
-    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH")
 
     path = f"{jupyter_server_path}/api/contents/{notebook_path}"
     response = requests.patch(
