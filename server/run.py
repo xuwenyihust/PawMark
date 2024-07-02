@@ -7,7 +7,7 @@ from app.routes.directory import directory_blueprint
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://server:password-server@localhost:5432/server_db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://server:password-server@postgres:5432/server_db'
     db.init_app(app)
 
     allowed_origins = ["http://localhost:5001", "http://localhost:3000"]
