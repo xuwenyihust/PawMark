@@ -35,3 +35,14 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebooks[0]['path'], '/path/to/notebook0')
       self.assertEqual(notebooks[1]['name'], 'Notebook1')
       self.assertEqual(notebooks[1]['path'], '/path/to/notebook1')
+
+  def test_get_notebook_by_path(self):
+    with self.app.app_context():
+      notebook = NotebookModel(name='Notebook', path='/path/to/notebook')
+      db.session.add(notebook)
+      db.session.commit()
+
+      notebooks = json.loads(Notebook.get_notebook_by_path(notebook_path='/path/to/notebook'))
+      self.assertEqual(len(notebooks), 1)
+      self.assertEqual(notebooks['name'], 'Notebook')
+      self.assertEqual(notebooks['path'], '/path/to/notebook')
