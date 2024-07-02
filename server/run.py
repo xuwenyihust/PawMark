@@ -4,7 +4,7 @@ from database import db
 import os
 from app.routes.notebook import notebook_blueprint
 from app.routes.directory import directory_blueprint
-from config import DevelopmentConfig, ProductionConfig, TestingConfig
+from config import DevelopmentConfig, IntegrationTestingConfig, TestingConfig
 
 def create_app():
     app = Flask(__name__)
@@ -12,6 +12,8 @@ def create_app():
         app.config.from_object(DevelopmentConfig)
     elif os.environ.get('ENV', 'development') == 'testing':
         app.config.from_object(TestingConfig)
+    elif os.environ.get('ENV', 'development') == 'integration':
+        app.config.from_object(IntegrationTestingConfig)
 
     db.init_app(app)
 

@@ -37,4 +37,4 @@ jobs:
           python -m unittest discover tests
         working-directory: server
         env:
-          ENV: development
+          ENV: integration
