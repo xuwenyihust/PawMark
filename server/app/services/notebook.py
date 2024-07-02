@@ -11,7 +11,7 @@ class Notebook:
 
   @staticmethod
   def get_all_notebooks():
-    print(app.config('JUPYTER_SERVER_PATH'))
+    print(app.config['JUPYTER_SERVER_PATH'])
 
     notebooks = NotebookModel.query.all()
 
