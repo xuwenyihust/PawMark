@@ -100,6 +100,13 @@ function Notebook({
         console.log('Saving notebook name:', currentName);
         setIsNameEditing(false);
         setCurrentName(currentName);
+        setNotebookState(prevState => {
+            return {
+                ...prevState,
+                name: currentName,
+                path: 'work/' + currentName,
+            }
+        });
         NotebookModel.renameNotebook(baseUrl, notebook.path, currentName).then((data) => {
             console.log('Notebook name saved:', data);
         }).catch((error) => {

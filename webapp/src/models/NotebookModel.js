@@ -195,15 +195,15 @@ class NotebookModel {
   };
 
   static async renameNotebook(basePath = '', path = '', newName = '') {
-    const newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName;
-    console.log("Renaming notebook at path:", path, "to:", newPath);
-    const response = await fetch(basePath + path, {
+    console.log("Renaming notebook at path:", basePath + '/' + path, "to:", newName);
+    
+    const response = await fetch("http://localhost:5002/notebook/" + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            path: newPath
+            'newName': newName
         })
     });
 
