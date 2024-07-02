@@ -3,14 +3,14 @@ from flask import jsonify
 from datetime import datetime
 import requests
 from database import db
-import json
+from flask import current_app as app
 import os
 
 class Directory:
 
   @staticmethod
   def create_directory(directory_path: str = None) -> None:
-    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
 
     path = f"{jupyter_server_path}/api/contents/{directory_path}"
     data = {
@@ -34,7 +34,7 @@ class Directory:
 
   @staticmethod
   def rename_directory_by_path(directory_path: str = None, new_directory_path: str = None):
-    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+    jupyter_server_path = app.config['JUPYTER_SERVER_PATH']
 
     path = f"{jupyter_server_path}/api/contents/{directory_path}"
     response = requests.patch(
