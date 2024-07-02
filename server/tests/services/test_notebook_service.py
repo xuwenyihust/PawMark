@@ -21,10 +21,10 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_get_all_notebooks(self):
     with self.app.app_context():
-      notebook_0 = NotebookModel(name='Notebook0', path='/path/to/notebook0')
+      notebook_0 = NotebookModel(name='Notebook0', path='path_to_notebook0')
       db.session.add(notebook_0)
 
-      notebook_1 = NotebookModel(name='Notebook1', path='/path/to/notebook1')
+      notebook_1 = NotebookModel(name='Notebook1', path='path_to_notebook1')
       db.session.add(notebook_1)
 
       db.session.commit()
