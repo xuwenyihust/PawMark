@@ -26,6 +26,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       notebooks = Notebook.get_all_notebooks()
       print(notebooks)
+      print(len(notebooks))
       self.assertEqual(len(notebooks), 1)
       self.assertEqual(notebooks[0].name, 'Notebook0')
       self.assertEqual(notebooks[0].path, '/path/to/notebook0')
