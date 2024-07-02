@@ -14,4 +14,4 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://server:password-server@postgres:5432/server_db'
-    JUPYTER_SERVER_PATH = 'notebook:8888'
+    JUPYTER_SERVER_PATH = 'http://notebook:8888'
