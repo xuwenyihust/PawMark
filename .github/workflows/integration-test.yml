@@ -22,13 +22,13 @@ jobs:
         env:
           JUPYTER_ENABLE_LAB: "no"
         ports:
-          - "8889:8888"
+          - "6666:8888"
         options: >-
-          --health-cmd "curl -f http://localhost:8888 || exit 1"
+          --health-cmd "curl -f http://localhost:6666 || exit 1"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          --publish 8889:8888
+          --publish 6666:8888
         
         
     steps:
