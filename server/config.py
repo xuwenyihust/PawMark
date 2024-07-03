@@ -26,6 +26,6 @@ class TestingConfig(Config):
 class IntegrationTestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://server:password-server@localhost:5432/server_db'
-    JUPYTER_SERVER_PATH = 'http://localhost:8889'
+    JUPYTER_SERVER_PATH = 'http://localhost:8888'
     JUPYTER_API_PATH = JUPYTER_SERVER_PATH + '/api/contents'
     JUPYTER_DEFAULT_PATH = 'work'
