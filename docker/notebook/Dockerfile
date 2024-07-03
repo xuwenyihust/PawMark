@@ -60,4 +60,6 @@ ENV SERVICE_ACCOUNT="spark"
 ENV EXECUTOR_IMAGE="wenyixu101/spark:3.5.0-python3.11"
 ENV WEBUI_SERVICE_NAME="notebook-spark-ui"
 
+CMD ["jupyter", "notebook", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+
 
