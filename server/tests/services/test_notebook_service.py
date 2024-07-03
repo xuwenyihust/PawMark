@@ -44,7 +44,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       print(Notebook.get_notebook_by_path(notebook_path='path_to_notebook'))
 
-      # notebooks = json.loads(Notebook.get_notebook_by_path(notebook_path='/path/to/notebook'))
+      # notebooks = json.loads(Notebook.get_notebook_by_path(notebook_path='path_to_notebook'))
       # self.assertEqual(len(notebooks), 1)
       # self.assertEqual(notebooks['name'], 'Notebook')
-      # self.assertEqual(notebooks['path'], '/path/to/notebook')
+      # self.assertEqual(notebooks['path'], 'path_to_notebook')
