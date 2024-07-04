@@ -33,7 +33,6 @@ class Notebook:
     try:
       path = f"{jupyter_api_path}/{notebook_path}"
       response = requests.get(path)
-      logger.info(f"Response: {response.content}")
       if response.status_code != 200:
         return jsonify({'message': 'Error getting notebook from Jupyter Server'}), 404
     except Exception as e:
