@@ -40,10 +40,10 @@ class NotebookServiceTestCase(unittest.TestCase):
     with self.app.app_context():
       Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
 
+      print(Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[0])
+
       notebooks = json.loads(Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[0])
       status_code = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[1]
-
-      print(notebooks)
 
       self.assertEqual(status_code, 200)
       self.assertEqual(len(notebooks), 1)
