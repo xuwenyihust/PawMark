@@ -38,7 +38,8 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_create_and_get_notebook(self):
     with self.app.app_context():
-      Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
+      create_response = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
+      print(create_response)
 
       notebook = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[0]
       status_code = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[1]

@@ -144,7 +144,7 @@ class Notebook:
       json=data
     )
 
-    return response.json()
+    return response
 
   @staticmethod
   def delete_notebook_by_path(notebook_path: str = None):
