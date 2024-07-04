@@ -54,16 +54,22 @@ class NotebookServiceTestCase(unittest.TestCase):
       # Create without name / path & get by path
       create_response_1 = Notebook.create_notebook_with_init_cells(notebook_name='', notebook_path='')
       self.assertEqual(create_response_1[1], 200)
-      print(create_response_1)
+      
+      notebook_name_1 = create_response_1[0]['name']
+      notebook_path_1 = create_response_1[0]['path']
 
-      # get_response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
-      # notebook_0 = get_response_0[0]
-      # status_code_0 = get_response_0[1]
+      self.assertTrue(notebook_name_1.startswith('notebook_'))
+      self.assertTrue(notebook_name_1.endswith('.ipynb'))
+      self.assertEquals('work/' + notebook_name_1, notebook_path_1)
 
-      # self.assertEqual(status_code_0, 200)
-      # self.assertEqual(notebook_0['name'], 'Notebook.ipynb')
-      # self.assertEqual(notebook_0['path'], 'work/Notebook.ipynb')
-      # self.assertEqual(len(notebook_0['content']['cells']), 2)
+      get_response_1 = Notebook.get_notebook_by_path(notebook_path=notebook_path_1)
+      notebook_1 = get_response_1[0]
+      status_code_1 = get_response_1[1]
+
+      self.assertEqual(status_code_1, 200)
+      self.assertEqual(notebook_1['name'], notebook_name_1)
+      self.assertEqual(notebook_1['path'], notebook_path_1)
+      self.assertEqual(len(notebook_1['content']['cells']), 2)
 
       # Create with name / path & get by path
 
