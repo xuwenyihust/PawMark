@@ -39,7 +39,7 @@ class NotebookServiceTestCase(unittest.TestCase):
   def test_create_and_get_notebook(self):
     with self.app.app_context():
       create_response = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
-      self.assertEquals(create_response[1], 200)
+      self.assertEqual(create_response[1], 200)
 
       notebook = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[0]
       status_code = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[1]
@@ -48,4 +48,6 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook['name'], 'Notebook.ipynb')
       self.assertEqual(notebook['path'], 'work/Notebook.ipynb')
       self.assertEqual(len(notebook['content']['cells']), 2)
+
+      print(Notebook.get_notebook_by_path(notebook_path='work/Notebook666.ipynb'))
       
