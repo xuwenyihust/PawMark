@@ -41,13 +41,20 @@ class NotebookServiceTestCase(unittest.TestCase):
       create_response = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
       self.assertEqual(create_response[1], 200)
 
-      notebook = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[0]
-      status_code = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')[1]
+      get_response_0 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      notebook_0 = get_response_0[0]
+      status_code_0 = get_response_0[1]
 
-      self.assertEqual(status_code, 200)
-      self.assertEqual(notebook['name'], 'Notebook.ipynb')
-      self.assertEqual(notebook['path'], 'work/Notebook.ipynb')
-      self.assertEqual(len(notebook['content']['cells']), 2)
+      self.assertEqual(status_code_0, 200)
+      self.assertEqual(notebook_0['name'], 'Notebook.ipynb')
+      self.assertEqual(notebook_0['path'], 'work/Notebook.ipynb')
+      self.assertEqual(len(notebook_0['content']['cells']), 2)
 
-      print(Notebook.get_notebook_by_path(notebook_path='work/Notebook666.ipynb'))
+      get_response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook666.ipynb')
+      notebook_1 = get_response_1[0]
+      status_code_1 = get_response_1[1]
+
+      self.assertEqual(status_code_1, 404)
+
+      print(notebook_1)
       
