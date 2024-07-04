@@ -41,7 +41,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       create_response = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
       print(create_response)
 
-      print(Notebook.get_notebook_by_path(notebook_path='/work/Notebook.ipynb').json)
+      print(Notebook.get_notebook_by_path(notebook_path='/work/Notebook.ipynb')[0].json())
       # notebooks = json.loads(Notebook.get_notebook_by_path(notebook_path='/work/Notebook.ipynb'))
       # self.assertEqual(len(notebooks), 1)
       # self.assertEqual(notebooks['name'], 'Notebook.ipynb')
