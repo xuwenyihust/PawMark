@@ -56,5 +56,5 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       self.assertEqual(status_code_1, 404)
 
-      print(notebook_1)
+      print(notebook_1.json())
       
