@@ -38,8 +38,9 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_create_and_get_notebook(self):
     with self.app.app_context():
-      create_response = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
-      self.assertEqual(create_response[1], 200)
+      # Create with name but without path & get by path
+      create_response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
+      self.assertEqual(create_response_0[1], 200)
 
       get_response_0 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
       notebook_0 = get_response_0[0]
@@ -50,11 +51,28 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook_0['path'], 'work/Notebook.ipynb')
       self.assertEqual(len(notebook_0['content']['cells']), 2)
 
-      get_response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook666.ipynb')
-      notebook_1 = get_response_1[0]
-      status_code_1 = get_response_1[1]
+      # Create without name / path & get by path
+      create_response_1 = Notebook.create_notebook_with_init_cells(notebook_name='', notebook_path='')
+      self.assertEqual(create_response_1[1], 200)
+      print(create_response_1)
 
-      self.assertEqual(status_code_1, 404)
+      # get_response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      # notebook_0 = get_response_0[0]
+      # status_code_0 = get_response_0[1]
 
-      print(notebook_1.json())
+      # self.assertEqual(status_code_0, 200)
+      # self.assertEqual(notebook_0['name'], 'Notebook.ipynb')
+      # self.assertEqual(notebook_0['path'], 'work/Notebook.ipynb')
+      # self.assertEqual(len(notebook_0['content']['cells']), 2)
+
+      # Create with name / path & get by path
+
+      # Get non-exist path
+      get_response_3 = Notebook.get_notebook_by_path(notebook_path='work/Notebook666.ipynb')
+      status_code_3 = get_response_3[1]
+
+      self.assertEqual(status_code_3, 404)
+
+  def test_delete_notebook(self):
+    pass
       
