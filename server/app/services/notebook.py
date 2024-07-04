@@ -91,7 +91,7 @@ class Notebook:
     except Exception as e:
       return jsonify({'message': 'Error creating notebook in DB: ' + str(e)}), 404
 
-    return response.json()
+    return response.json(), 200
 
   @staticmethod
   def create_notebook_with_init_cells(notebook_name: str = None, notebook_path: str = None) -> None:
