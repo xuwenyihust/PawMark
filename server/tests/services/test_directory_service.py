@@ -32,6 +32,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
       directoryFromDB = DirectoryModel.query.filter_by(path='work/test_directory').first()
       self.assertIsNotNone(directoryFromDB)
+      self.assertEqual(directoryFromDB.name, 'test_directory')
 
       # Check if created directory could be detected
       response_2 = Directory.get_content_by_path('work')
@@ -52,13 +53,15 @@ class DirectoryServiceTestCase(unittest.TestCase):
       response_0 = Directory.create_directory('work/original_name')
       directoryFromDB = DirectoryModel.query.filter_by(path='work/original_name').first()
       self.assertIsNotNone(directoryFromDB)
+      self.assertEqual(directoryFromDB.name, 'original_name')
 
-      # # Rename directory
+      # Rename directory
       response_1 = Directory.rename_directory_by_path('work/original_name', 'work/updated_name')
       self.assertEqual(response_1.status_code, 200)
 
       directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
       self.assertIsNotNone(directoryFromDB)
+      self.assertEqual(directoryFromDB.name, 'updated_name')
 
       # Check if renamed directory could be detected
       response_2 = Directory.get_content_by_path('work')

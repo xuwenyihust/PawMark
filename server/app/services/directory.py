@@ -52,15 +52,20 @@ class Directory:
       "type": "directory"
     }
 
-    response = requests.put(
-      path,
-      json=data
-    )
+    try:
+      response = requests.put(
+        path,
+        json=data
+      )
 
-    logger.info(f"Response: {response.content}")
+      directory_name = json.loads(response.content)['name']
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Error creating directory in Jupyter Server: ' + str(e)}), 
+        status=404)
 
     notebook = DirectoryModel(
-      name=directory_path,
+      name=directory_name,
       path=directory_path
     )
 
