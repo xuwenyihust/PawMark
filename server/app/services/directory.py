@@ -94,6 +94,7 @@ class Directory:
           response=({'message': 'Failed to rename in jupyter server'}), 
           status=404)
 
+    new_directory_name = json.loads(response.content)['name']
     directory = DirectoryModel.query.filter_by(path=directory_path).first()
 
     if directory is None:
@@ -104,7 +105,7 @@ class Directory:
 
     # Rename the directory
     try:
-      directory.name = new_directory_path
+      directory.name = new_directory_name
       directory.path = new_directory_path
       db.session.commit()
     except Exception as e:
