@@ -29,7 +29,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       # Create directory
       response_1 = Directory.create_directory('work/test_directory')
-      self.assertEqual(response_1.status_code, 200)
+      self.assertEqual(response_1.status_code, 201)
       directoryFromDB = DirectoryModel.query.filter_by(path='work/test_directory').first()
       self.assertIsNotNone(directoryFromDB)
 
@@ -39,23 +39,16 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertEqual(len(json.loads(response_2.data)['content']), 1)
       self.assertEqual(json.loads(response_2.data)['content'][0]['name'], 'test_directory')
 
-  # def test_rename_directory_by_path(self):
-  #   with self.app.app_context():
+  def test_rename_directory_by_path(self):
+    with self.app.app_context():
 
-  #     response_0 = Directory.get_content_by_path('work')
-  #     status_code_0 = response_0[1]
+      response_0 = Directory.get_content_by_path('work')
+      contents = json.loads(response_0.data)['content']
+      content_0 = [x for x in contents if x['name'] == 'updated_name']
+      self.assertEqual(response_0.status_code, 200)
+      self.assertEqual(content_0, [])
 
-  #     print(response_0[0])
-  #     print(response_0[0].status_code)
-  #     print(response_0[0].json())
-      # print(response_0[0]['name'])
-      # print(response_0[0].json())
-
-      # content_0 = [x for x in response_0[0].json() if x['name'] == 'updated_name']
-      # self.assertEqual(status_code_0, 200)
-      # self.assertEqual(content_0, [])
-
-      # # Create directory
+      # Create directory
       # response_0 = Directory.create_directory('work/original_name')
       # directoryFromDB = DirectoryModel.query.filter_by(path='work/original_name').first()
       # self.assertIsNotNone(directoryFromDB)
