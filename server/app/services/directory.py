@@ -1,5 +1,6 @@
 from app.models.directory import DirectoryModel
-from flask import jsonify
+from flask import Response
+import json
 from datetime import datetime
 import requests
 from database import db
@@ -23,7 +24,9 @@ class Directory:
     response = requests.get(path)
 
     content = response.json()['content']
-    return jsonify({'content': content}, status=200)
+    return Response(
+      response=json.dumsp({'content': content}), 
+      status=200)
 
   @staticmethod
   def create_directory(directory_path: str = None) -> None:
@@ -33,7 +36,9 @@ class Directory:
 
     if directory_path is None:
       logger.error("Directory path is None")
-      return jsonify({'message': 'Directory path is None'}, status=404)
+      return Response(
+        response=json.dumsp({'message': 'Directory path is None'}), 
+        status=404)
 
     path = f"{jupyter_api_path}/{directory_path}"
     data = {
@@ -54,7 +59,9 @@ class Directory:
       db.session.add(notebook)
       db.session.commit()
     except Exception as e:
-      return jsonify({'message': 'Error creating directory in DB: ' + str(e)}, status=404)
+      return Response(
+        response=({'message': 'Error creating directory in DB: ' + str(e)}), 
+        status=404)
 
     return response
 
@@ -69,13 +76,17 @@ class Directory:
     )
 
     if response.status_code != 200:
-        return jsonify({'message': 'Failed to rename in jupyter server'}, status=404)
+        return Response(
+          response=({'message': 'Failed to rename in jupyter server'}), 
+          status=404)
 
     directory = DirectoryModel.query.filter_by(path=directory_path).first()
 
     if directory is None:
         # If no directory was found with the given path, return a 404 error
-        return jsonify({'message': 'Directory not found in DB'}, status=404)
+        return Response(
+          response=json.dumps({'message': 'Directory not found in DB'}), 
+          status=404)
 
     # Rename the directory
     try:
@@ -83,6 +94,10 @@ class Directory:
       directory.path = f'work/{new_directory_path}'
       db.session.commit()
     except Exception as e:
-      return jsonify({'message': 'Error renaming directory in DB: ' + str(e)}, status=404)
+      return Response(
+        response=json.dumps({'message': 'Error renaming directory in DB: ' + str(e)}), 
+        status=404)
 
-    return jsonify({'message': 'Directory renamed'}, status=200)
+    return Response(
+      response=json.dumps({'message': 'Directory renamed'}), 
+      status=200)
