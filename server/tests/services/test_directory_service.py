@@ -39,7 +39,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
   def test_rename_directory_by_path(self):
     with self.app.app_context():
 
-      content_0 = [x for x in Directory.get_content_by_path('work') if x['name'] == 'updated_name']
+      content_0 = [x for x in Directory.get_content_by_path('work').json() if x['name'] == 'updated_name']
       self.assertEqual(content_0, [])
 
       # Create directory
