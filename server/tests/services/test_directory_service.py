@@ -32,19 +32,20 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertIsNotNone(directoryFromDB)
 
       # Check if created directory could be detected
-      content_1 = Directory.get_content_by_path('work')
-      self.assertEqual(len(content_1), 1)
-      self.assertEqual(content_1[0]['name'], 'test_directory')
+      response_1 = Directory.get_content_by_path('work')
+      self.assertEqual(response_1.status_code, 200)
+      self.assertEqual(len(response_1.json()), 1)
+      self.assertEqual(response_1.json()['name'], 'test_directory')
 
-  def test_rename_directory_by_path(self):
-    with self.app.app_context():
+  # def test_rename_directory_by_path(self):
+  #   with self.app.app_context():
 
-      response_0 = Directory.get_content_by_path('work')
-      status_code_0 = response_0[1]
+  #     response_0 = Directory.get_content_by_path('work')
+  #     status_code_0 = response_0[1]
 
-      print(response_0[0])
-      print(response_0[0].status_code)
-      print(response_0[0].json())
+  #     print(response_0[0])
+  #     print(response_0[0].status_code)
+  #     print(response_0[0].json())
       # print(response_0[0]['name'])
       # print(response_0[0].json())
 
