@@ -17,6 +17,8 @@ class Directory:
     jupyter_api_path = app.config['JUPYTER_API_PATH']
     jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
     
+    if path is None:
+      path = jupyter_default_path
     path = f"{jupyter_api_path}/{path}"
     response = requests.get(path)
 

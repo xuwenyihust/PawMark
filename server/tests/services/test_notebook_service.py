@@ -60,7 +60,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       self.assertTrue(notebook_name_1.startswith('notebook_'))
       self.assertTrue(notebook_name_1.endswith('.ipynb'))
-      self.assertEquals('work/' + notebook_name_1, notebook_path_1)
+      self.assertEqual('work/' + notebook_name_1, notebook_path_1)
 
       get_response_1 = Notebook.get_notebook_by_path(notebook_path=notebook_path_1)
       notebook_1 = get_response_1[0]
