@@ -30,7 +30,10 @@ class Directory:
     logger.info(f"Creating directory with path: {directory_path}")
 
     jupyter_api_path = app.config['JUPYTER_API_PATH']
-    jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
+
+    if directory_path is None:
+      logger.error("Directory path is None")
+      return jsonify({'message': 'Directory path is None'}), 404
 
     path = f"{jupyter_api_path}/{directory_path}"
     data = {
