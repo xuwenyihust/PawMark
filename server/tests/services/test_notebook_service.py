@@ -29,7 +29,8 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       db.session.commit()
 
-      notebooks = json.loads(Notebook.get_all_notebooks())
+      response = Notebook.get_all_notebooks()
+      notebooks = json.loads(response.data)
       self.assertEqual(len(notebooks), 2)
       self.assertEqual(notebooks[0]['name'], 'Notebook0')
       self.assertEqual(notebooks[0]['path'], 'path_to_notebook0')
@@ -40,11 +41,11 @@ class NotebookServiceTestCase(unittest.TestCase):
     with self.app.app_context():
       # Create with name but without path & get by path
       create_response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
-      self.assertEqual(create_response_0[1], 200)
+      self.assertEqual(create_response_0.status_code, 200)
 
       get_response_0 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
-      notebook_0 = get_response_0[0]
-      status_code_0 = get_response_0[1]
+      notebook_0 = json.loads(get_response_0.data)
+      status_code_0 = get_response_0.status_code
 
       self.assertEqual(status_code_0, 200)
       self.assertEqual(notebook_0['name'], 'Notebook.ipynb')
@@ -53,18 +54,19 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       # Create without name / path & get by path
       create_response_1 = Notebook.create_notebook_with_init_cells(notebook_name='', notebook_path='')
-      self.assertEqual(create_response_1[1], 200)
+      self.assertEqual(create_response_1.status_code, 200)
       
-      notebook_name_1 = create_response_1[0]['name']
-      notebook_path_1 = create_response_1[0]['path']
+      notebook_1 = json.loads(create_response_1.data)
+      notebook_name_1 = notebook_1[0]['name']
+      notebook_path_1 = notebook_1[0]['path']
 
       self.assertTrue(notebook_name_1.startswith('notebook_'))
       self.assertTrue(notebook_name_1.endswith('.ipynb'))
       self.assertEqual('work/' + notebook_name_1, notebook_path_1)
 
       get_response_1 = Notebook.get_notebook_by_path(notebook_path=notebook_path_1)
-      notebook_1 = get_response_1[0]
-      status_code_1 = get_response_1[1]
+      notebook_1 = json.loads(get_response_1.data)[0]
+      status_code_1 = get_response_1.status_code
 
       self.assertEqual(status_code_1, 200)
       self.assertEqual(notebook_1['name'], notebook_name_1)
@@ -75,7 +77,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       # Get non-exist path
       get_response_3 = Notebook.get_notebook_by_path(notebook_path='work/Notebook666.ipynb')
-      status_code_3 = get_response_3[1]
+      status_code_3 = get_response_3.status_code
 
       self.assertEqual(status_code_3, 404)
 

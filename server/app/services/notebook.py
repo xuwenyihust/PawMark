@@ -1,5 +1,5 @@
 from app.models.notebook import NotebookModel
-from flask import jsonify
+from flask import Response
 from datetime import datetime
 import requests
 import logging
@@ -18,10 +18,10 @@ class Notebook:
     # Convert the notebooks to dictionaries
     notebooks_dict = [notebook.to_dict() for notebook in notebooks]
 
-    # Now you can serialize notebooks_dict
-    notebooks_json = json.dumps(notebooks_dict)
-
-    return notebooks_json
+    return Response(
+      response=json.dumps(notebooks_dict),
+      status=200
+    )
   
   @staticmethod
   def get_notebook_by_path(notebook_path: str = None):
@@ -34,17 +34,26 @@ class Notebook:
       path = f"{jupyter_api_path}/{notebook_path}"
       response = requests.get(path)
       if response.status_code != 200:
-        return jsonify({'message': 'Error getting notebook from Jupyter Server'}), 404
+        return Response(
+          response=json.dumps({'message': 'Error getting notebook from Jupyter Server'}), 
+          status=404)
     except Exception as e:
-      return jsonify({'message': 'Error getting notebook from Jupyter Server: ' + str(e)}), 404
+      return Response(
+        response=json.dumps({'message': 'Error getting notebook from Jupyter Server: ' + str(e)}), 
+        status=404)
 
     try:
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
       logger.info(f"Notebook found in DB: {notebook}")
     except Exception as e:
-      return jsonify({'message': 'Error getting notebook from DB: ' + str(e)}), 404
+      return Response(
+        response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
+        status=404)
 
-    return response.json(), 200
+    return Response(
+        response=response.json(), 
+        status=200
+      )
 
   @staticmethod
   def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
@@ -77,7 +86,9 @@ class Notebook:
         json=data
       )
     except Exception as e:
-      return jsonify({'message': 'Error creating notebook in Jupyter Server: ' + str(e)}), 404
+      return Response(
+        response=json.dumps({'message': 'Error creating notebook in Jupyter Server: ' + str(e)}), 
+        status=404)
 
     try:
       notebook = NotebookModel(
@@ -88,9 +99,11 @@ class Notebook:
       db.session.add(notebook)
       db.session.commit()
     except Exception as e:
-      return jsonify({'message': 'Error creating notebook in DB: ' + str(e)}), 404
+      return Response(
+        response=json.dumps({'message': 'Error creating notebook in DB: ' + str(e)}), 
+        status=404)
 
-    return response.json(), 200
+    return Response(response=response.json(), status=200)
 
   @staticmethod
   def create_notebook_with_init_cells(notebook_name: str = None, notebook_path: str = None) -> None:
@@ -144,7 +157,7 @@ class Notebook:
       json=data
     )
 
-    return response.json(), response.status_code
+    return Response(response=response.json(), status=response.status_code)
 
   @staticmethod
   def delete_notebook_by_path(notebook_path: str = None):
@@ -154,14 +167,18 @@ class Notebook:
     response = requests.delete(path)
 
     if response.status_code != 204:
-        return jsonify({'message': 'Notebook not found in jupyter server'}), 404
+        return Response(
+          response=json.dumps({'message': 'Notebook not found in jupyter server'}), 
+          status=404)
 
     try:
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
 
       if notebook is None:
           # If no notebook was found with the given path, return a 404 error
-          return jsonify({'message': 'Notebook not found in DB'}), 404
+          return Response(
+            response=json.dumps({'message': 'Notebook not found in DB'}), 
+            status=404)
 
       # Delete the notebook
       db.session.delete(notebook)
@@ -169,9 +186,13 @@ class Notebook:
       # Commit the transaction
       db.session.commit()
     except Exception as e:
-      return jsonify({'message': 'Notebook not found in DB'}), 404
+      return Response(
+        response=json.dumps({'message': 'Notebook not found in DB'}), 
+        status=404)
 
-    return jsonify({'message': 'Notebook deleted'}), 200
+    return Response(
+      response=json.dumps({'message': 'Notebook deleted'}), 
+      status=200)
   
   @staticmethod
   def rename_notebook_by_path(notebook_path: str = None, new_notebook_name: str = None):
@@ -184,13 +205,17 @@ class Notebook:
     )
 
     if response.status_code != 200:
-        return jsonify({'message': 'Failed to rename in jupyter server'}), 404
+        return Response(
+          response=json.dumps({'message': 'Failed to rename in jupyter server'}), 
+          status=404)
 
     notebook = NotebookModel.query.filter_by(path=notebook_path).first()
 
     if notebook is None:
         # If no notebook was found with the given path, return a 404 error
-        return jsonify({'message': 'Notebook not found in DB'}), 404
+        return Response(
+          response=json.dumps({'message': 'Notebook not found in DB'}), 
+          status=404)
 
     # Rename the notebook
     notebook.name = new_notebook_name
@@ -198,6 +223,10 @@ class Notebook:
     try:
       db.session.commit()
     except Exception as e:
-      return jsonify({'message': 'Notebook not found in DB'}), 404
+      return Response(
+        response=json.dumps({'message': 'Notebook not found in DB'}), 
+        status=404)
 
-    return jsonify({'message': 'Notebook renamed'}), 200
+    return Response(
+      response=json.dumps({'message': 'Notebook renamed'}), 
+      status=200)

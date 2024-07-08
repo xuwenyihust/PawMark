@@ -12,9 +12,7 @@ logger = logging.getLogger(__name__)
 class Directory:
 
   @staticmethod
-  def get_content_by_path(path: str = None):
-    logger.info(f"Getting content with path: {path}")
-     
+  def get_content_by_path(path: str = None):     
     jupyter_api_path = app.config['JUPYTER_API_PATH']
     jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
     
