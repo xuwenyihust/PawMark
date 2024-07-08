@@ -22,7 +22,8 @@ class Directory:
     path = f"{jupyter_api_path}/{path}"
     response = requests.get(path)
 
-    return response.json()
+    content = response.json()['content']
+    return content
 
   @staticmethod
   def create_directory(directory_path: str = None) -> None:

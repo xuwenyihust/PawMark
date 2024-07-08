@@ -21,9 +21,8 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
   def test_get_content_by_path(self):
     with self.app.app_context():
-      response = Directory.get_content_by_path()
-      print(response)
-      # self.assertEqual(response['name'], '666')
+      content = Directory.get_content_by_path()
+      self.assertEqual(content, [])
 
   # def test_create_directory(self):
   #   with self.app.app_context():
