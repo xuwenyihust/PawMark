@@ -78,8 +78,11 @@ class Directory:
         return jsonify({'message': 'Directory not found in DB'}), 404
 
     # Rename the directory
-    directory.name = new_directory_path
-    directory.path = f'work/{new_directory_path}'
-    db.session.commit()
+    try:
+      directory.name = new_directory_path
+      directory.path = f'work/{new_directory_path}'
+      db.session.commit()
+    except Exception as e:
+      return jsonify({'message': 'Error renaming directory in DB: ' + str(e)}), 404
 
     return jsonify({'message': 'Directory renamed'}), 200
