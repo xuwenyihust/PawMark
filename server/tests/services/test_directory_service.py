@@ -41,7 +41,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       response_0 = Directory.get_content_by_path('work')
       status_code_0 = response_0[1]
-      content_0 = [x for x in response_0[0].json() if x['name'] == 'updated_name']
+      content_0 = [x for x in response_0.json() if x['name'] == 'updated_name']
       self.assertEqual(status_code_0, 200)
       self.assertEqual(content_0, [])
 
