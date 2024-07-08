@@ -49,21 +49,21 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertEqual(content_0, [])
 
       # Create directory
-      # response_0 = Directory.create_directory('work/original_name')
-      # directoryFromDB = DirectoryModel.query.filter_by(path='work/original_name').first()
-      # self.assertIsNotNone(directoryFromDB)
+      response_0 = Directory.create_directory('work/original_name')
+      directoryFromDB = DirectoryModel.query.filter_by(path='work/original_name').first()
+      self.assertIsNotNone(directoryFromDB)
 
       # # Rename directory
-      # response_1 = Directory.rename_directory_by_path('work/original_name', 'work/updated_name')
-      # print(response_1)
+      response_1 = Directory.rename_directory_by_path('work/original_name', 'work/updated_name')
+      self.assertEqual(response_1.status_code, 200)
 
-      # directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
-      # print(directoryFromDB)
-      # self.assertIsNotNone(directoryFromDB)
+      directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
+      self.assertIsNotNone(directoryFromDB)
 
-      # # Check if renamed directory could be detected
-      # content_1 = Directory.get_content_by_path('work')
-      # self.assertEqual(len(content_1), 1)
-      # self.assertEqual(content_1[0]['name'], 'updated_name')
-      # self.assertEqual(content_1[0]['path'], 'work/updated_name')
+      # Check if renamed directory could be detected
+      response_2 = Directory.get_content_by_path('work')
+      content_2 = json.loads(response_2.data)['content']
+      self.assertEqual(len(content_2), 1)
+      self.assertEqual(content_2[0]['name'], 'updated_name')
+      self.assertEqual(content_2[0]['path'], 'work/updated_name')
 
