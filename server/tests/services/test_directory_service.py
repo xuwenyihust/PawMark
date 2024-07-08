@@ -24,10 +24,8 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       # Nothing created yet, should be empty
       response_0 = Directory.get_content_by_path('work')
-      # self.assertEqual(response_0.status_code, 200)
-      print(response_0)
-      print(response_0.data)
-      # self.assertEqual(response_0.json()['content'], [])
+      self.assertEqual(response_0.status_code, 200)
+      self.assertEqual(json.loads(response_0.data)['content'], [])
 
       # Create directory
       response_1 = Directory.create_directory('work/test_directory')
@@ -37,8 +35,8 @@ class DirectoryServiceTestCase(unittest.TestCase):
       # Check if created directory could be detected
       response_2 = Directory.get_content_by_path('work')
       self.assertEqual(response_2.status_code, 200)
-      self.assertEqual(len(response_2.json()), 1)
-      self.assertEqual(response_2.json()['name'], 'test_directory')
+      self.assertEqual(len(json.loads(response_0.data)), 1)
+      self.assertEqual(json.loads(response_0.data)['name'], 'test_directory')
 
   # def test_rename_directory_by_path(self):
   #   with self.app.app_context():
