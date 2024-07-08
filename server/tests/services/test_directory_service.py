@@ -35,8 +35,8 @@ class DirectoryServiceTestCase(unittest.TestCase):
       # Check if created directory could be detected
       response_2 = Directory.get_content_by_path('work')
       self.assertEqual(response_2.status_code, 200)
-      self.assertEqual(len(json.loads(response_0.data)), 1)
-      self.assertEqual(json.loads(response_0.data)['name'], 'test_directory')
+      self.assertEqual(len(json.loads(response_0.data)['content']), 1)
+      self.assertEqual(json.loads(response_0.data)['content'][0]['name'], 'test_directory')
 
   # def test_rename_directory_by_path(self):
   #   with self.app.app_context():
