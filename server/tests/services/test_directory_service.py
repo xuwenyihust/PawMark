@@ -63,8 +63,8 @@ class DirectoryServiceTestCase(unittest.TestCase):
       # Check if renamed directory could be detected
       response_2 = Directory.get_content_by_path('work')
       contents = json.loads(response_2.data)['content']
-      content_original = [x for x in contents if x['name'] == 'work/original_name']
-      content_updated = [x for x in contents if x['name'] == 'work/updated_name']
+      content_original = [x for x in contents if x['name'] == 'original_name']
+      content_updated = [x for x in contents if x['name'] == 'updated_name']
       
       self.assertEqual(len(content_original), 0)
       self.assertEqual(len(content_updated), 1)

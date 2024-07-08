@@ -57,6 +57,8 @@ class Directory:
       json=data
     )
 
+    logger.info(f"Response: {response}")
+
     notebook = DirectoryModel(
       name=directory_path,
       path=directory_path
