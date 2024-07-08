@@ -58,14 +58,16 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 200)
 
       directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
-      print(DirectoryModel.query.all())
-      print(DirectoryModel.query.all()[0].to_dict())
       self.assertIsNotNone(directoryFromDB)
 
       # Check if renamed directory could be detected
       response_2 = Directory.get_content_by_path('work')
-      content_2 = json.loads(response_2.data)['content']
-      self.assertEqual(len(content_2), 1)
-      self.assertEqual(content_2[0]['name'], 'updated_name')
-      self.assertEqual(content_2[0]['path'], 'work/updated_name')
+      contents = json.loads(response_2.data)['content']
+      content_original = [x for x in contents if x['name'] == 'work/original_name']
+      content_updated = [x for x in contents if x['name'] == 'work/updated_name']
+      
+      self.assertEqual(len(content_original), 0)
+      self.assertEqual(len(content_updated), 1)
+      self.assertEqual(content_updated[0]['name'], 'updated_name')
+      self.assertEqual(content_updated[0]['path'], 'work/updated_name')
 
