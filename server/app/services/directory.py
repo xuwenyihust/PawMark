@@ -98,7 +98,7 @@ class Directory:
     # Rename the directory
     try:
       directory.name = new_directory_path
-      directory.path = f'work/{new_directory_path}'
+      directory.path = new_directory_path
       db.session.commit()
     except Exception as e:
       return Response(
