@@ -23,7 +23,7 @@ class Directory:
     response = requests.get(path)
 
     content = response.json()['content']
-    return content
+    return jsonify({'content': content}), 200
 
   @staticmethod
   def create_directory(directory_path: str = None) -> None:
@@ -56,7 +56,7 @@ class Directory:
     except Exception as e:
       return jsonify({'message': 'Error creating directory in DB: ' + str(e)}), 404
 
-    return response.json()
+    return response
 
   @staticmethod
   def rename_directory_by_path(directory_path: str = None, new_directory_path: str = None):

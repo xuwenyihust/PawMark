@@ -50,6 +50,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
       # Rename directory
       response_1 = Directory.rename_directory_by_path('work/original_name', 'work/updated_name')
       print(response_1)
+
       directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
       print(directoryFromDB)
       self.assertIsNotNone(directoryFromDB)
