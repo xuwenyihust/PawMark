@@ -25,7 +25,7 @@ class Directory:
 
     content = response.json()['content']
     return Response(
-      response=json.dumsp({'content': content}), 
+      response=json.dumps({'content': content}), 
       status=200)
 
   @staticmethod
