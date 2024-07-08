@@ -58,6 +58,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 200)
 
       directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
+      print(DirectoryModel.query.all())
       self.assertIsNotNone(directoryFromDB)
 
       # Check if renamed directory could be detected
