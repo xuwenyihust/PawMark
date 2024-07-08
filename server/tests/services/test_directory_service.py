@@ -59,7 +59,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
       print(DirectoryModel.query.all())
-      print(DirectoryModel.query.all()[0])
+      print(DirectoryModel.query.all()[0].to_dict())
       self.assertIsNotNone(directoryFromDB)
 
       # Check if renamed directory could be detected
