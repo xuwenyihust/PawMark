@@ -36,10 +36,26 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertEqual(len(content_1), 1)
       self.assertEqual(content_1[0]['name'], 'test_directory')
 
-      # Create directory with same name, should fail
-      response_1 = Directory.create_directory('work/test_directory')
-      directoryFromDB = DirectoryModel.query.filter_by(path='work/test_directory')
-      print(directoryFromDB)
-      print(response_1)
+  def test_rename_directory_by_path(self):
+    with self.app.app_context():
 
+      content_0 = [x for x in Directory.get_content_by_path('work') if x['name'] == 'updated_name']
+      self.assertEqual(content_0, [])
+
+      # Create directory
+      response_0 = Directory.create_directory('work/original_name')
+      directoryFromDB = DirectoryModel.query.filter_by(path='work/original_name').first()
+      self.assertIsNotNone(directoryFromDB)
+
+      # Rename directory
+      response_1 = Directory.rename_directory_by_path('work/original_name', 'work/updated_name')
+      directoryFromDB = DirectoryModel.query.filter_by(path='work/updated_name').first()
+      print(directoryFromDB)
+      self.assertIsNotNone(directoryFromDB)
+
+      # Check if renamed directory could be detected
+      content_1 = Directory.get_content_by_path('work')
+      self.assertEqual(len(content_1), 1)
+      self.assertEqual(content_1[0]['name'], 'updated_name')
+      self.assertEqual(content_1[0]['path'], 'work/updated_name')
 
