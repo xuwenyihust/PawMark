@@ -57,7 +57,7 @@ class Directory:
       json=data
     )
 
-    logger.info(f"Response: {response}")
+    logger.info(f"Response: {response.content}")
 
     notebook = DirectoryModel(
       name=directory_path,
