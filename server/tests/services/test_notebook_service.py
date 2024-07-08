@@ -81,4 +81,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_delete_notebook(self):
     pass
+
+  def test_rename_notebook(self):
+    pass
       

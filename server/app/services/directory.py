@@ -11,6 +11,18 @@ logger = logging.getLogger(__name__)
 class Directory:
 
   @staticmethod
+  def get_content_by_path(path: str = None):
+    logger.info(f"Getting content with path: {path}")
+     
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
+    
+    path = f"{jupyter_api_path}/{path}"
+    response = requests.get(path)
+
+    return response.json()
+
+  @staticmethod
   def create_directory(directory_path: str = None) -> None:
     logger.info(f"Creating directory with path: {directory_path}")
 
