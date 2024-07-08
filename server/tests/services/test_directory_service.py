@@ -21,15 +21,14 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
   def test_create_directory(self):
     with self.app.app_context():
-
-      content_0 = Directory.get_content_by_path()
+      # Nothing created yet, should be empty
+      content_0 = Directory.get_content_by_path('work')
       self.assertEqual(content_0, [])
-
-
+      # Create directory
       Directory.create_directory('work/test_directory')
       directoryFromDB = DirectoryModel.query.filter_by(path='work/test_directory').first()
       self.assertIsNotNone(directoryFromDB)
-
+      # Check if created directory could be detected
       content_1 = Directory.get_content_by_path('work')
       self.assertEqual(len(content_1), 1)
       self.assertEqual(content_1[0]['name'], 'test_directory')
