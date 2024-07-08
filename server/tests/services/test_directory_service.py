@@ -43,7 +43,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
       status_code_0 = response_0[1]
 
       print(response_0[0])
-      print(response_0['name'])
+      print(response_0[0]['name'])
       print(response_0[0].json())
 
       # content_0 = [x for x in response_0[0].json() if x['name'] == 'updated_name']
