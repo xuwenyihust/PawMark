@@ -21,9 +21,16 @@ class Directory:
     if path is None:
       path = jupyter_default_path
     path = f"{jupyter_api_path}/{path}"
-    response = requests.get(path)
 
-    content = response.json()['content']
+    try:
+      response = requests.get(path)
+      content = response.json()['content']
+      logger.info(f"Content: {content}")
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Error getting content from Jupyter Server: ' + str(e)}), 
+        status=404)
+
     return Response(
       response=json.dumps({'content': content}), 
       status=200)
