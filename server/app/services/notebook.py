@@ -176,9 +176,6 @@ class Notebook:
 
     path = f"{jupyter_api_path}/{notebook_path}"
 
-    content["nbformat"] = 4
-    content["nbformat_minor"] = 4
-
     logger.info("Update notebook content: " + str(content))
 
     response = requests.put(

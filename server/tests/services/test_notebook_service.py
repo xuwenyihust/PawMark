@@ -164,9 +164,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       # Update notebook_1 with updated_cells
       updated_notebook['content']['cells'] = updated_cells
 
-      print(updated_notebook)
-
-      response_2 = Notebook.update_notebook(notebook_path='work/Notebook.ipynb', content=updated_notebook)
+      response_2 = Notebook.update_notebook(notebook_path='work/Notebook.ipynb', content=updated_notebook['content'])
       self.assertEqual(response_2.status_code, 200)
       self.assertEqual(json.loads(response_2.data)['message'], 'Notebook updated')
 
