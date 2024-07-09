@@ -102,7 +102,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       # Create without .ipynb extension
       response_6 = Notebook.create_notebook_with_init_cells(notebook_name='NotebookWithoutExtension', notebook_path='work')
-      self.assertEqual(response_6.status_code, 200)
+      self.assertEqual(response_6.status_code, 201)
 
       notebook_6 = json.loads(response_6.data.decode('utf-8'))
       notebook_name_6 = notebook_6['name']
