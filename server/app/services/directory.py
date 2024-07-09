@@ -75,7 +75,11 @@ class Directory:
         response=({'message': 'Error creating directory in DB: ' + str(e)}), 
         status=404)
 
-    return response
+    return Response(
+      response=response.content, 
+      status=response.status_code,
+      mimetype='application/json'
+    )
 
   @staticmethod
   def rename_directory_by_path(directory_path: str = None, new_directory_path: str = None):
