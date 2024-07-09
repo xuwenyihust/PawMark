@@ -179,6 +179,8 @@ class Notebook:
     content["nbformat"] = 4
     content["nbformat_minor"] = 4
 
+    logger.info("Update notebook content: " + str(content))
+
     response = requests.put(
       path,
       headers={"Content-Type": "application/json"},
@@ -192,7 +194,7 @@ class Notebook:
       logger.error(f"Failed to update notebook in jupyter server: {response.content}")
       return Response(
         response=json.dumps({'message': 'Failed to update notebook in jupyter server'}), 
-        status=404)
+        status=500)
 
     logger.info(f"Notebook updated in jupyter server: {response.content}")
     return Response(

@@ -161,7 +161,10 @@ class NotebookServiceTestCase(unittest.TestCase):
       ]
 
       updated_notebook = notebook_1
+      # Update notebook_1 with updated_cells
       updated_notebook['content']['cells'] = updated_cells
+
+      print(updated_notebook)
 
       response_2 = Notebook.update_notebook(notebook_path='work/Notebook.ipynb', content=updated_notebook)
       self.assertEqual(response_2.status_code, 200)
@@ -182,7 +185,7 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       self.assertEqual(notebook_3['content']['cells'][2]['cell_type'], 'code')
       self.assertEqual(notebook_3['content']['cells'][2]['source'], 'print(x)')
-      
+
   
   def test_delete_notebook(self):
     with self.app.app_context():
