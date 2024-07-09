@@ -29,6 +29,12 @@ def create_notebook():
     notebook_path = data.get('path', None)
     return Notebook.create_notebook_with_init_cells(notebook_name=notebook_name, notebook_path=notebook_path)
 
+@notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['PUT'])
+def update_notebook(notebook_path):
+    data = request.get_json()
+    content = data.get('content', None)
+    return Notebook.update_notebook(notebook_path=notebook_path, content=content)
+    
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['DELETE'])
 def delete_notebook(notebook_path):
     logging.info(f"Deleting notebook with path: {notebook_path}")

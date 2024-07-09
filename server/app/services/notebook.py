@@ -169,6 +169,36 @@ class Notebook:
       status=response.status_code,
       mimetype='application/json')
 
+
+  @staticmethod
+  def update_notebook(notebook_path: str, content: dict):
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+
+    path = f"{jupyter_api_path}/{notebook_path}"
+
+    logger.info("Update notebook content: " + str(content))
+
+    response = requests.put(
+      path,
+      headers={"Content-Type": "application/json"},
+      json={
+        "content": content,
+        "type": "notebook"
+      }
+    )
+
+    if response.status_code != 200:
+      logger.error(f"Failed to update notebook in jupyter server: {response.content}")
+      return Response(
+        response=json.dumps({'message': 'Failed to update notebook in jupyter server'}), 
+        status=500)
+
+    logger.info(f"Notebook updated in jupyter server: {response.content}")
+    return Response(
+      response=json.dumps({'message': 'Notebook updated'}), 
+      status=200)
+
+
   @staticmethod
   def delete_notebook_by_path(notebook_path: str = None):
     jupyter_api_path = app.config['JUPYTER_API_PATH']

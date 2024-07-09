@@ -176,23 +176,22 @@ class NotebookModel {
     if (!updatedContent.metadata.hasOwnProperty('uuid')) {
       updatedContent.metadata.uuid = uuidv4();
     }
+
+    const response = await fetch("http://localhost:5002/notebook/" + path, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'content': updatedContent
+        })
+    });
   
-    const response = await fetch(path, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              content: updatedContent,
-              type: 'notebook'
-          })
-      });
-  
-      if (!response.ok) {
-          throw new Error('Failed to update notebook');
-      }
-      const data = await response.json();
-      return data;
+    if (!response.ok) {
+        throw new Error('Failed to update notebook');
+    }
+    const data = await response.json();
+    return data;
   };
 
   static async renameNotebook(basePath = '', path = '', newName = '') {
