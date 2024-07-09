@@ -104,7 +104,10 @@ class Notebook:
         response=json.dumps({'message': 'Error creating notebook in DB: ' + str(e)}), 
         status=404)
 
-    return Response(response=response.json(), status=200)
+    return Response(
+      response=response.content, 
+      status=200,
+      mimetype='application/json')
 
   @staticmethod
   def create_notebook_with_init_cells(notebook_name: str = None, notebook_path: str = None) -> None:
@@ -158,7 +161,10 @@ class Notebook:
       json=data
     )
 
-    return Response(response=response.json(), status=response.status_code)
+    return Response(
+      response=response.content, 
+      status=response.status_code,
+      mimetype='application/json')
 
   @staticmethod
   def delete_notebook_by_path(notebook_path: str = None):
