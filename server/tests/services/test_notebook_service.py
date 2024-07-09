@@ -45,9 +45,6 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       get_response_0 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
       
-      print(get_response_0)
-      print(get_response_0.data)
-      
       notebook_0 = json.loads(get_response_0.data.decode('utf-8'))
       status_code_0 = get_response_0.status_code
 
@@ -60,7 +57,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       create_response_1 = Notebook.create_notebook_with_init_cells(notebook_name='', notebook_path='')
       self.assertEqual(create_response_1.status_code, 200)
       
-      notebook_1 = json.loads(create_response_1.data)
+      notebook_1 = json.loads(create_response_1.data.decode('utf-8'))
       notebook_name_1 = notebook_1[0]['name']
       notebook_path_1 = notebook_1[0]['path']
 
@@ -69,7 +66,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual('work/' + notebook_name_1, notebook_path_1)
 
       get_response_1 = Notebook.get_notebook_by_path(notebook_path=notebook_path_1)
-      notebook_1 = json.loads(get_response_1.data)[0]
+      notebook_1 = json.loads(get_response_1.data.decode('utf-8'))[0]
       status_code_1 = get_response_1.status_code
 
       self.assertEqual(status_code_1, 200)

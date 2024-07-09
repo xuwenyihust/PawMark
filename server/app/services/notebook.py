@@ -51,7 +51,7 @@ class Notebook:
         status=404)
 
     return Response(
-        response=response.content.decode('utf-8'), 
+        response=response.content, 
         status=200,
         mimetype='application/json'
       )
