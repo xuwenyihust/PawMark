@@ -1,59 +1,116 @@
 from app.models.directory import DirectoryModel
-from flask import jsonify
+from flask import Response
+import json
 from datetime import datetime
 import requests
 from database import db
-import json
-import os
+from flask import current_app as app
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Directory:
 
   @staticmethod
-  def create_directory(directory_path: str = None) -> None:
-    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+  def get_content_by_path(path: str = None):     
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
+    
+    if path is None:
+      path = jupyter_default_path
+    path = f"{jupyter_api_path}/{path}"
 
-    path = f"{jupyter_server_path}/api/contents/{directory_path}"
+    try:
+      response = requests.get(path)
+      content = response.json()['content']
+      logger.info(f"Content: {content}")
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Error getting content from Jupyter Server: ' + str(e)}), 
+        status=404)
+
+    return Response(
+      response=json.dumps({'content': content}), 
+      status=200)
+
+  @staticmethod
+  def create_directory(directory_path: str = None) -> None:
+    logger.info(f"Creating directory with path: {directory_path}")
+
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+
+    if directory_path is None:
+      logger.error("Directory path is None")
+      return Response(
+        response=json.dumsp({'message': 'Directory path is None'}), 
+        status=404)
+
+    path = f"{jupyter_api_path}/{directory_path}"
     data = {
       "type": "directory"
     }
 
-    response = requests.put(
-      path,
-      json=data
-    )
+    try:
+      response = requests.put(
+        path,
+        json=data
+      )
+
+      directory_name = json.loads(response.content)['name']
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Error creating directory in Jupyter Server: ' + str(e)}), 
+        status=404)
 
     notebook = DirectoryModel(
-      name=directory_path,
-      path=f'work/{directory_path}'
+      name=directory_name,
+      path=directory_path
     )
 
-    db.session.add(notebook)
-    db.session.commit()
+    try:
+      db.session.add(notebook)
+      db.session.commit()
+    except Exception as e:
+      return Response(
+        response=({'message': 'Error creating directory in DB: ' + str(e)}), 
+        status=404)
 
-    return response.json()
+    return response
 
   @staticmethod
   def rename_directory_by_path(directory_path: str = None, new_directory_path: str = None):
-    jupyter_server_path = os.environ.get("JUPYTER_SERVER_PATH", "http://localhost:8888")
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
 
-    path = f"{jupyter_server_path}/api/contents/{directory_path}"
+    path = f"{jupyter_api_path}/{directory_path}"
     response = requests.patch(
       path,
       json={"path": f"{new_directory_path}"}
     )
 
     if response.status_code != 200:
-        return jsonify({'message': 'Failed to rename in jupyter server'}), 404
+        return Response(
+          response=({'message': 'Failed to rename in jupyter server'}), 
+          status=404)
 
+    new_directory_name = json.loads(response.content)['name']
     directory = DirectoryModel.query.filter_by(path=directory_path).first()
 
     if directory is None:
         # If no directory was found with the given path, return a 404 error
-        return jsonify({'message': 'Directory not found in DB'}), 404
+        return Response(
+          response=json.dumps({'message': 'Directory not found in DB'}), 
+          status=404)
 
     # Rename the directory
-    directory.name = new_directory_path
-    directory.path = f'work/{new_directory_path}'
-    db.session.commit()
+    try:
+      directory.name = new_directory_name
+      directory.path = new_directory_path
+      db.session.commit()
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Error renaming directory in DB: ' + str(e)}), 
+        status=404)
 
-    return jsonify({'message': 'Directory renamed'}), 200
+    return Response(
+      response=json.dumps({'message': 'Directory renamed'}), 
+      status=200)

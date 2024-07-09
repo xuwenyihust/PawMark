@@ -25,8 +25,9 @@ def get_notebook_by_path(notebook_path):
 @notebook_blueprint.route('/notebook', methods=['POST'])
 def create_notebook():
     data = request.get_json()
-    notebook_name = data.get('notebookName', None)
-    return Notebook.create_notebook_with_init_cells(notebook_name=notebook_name)
+    notebook_name = data.get('name', None)
+    notebook_path = data.get('path', None)
+    return Notebook.create_notebook_with_init_cells(notebook_name=notebook_name, notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['DELETE'])
 def delete_notebook(notebook_path):

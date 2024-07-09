@@ -6,10 +6,10 @@ c = get_config()
   
 c.NotebookApp.tornado_settings = {
     'headers': {
-        'Content-Security-Policy': "frame-ancestors 'self' http://localhost:5001 http://localhost:3000 http://localhost:5002;",
-        'X-Frame-Options': 'ALLOW-FROM http://localhost:5001 http://localhost:3000 http://localhost:5002',
+        'Content-Security-Policy': "frame-ancestors 'self' http://localhost:5001 http://localhost:3000 http://localhost:5002 http://localhost:8888;",
+        'X-Frame-Options': 'ALLOW-FROM http://localhost:5001 http://localhost:3000 http://localhost:5002 http://localhost:8888',
     }
 }
-c.NotebookApp.allow_origin_pat = 'http://localhost:(3000|5001|5002)'  # Allows requests from your React app
+c.NotebookApp.allow_origin_pat = 'http://localhost:(3000|5001|5002|8888)'  # Allows requests from your React app
 c.NotebookApp.allow_credentials = True  # Allows cookies to be sent
 c.NotebookApp.disable_check_xsrf = True

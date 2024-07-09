@@ -10,6 +10,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/xuwenyihust/datapulse)
 ![Apache Spark 3.5.0](https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark)
 [![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?label=License)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)
+[![Integration Test](https://github.com/xuwenyihust/PawMark/actions/workflows/integration-test.yml/badge.svg)](https://github.com/xuwenyihust/PawMark/actions/workflows/integration-test.yml)
 [![Test Web App](https://github.com/xuwenyihust/PawMark/actions/workflows/test-webapp.yml/badge.svg)](https://github.com/xuwenyihust/PawMark/actions/workflows/test-webapp.yml)
 
 ## Summary

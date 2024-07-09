@@ -135,7 +135,8 @@ class NotebookModel {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          'notebookName': path + '/' + notebookName,
+          'name': notebookName,
+          'path': path
         })
     });
 
