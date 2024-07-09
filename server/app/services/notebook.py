@@ -50,10 +50,7 @@ class Notebook:
         response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
         status=404)
 
-    return Response(
-        response=response.json(), 
-        status=200
-      )
+    response
 
   @staticmethod
   def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
