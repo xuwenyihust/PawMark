@@ -122,5 +122,29 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(response_3.status_code, 404)
 
   def test_rename_notebook(self):
-    pass
+    with self.app.app_context():
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
+
+      # Rename Notebook
+      response_1 = Notebook.rename_notebook_by_path(notebook_path='work/Notebook.ipynb', new_notebook_name='NewNotebook.ipynb')
+      self.assertEqual(response_1.status_code, 200)
+      self.assertEqual(json.loads(response_1.data)['message'], 'Notebook renamed')
+
+      # Get Notebook
+      response_2 = Notebook.get_notebook_by_path(notebook_path='work/NewNotebook.ipynb')
+      self.assertEqual(response_2.status_code, 200)
+      self.assertEqual(json.loads(response_2.data)['name'], 'NewNotebook.ipynb')
+      self.assertEqual(json.loads(response_2.data)['path'], 'work/NewNotebook.ipynb')
+
+      notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
+      self.assertIsNone(notebook_1)
+
+      notebook_2 = NotebookModel.query.filter_by(path='work/NewNotebook.ipynb').first()
+      self.assertIsNotNone(notebook_2)
+      self.assertEqual(notebook_2.name, 'NewNotebook.ipynb')
+      self.assertEqual(notebook_2.path, 'work/NewNotebook.ipynb')
+
+      # Rename non-exist Notebook
       
