@@ -51,7 +51,7 @@ class Notebook:
         status=404)
 
     return Response(
-        response=json.dumps(response.json()), 
+        response=json.dumps(response.json().decode('utf-8')), 
         status=200
       )
 
