@@ -48,7 +48,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       print(get_response_0)
       print(get_response_0.data)
       
-      notebook_0 = json.loads(get_response_0.data)
+      notebook_0 = json.loads(get_response_0.data.decode('utf-8'))
       status_code_0 = get_response_0.status_code
 
       self.assertEqual(status_code_0, 200)
