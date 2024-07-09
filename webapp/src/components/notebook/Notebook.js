@@ -115,7 +115,7 @@ function Notebook({
     }
 
     const handleUpdateNotebook = () => {
-        NotebookModel.updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
+        NotebookModel.updateNotebook(notebook.path, notebookState.content).then((data) => {
             setIsNotebookModified(false)
         }).catch((error) => {
             console.error('Failed to save notebook:', error);

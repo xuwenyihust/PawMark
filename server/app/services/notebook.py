@@ -178,14 +178,19 @@ class Notebook:
 
     response = requests.put(
       path,
-      json=content
+      json={
+        "content": content,
+        "type": "notebook"
+      }
     )
 
     if response.status_code != 200:
+      logger.error(f"Failed to update notebook in jupyter server: {response.content}")
       return Response(
         response=json.dumps({'message': 'Failed to update notebook in jupyter server'}), 
         status=404)
 
+    logger.info(f"Notebook updated in jupyter server: {response.content}")
     return Response(
       response=json.dumps({'message': 'Notebook updated'}), 
       status=200)
