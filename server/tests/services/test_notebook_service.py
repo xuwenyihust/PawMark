@@ -40,40 +40,41 @@ class NotebookServiceTestCase(unittest.TestCase):
   def test_create_and_get_notebook(self):
     with self.app.app_context():
       # Create with name but without path & get by path
-      create_response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
-      self.assertEqual(create_response_0.status_code, 200)
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
+      self.assertEqual(response_0.status_code, 200)
 
-      get_response_0 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
       
-      notebook_0 = json.loads(get_response_0.data.decode('utf-8'))
-      status_code_0 = get_response_0.status_code
-
-      self.assertEqual(status_code_0, 200)
-      self.assertEqual(notebook_0['name'], 'Notebook.ipynb')
-      self.assertEqual(notebook_0['path'], 'work/Notebook.ipynb')
-      self.assertEqual(len(notebook_0['content']['cells']), 2)
-
-      # Create without name / path & get by path
-      create_response_1 = Notebook.create_notebook_with_init_cells(notebook_name='', notebook_path='')
-      self.assertEqual(create_response_1.status_code, 200)
-      
-      notebook_1 = json.loads(create_response_1.data.decode('utf-8'))
-      print(notebook_1)
-      notebook_name_1 = notebook_1[0]['name']
-      notebook_path_1 = notebook_1[0]['path']
-
-      self.assertTrue(notebook_name_1.startswith('notebook_'))
-      self.assertTrue(notebook_name_1.endswith('.ipynb'))
-      self.assertEqual('work/' + notebook_name_1, notebook_path_1)
-
-      get_response_1 = Notebook.get_notebook_by_path(notebook_path=notebook_path_1)
-      notebook_1 = json.loads(get_response_1.data.decode('utf-8'))[0]
-      status_code_1 = get_response_1.status_code
+      notebook_1 = json.loads(response_1.data.decode('utf-8'))
+      status_code_1 = response_1.status_code
 
       self.assertEqual(status_code_1, 200)
-      self.assertEqual(notebook_1['name'], notebook_name_1)
-      self.assertEqual(notebook_1['path'], notebook_path_1)
+      self.assertEqual(notebook_1['name'], 'Notebook.ipynb')
+      self.assertEqual(notebook_1['path'], 'work/Notebook.ipynb')
       self.assertEqual(len(notebook_1['content']['cells']), 2)
+
+      # Create without name / path & get by path
+      response_2 = Notebook.create_notebook_with_init_cells(notebook_name='', notebook_path='')
+      self.assertEqual(response_2.status_code, 200)
+      
+      notebook_2 = json.loads(response_2.data.decode('utf-8'))
+      notebook_name_2 = notebook_2['name']
+      notebook_path_2 = notebook_2['path']
+
+      self.assertTrue(notebook_name_2.startswith('notebook_'))
+      self.assertTrue(notebook_name_2.endswith('.ipynb'))
+      self.assertEqual('work/' + notebook_name_2, notebook_path_2)
+
+      response_3 = Notebook.get_notebook_by_path(notebook_path=notebook_path_2)
+      notebooks = json.loads(response_3.data.decode('utf-8'))
+      self.assertEqual(len(notebooks), 1)
+      notebook_3 = notebooks[0]
+      status_code_3 = response_3.status_code
+
+      self.assertEqual(status_code_3, 200)
+      self.assertEqual(notebook_3['name'], notebook_name_2)
+      self.assertEqual(notebook_3['path'], notebook_path_2)
+      self.assertEqual(len(notebook_3['content']['cells']), 2)
 
       # Create with name / path & get by path
 
