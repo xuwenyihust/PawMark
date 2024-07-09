@@ -100,6 +100,26 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook_5['path'], notebook_path_4)
       self.assertEqual(len(notebook_5['content']['cells']), 2)
 
+      # Create without .ipynb extension
+      response_6 = Notebook.create_notebook_with_init_cells(notebook_name='NotebookWithoutExtension', notebook_path='work')
+      self.assertEqual(response_6.status_code, 200)
+
+      notebook_6 = json.loads(response_6.data.decode('utf-8'))
+      notebook_name_6 = notebook_6['name']
+      notebook_path_6 = notebook_6['path']
+      
+      self.assertEqual('NotebookWithoutExtension.ipynb', notebook_name_6)
+      self.assertEqual('work/NotebookWithoutExtension.ipynb', notebook_path_6)
+
+      response_7 = Notebook.get_notebook_by_path(notebook_path=notebook_path_6)
+      notebook_7 = json.loads(response_7.data.decode('utf-8'))
+      status_code_7 = response_7.status_code
+      
+      self.assertEqual(status_code_7, 200)
+      self.assertEqual(notebook_7['name'], notebook_name_6)
+      self.assertEqual(notebook_7['path'], notebook_path_6)
+      self.assertEqual(len(notebook_7['content']['cells']), 2)
+
   def test_delete_notebook(self):
     with self.app.app_context():
       # Create Notebook
