@@ -120,6 +120,27 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook_7['path'], notebook_path_6)
       self.assertEqual(len(notebook_7['content']['cells']), 2)
 
+  def test_update_notebook(self):
+    with self.app.app_context():
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
+
+      # Check Notebook
+      response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      notebook_1 = json.loads(response_1.data.decode('utf-8'))
+      self.assertEqual(notebook_1['name'], 'Notebook.ipynb')
+      self.assertEqual(notebook_1['path'], 'work/Notebook.ipynb')
+      self.assertEqual(len(notebook_1['content']['cells']), 2)
+
+      self.assertEqual(notebook_1['content']['cells'][0]['cell_type'], 'markdown')
+      self.assertEqual(notebook_1['content']['cells'][0]['source'], '# My Notebook')
+
+      self.assertEqual(notebook_1['content']['cells'][1]['cell_type'], 'code')
+      self.assertEqual(notebook_1['content']['cells'][1]['source'], '# SparkSession: spark is already created\nspark')
+
+      # Update Notebook
+  
   def test_delete_notebook(self):
     with self.app.app_context():
       # Create Notebook
