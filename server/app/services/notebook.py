@@ -207,9 +207,13 @@ class Notebook:
     jupyter_api_path = app.config['JUPYTER_API_PATH']
 
     path = f"{jupyter_api_path}/{notebook_path}"
+
+    parent_path = '/'.join(notebook_path.split('/')[:-1])
+    new_path = f"{parent_path}/{new_notebook_name}"
+
     response = requests.patch(
       path,
-      json={"path": f"work/{new_notebook_name}"}
+      json={"path": new_path}
     )
 
     if response.status_code != 200:
@@ -225,9 +229,7 @@ class Notebook:
           response=json.dumps({'message': 'Notebook not found in DB'}), 
           status=404)
 
-    # Rename the notebook
-    notebook.name = new_notebook_name
-    notebook.path = f'work/{new_notebook_name}'
+    notebook.path = new_path
     try:
       db.session.commit()
     except Exception as e:
