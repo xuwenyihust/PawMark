@@ -34,6 +34,7 @@ class Notebook:
       path = f"{jupyter_api_path}/{notebook_path}"
       response = requests.get(path)
       if response.status_code != 200:
+        logger.error(f"Error getting notebook from Jupyter Server: {response.content}")
         return Response(
           response=json.dumps({'message': 'Error getting notebook from Jupyter Server'}), 
           status=404)
