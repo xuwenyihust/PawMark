@@ -61,9 +61,6 @@ class Notebook:
   def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
     logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path}")
 
-    if not notebook_name.endswith('.ipynb'):
-      notebook_name = f"{notebook_name}.ipynb"
-
     jupyter_api_path = app.config['JUPYTER_API_PATH']
 
     path = f"{jupyter_api_path}/{notebook_path}/{notebook_name}"
@@ -122,6 +119,8 @@ class Notebook:
 
     if not notebook_name or notebook_name == "":
       notebook_name = f"notebook_{datetime.now().strftime('%Y%m%d%H%M%S')}.ipynb"
+    if not notebook_name.endswith('.ipynb'):
+      notebook_name = f"{notebook_name}.ipynb"
     if not notebook_path or notebook_path == "":
       notebook_path = jupyter_default_path
 
