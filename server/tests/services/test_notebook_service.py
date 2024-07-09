@@ -81,7 +81,6 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(status_code_3, 404)
 
       # Create with name / path & get by path
-
       response_4 = Notebook.create_notebook_with_init_cells(notebook_name='NotebookWithPath.ipynb', notebook_path='work')
       self.assertEqual(response_4.status_code, 200)
       
@@ -102,7 +101,24 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(len(notebook_5['content']['cells']), 2)
 
   def test_delete_notebook(self):
-    pass
+    # Create Notebook
+    response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+    self.assertEqual(response_0.status_code, 200)
+
+    # Delete Notebook
+    response_1 = Notebook.delete_notebook_by_path(notebook_path='work/Notebook.ipynb')
+    self.assertEqual(response_1.status_code, 200)
+
+    # Get Notebook
+    response_2 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+    self.assertEqual(response_2.status_code, 404)
+
+    notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
+    self.assertIsNone(notebook_1)
+
+    # Delete non-exist Notebook
+    response_3 = Notebook.delete_notebook_by_path(notebook_path='work/Notebook666.ipynb')
+    self.assertEqual(response_3.status_code, 404)
 
   def test_rename_notebook(self):
     pass
