@@ -229,6 +229,8 @@ class Notebook:
           response=json.dumps({'message': 'Notebook not found in DB'}), 
           status=404)
 
+    # Rename the notebook
+    notebook.name = new_notebook_name
     notebook.path = new_path
     try:
       db.session.commit()
