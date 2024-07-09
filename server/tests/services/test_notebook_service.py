@@ -74,13 +74,32 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook_3['path'], notebook_path_2)
       self.assertEqual(len(notebook_3['content']['cells']), 2)
 
-      # Create with name / path & get by path
-
       # Get non-exist path
       get_response_3 = Notebook.get_notebook_by_path(notebook_path='work/Notebook666.ipynb')
       status_code_3 = get_response_3.status_code
 
       self.assertEqual(status_code_3, 404)
+
+      # Create with name / path & get by path
+
+      response_4 = Notebook.create_notebook_with_init_cells(notebook_name='NotebookWithPath.ipynb', notebook_path='work')
+      self.assertEqual(response_4.status_code, 200)
+      
+      notebook_4 = json.loads(response_4.data.decode('utf-8'))
+      notebook_name_4 = notebook_4['name']
+      notebook_path_4 = notebook_4['path']
+
+      self.assertEqual('NotebookWithPath.ipynb', notebook_name_4)
+      self.assertEqual('work/NotebookWithPath.ipynb', notebook_path_4)
+
+      response_5 = Notebook.get_notebook_by_path(notebook_path=notebook_path_4)
+      notebook_5 = json.loads(response_5.data.decode('utf-8'))
+      status_code_5 = response_5.status_code
+
+      self.assertEqual(status_code_5, 200)
+      self.assertEqual(notebook_5['name'], notebook_name_4)
+      self.assertEqual(notebook_5['path'], notebook_path_4)
+      self.assertEqual(len(notebook_5['content']['cells']), 2)
 
   def test_delete_notebook(self):
     pass
