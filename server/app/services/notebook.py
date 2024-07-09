@@ -178,8 +178,11 @@ class Notebook:
 
     response = requests.put(
       path,
+      headers={"Content-Type": "application/json"},
       json={
         "content": content,
+        "nbformat": 4,
+        "nbformat_minor": 4,
         "type": "notebook"
       }
     )
