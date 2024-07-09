@@ -58,6 +58,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(create_response_1.status_code, 200)
       
       notebook_1 = json.loads(create_response_1.data.decode('utf-8'))
+      print(notebook_1)
       notebook_name_1 = notebook_1[0]['name']
       notebook_path_1 = notebook_1[0]['path']
 
