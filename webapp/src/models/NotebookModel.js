@@ -176,17 +176,6 @@ class NotebookModel {
     if (!updatedContent.metadata.hasOwnProperty('uuid')) {
       updatedContent.metadata.uuid = uuidv4();
     }
-  
-    // const response = await fetch(path, {
-    //       method: 'PUT',
-    //       headers: {
-    //           'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-    //           content: updatedContent,
-    //           type: 'notebook'
-    //       })
-    //   });
 
     const response = await fetch("http://localhost:5002/notebook/" + path, {
         method: 'PUT',
