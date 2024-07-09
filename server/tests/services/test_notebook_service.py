@@ -4,6 +4,7 @@ from run import create_app
 from database import db
 from app.models.notebook import NotebookModel
 from app.services.notebook import Notebook
+from app.services.directory import Directory
 import json
 
 class NotebookServiceTestCase(unittest.TestCase):
@@ -232,4 +233,43 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook_2.path, 'work/NewNotebook.ipynb')
 
       # Rename non-exist Notebook
+
+  def test_move_notebook(self):
+    with self.app.app_context():
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
+
+      # Move Notebook to non-exist path
+      response_1 = Notebook.move_notebook(notebook_path='work/Notebook.ipynb', new_notebook_path='work/NotebookFolder/Notebook.ipynb')
+      self.assertEqual(response_1.status_code, 404)
+
+      # Create path
+      response_2 = Directory.create_directory('work/NotebookFolder')
+      self.assertEqual(response_2.status_code, 201)
+
+      # Move Notebook
+      response_3 = Notebook.move_notebook(notebook_path='work/Notebook.ipynb', new_notebook_path='work/NotebookFolder/Notebook.ipynb')
+      self.assertEqual(response_3.status_code, 200)
+
+      # Get Notebook
+      response_4 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_4.status_code, 404)
+
+      response_5 = Notebook.get_notebook_by_path(notebook_path='work/NotebookFolder/Notebook.ipynb')
+      self.assertEqual(response_5.status_code, 200)
+      self.assertEqual(json.loads(response_5.data)['name'], 'Notebook.ipynb')
+      self.assertEqual(json.loads(response_5.data)['path'], 'work/NotebookFolder/Notebook.ipynb')
+
+      notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
+      self.assertIsNone(notebook_1)
+
+      notebook_2 = NotebookModel.query.filter_by(path='work/NotebookFolder/Notebook.ipynb').first()
+      self.assertIsNotNone(notebook_2)
+      self.assertEqual(notebook_2.name, 'Notebook.ipynb')
+      self.assertEqual(notebook_2.path, 'work/NotebookFolder/Notebook.ipynb')
+
+      # Move non-exist Notebook
+      response_6 = Notebook.move_notebook(notebook_path='work/Notebook666.ipynb', new_notebook_path='work/NotebookFolder/Notebook666.ipynb')
+      self.assertEqual(response_6.status_code, 404)
       

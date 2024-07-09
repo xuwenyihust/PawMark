@@ -41,7 +41,16 @@ def delete_notebook(notebook_path):
     return Notebook.delete_notebook_by_path(notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['PATCH'])
-def rename_notebook(notebook_path):
+def rename_or_move_notebook(notebook_path):
     data = request.get_json()
-    new_notebook_name = data.get('newName', None)
-    return Notebook.rename_notebook_by_path(notebook_path=notebook_path, new_notebook_name=new_notebook_name)
+    if 'newName' in data:
+        logging.info(f"Renaming notebook with path: {notebook_path} to {data['newName']}")
+        new_notebook_name = data.get('newName', None)
+        return Notebook.rename_notebook_by_path(notebook_path=notebook_path, new_notebook_name=new_notebook_name)
+    elif 'newPath' in data:
+        logging.info(f"Moving notebook with path: {notebook_path} to {data['newPath']}")
+        new_notebook_path = data.get('newPath', None)
+        return Notebook.move_notebook(notebook_path=notebook_path, new_notebook_path=new_notebook_path)
+
+    
+

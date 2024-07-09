@@ -274,3 +274,40 @@ class Notebook:
     return Response(
       response=json.dumps({'message': 'Notebook renamed'}), 
       status=200)
+  
+  @staticmethod
+  def move_notebook(notebook_path: str = None, new_notebook_path: str = None):
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+
+    path = f"{jupyter_api_path}/{notebook_path}"
+
+    response = requests.patch(
+      path,
+      json={"path": new_notebook_path}
+    )
+
+    if response.status_code != 200:
+        return Response(
+          response=json.dumps({'message': 'Failed to move in jupyter server'}), 
+          status=404)
+
+    notebook = NotebookModel.query.filter_by(path=notebook_path).first()
+
+    if notebook is None:
+        # If no notebook was found with the given path, return a 404 error
+        return Response(
+          response=json.dumps({'message': 'Notebook not found in DB'}), 
+          status=404)
+
+    # Move the notebook
+    notebook.path = new_notebook_path
+    try:
+      db.session.commit()
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Notebook not found in DB'}), 
+        status=404)
+
+    return Response(
+      response=json.dumps({'message': 'Notebook moved'}), 
+      status=200)

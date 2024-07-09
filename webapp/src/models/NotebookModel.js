@@ -216,14 +216,13 @@ class NotebookModel {
 
   static async moveNotebook(basePath = '', path = '', destination = '') {
     console.log("Moving notebook at path:", basePath + '/' + path, "to:", destination);
-    const response = await fetch(basePath + '/' + path, {
+    const response = await fetch("http://localhost:5002/notebook/" + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          // 'type': 'notebook',
-          'path': destination
+            'newPath': destination
         })
     });
 
