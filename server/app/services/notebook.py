@@ -176,13 +176,14 @@ class Notebook:
 
     path = f"{jupyter_api_path}/{notebook_path}"
 
+    content["nbformat"] = 4
+    content["nbformat_minor"] = 4
+
     response = requests.put(
       path,
       headers={"Content-Type": "application/json"},
       json={
         "content": content,
-        "nbformat": 4,
-        "nbformat_minor": 4,
         "type": "notebook"
       }
     )
