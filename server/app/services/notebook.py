@@ -50,9 +50,12 @@ class Notebook:
         response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
         status=404)
 
+    logger.info(f"Notebook found in DB: {response.content.decode('utf-8')}")
+
     return Response(
         response=response.content.decode('utf-8'), 
-        status=200
+        status=200,
+        mimetype='application/json'
       )
 
   @staticmethod
