@@ -10,7 +10,7 @@ const RenameDialog = ({
   handleRename
 }) => {
 
-  const [newName, setNewName] = useState(NotebookModel.getNameWithoutExtension(file.name));
+  const [newName, setNewName] = useState('');
 
   const handleInputChange = (event) => {
     setNewName(event.target.value);
