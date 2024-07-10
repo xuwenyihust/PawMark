@@ -2,18 +2,25 @@ class SessionModel {
   constructor() {
   }
 
-  static async getSession(basePath = '', notebookPath = '') {
+  static async getSession(notebookPath = '') {
     try {
-        const response = await fetch(basePath + '/api/sessions', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
+        const response = await fetch("http://localhost:5002/session/" + notebookPath, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          }
         });
+
+        if (response.status === 404) {
+            console.log('Session not found');
+            return null;
+        }
+
         const session = await response.json();
-        const associatedSession = session.find(session => session.notebook.path === basePath + '/' + notebookPath);
-        const kernelId = associatedSession
-            .kernel.id;
+        console.log('Session:', session);
+        // The kernel ID is in the 'id' property of the 'kernel' object
+        const kernelId = session.kernel.id;
+
         return kernelId;
     } catch (error) {
         console.error('Failed to get session:', error);

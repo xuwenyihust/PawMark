@@ -68,7 +68,7 @@ function Notebook({
             });
             setCurrentName(notebook.name);
         }
-        SessionModel.getSession(jupyterBaseUrl, notebook.path)
+        SessionModel.getSession(notebook.path)
             .then((kernelId) => {
                 setKernelId(kernelId);
             });
