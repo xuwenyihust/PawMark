@@ -1,22 +1,28 @@
-
-
 class SessionModel {
   constructor() {
   }
 
+  static async getSession(basePath = '', notebookPath = '') {
+    try {
+        const response = await fetch(basePath + '/api/sessions', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const session = await response.json();
+        const associatedSession = session.find(session => session.notebook.path === basePath + '/' + notebookPath);
+        const kernelId = associatedSession
+            .kernel.id;
+        return kernelId;
+    } catch (error) {
+        console.error('Failed to get session:', error);
+        return null;
+    }
+  };
+
   static async createSession(notebookPath = '') {
     try {
-        // const response = await fetch(basePath + '/api/sessions', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         notebook: { path: `${basePath}/${notebookPath}` },
-        //         kernel: { id: null, name: 'python3' },
-        //     }),
-        // });
-
         const response = await fetch("http://localhost:5002/session", {
           method: 'POST',
           headers: {
