@@ -3,7 +3,6 @@ import { useState } from 'react';
 import NotebookModel from '../../../../models/NotebookModel';
 
 const RenameDialog = ({
-  baseUrl, 
   file, 
   renameDialogOpen, 
   setRenameDialogOpen,
@@ -11,7 +10,7 @@ const RenameDialog = ({
   handleRename
 }) => {
 
-  const [newName, setNewName] = useState(file.name);
+  const [newName, setNewName] = useState(NotebookModel.getNameWithoutExtension(file.name));
 
   const handleInputChange = (event) => {
     setNewName(event.target.value);
@@ -68,7 +67,7 @@ const RenameDialog = ({
         </Button>
         <Button 
           style={{ color: 'lightgrey' }}
-          onClick={(event) => {
+          onClick={() => {
             setRenameDialogOpen(false);
             handleMoreClose();
             file.type === 'directory' ? 

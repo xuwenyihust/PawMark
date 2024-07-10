@@ -107,7 +107,7 @@ function Notebook({
                 path: 'work/' + currentName,
             }
         });
-        NotebookModel.renameNotebook(baseUrl, notebook.path, currentName).then((data) => {
+        NotebookModel.renameNotebook(notebook.path, currentName).then((data) => {
             console.log('Notebook name saved:', data);
         }).catch((error) => {
             console.error('Failed to save notebook name:', error);

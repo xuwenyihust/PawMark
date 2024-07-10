@@ -3,6 +3,7 @@ import { CgMoreVerticalAlt } from "react-icons/cg";
 import { Menu, MenuItem } from '@mui/material';
 import config from '../../../../config';
 import DirectoryModel from '../../../../models/DirectoryModel';
+import NotebookModel from '../../../../models/NotebookModel';
 import DeleteDialog from './DeleteDialog';
 import RenameDialog from './RenameDialog';
 
@@ -38,7 +39,11 @@ const MoreButton = ({
 
   const handleRename = async (file, newName) => {
     try {
-      await DirectoryModel.renameItem(currentPath + '/'  + file.name, currentPath + '/' + newName);
+      if (file.type === 'notebook') {
+        await NotebookModel.renameNotebook(currentPath + '/' + file.name, newName);
+      } else {
+        await DirectoryModel.renameDirectory(currentPath + '/'  + file.name, currentPath + '/' + newName);
+      }
     } catch (error) {
       console.error('Failed to rename item:', error);
     }
@@ -98,7 +103,6 @@ const MoreButton = ({
             Rename
         </MenuItem>
         <RenameDialog 
-          baseUrl={baseUrl}
           file={file}
           renameDialogOpen={renameDialogOpen}
           setRenameDialogOpen={setRenameDialogOpen}

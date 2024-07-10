@@ -71,7 +71,7 @@ class DirectoryModel {
     }
   }; 
 
-  static async renameItem(oldPath='', newPath='') {
+  static async renameDirectory(oldPath='', newPath='') {
     console.log("Renaming item at path:", oldPath, "to", newPath);
     const response = await fetch("http://localhost:5002/directory/" + oldPath, {
         method: 'PATCH',

@@ -243,6 +243,8 @@ class Notebook:
     parent_path = '/'.join(notebook_path.split('/')[:-1])
     new_path = f"{parent_path}/{new_notebook_name}"
 
+    logger.info(f"Renaming notebook with path: {notebook_path} to {new_path}")
+
     response = requests.patch(
       path,
       json={"path": new_path}
