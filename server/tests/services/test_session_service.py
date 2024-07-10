@@ -18,8 +18,11 @@ class SessionServiceTestCase(unittest.TestCase):
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
       self.assertEqual(response_0.status_code, 200)
 
-      print(">>>>>>>")
-      print(response_0.data)
+      notebook = json.loads(response_0.data.decode('utf-8'))
+      notebook_path = notebook['path']
 
       # Create session
+      response_1 = Session.create_session(notebook_path)
+      self.assertEqual(response_1.status_code, 200)
 
+      print(response_1.data)
