@@ -21,8 +21,13 @@ class Kernel:
         response=json.dumps({'message': 'Error restarting kernel: ' + str(e)}), 
         status=404)
     
+    if response.status_code != 200:
+      return Response(
+        response=json.dumps({'message': 'Error restarting kernel'}), 
+        status=404)
+    
     return Response(
-      response=response.text, 
+      response=response.content, 
       status=200,
       mimetype='application/json'
     )
