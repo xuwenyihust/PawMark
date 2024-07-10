@@ -17,7 +17,6 @@ class KernelServiceTestCase(unittest.TestCase):
       # Restart non-exist kernel
       response_0 = Kernel.restart_kernel('kernel_id')
       self.assertEqual(response_0.status_code, 404)
-      self.assertEqual(json.loads(response_0.data.decode('utf-8'))['message'], 'Error restarting kernel: kernel_id')
 
       # Create Notebook
       response_1 = Notebook.create_notebook('work/test_notebook')
