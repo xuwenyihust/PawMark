@@ -16,6 +16,7 @@ class KernelServiceTestCase(unittest.TestCase):
     with self.app.app_context():
       # Restart non-exist kernel
       response_0 = Kernel.restart_kernel('kernel_id')
+      print(response_0.data)
       self.assertEqual(response_0.status_code, 200)
       self.assertEqual(json.loads(response_0.data.decode('utf-8'))['message'], 'Error restarting kernel: kernel_id')
 

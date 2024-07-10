@@ -22,7 +22,7 @@ class Kernel:
         status=404)
     
     return Response(
-      response=response.content, 
+      response=response.json(), 
       status=200,
       mimetype='application/json'
     )
