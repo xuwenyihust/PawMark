@@ -5,6 +5,7 @@ class Config(object):
     JUPYTER_SERVER_PATH = 'http://localhost:8888'
     JUPYTER_CONTENT_API_PATH = JUPYTER_SERVER_PATH + '/api/contents'
     JUPYTER_SESSION_API_PATH = JUPYTER_SERVER_PATH + '/api/sessions'
+    JUPYTER_KERNEL_API_PATH = JUPYTER_SERVER_PATH + '/api/kernels'
     JUPYTER_DEFAULT_PATH = 'work'
 
 class ProductionConfig(Config):
@@ -16,6 +17,7 @@ class DevelopmentConfig(Config):
     JUPYTER_SERVER_PATH = 'http://localhost:8888'
     JUPYTER_CONTENT_API_PATH = JUPYTER_SERVER_PATH + '/api/contents'
     JUPYTER_SESSION_API_PATH = JUPYTER_SERVER_PATH + '/api/sessions'
+    JUPYTER_KERNEL_API_PATH = JUPYTER_SERVER_PATH + '/api/kernels'
     JUPYTER_DEFAULT_PATH = 'work'
 
 class TestingConfig(Config):
@@ -24,6 +26,7 @@ class TestingConfig(Config):
     JUPYTER_SERVER_PATH = 'http://notebook:8888'
     JUPYTER_CONTENT_API_PATH = JUPYTER_SERVER_PATH + '/api/contents'
     JUPYTER_SESSION_API_PATH = JUPYTER_SERVER_PATH + '/api/sessions'
+    JUPYTER_KERNEL_API_PATH = JUPYTER_SERVER_PATH + '/api/kernels'
     JUPYTER_DEFAULT_PATH = 'work'
 
 class IntegrationTestingConfig(Config):
@@ -32,4 +35,5 @@ class IntegrationTestingConfig(Config):
     JUPYTER_SERVER_PATH = 'http://localhost:8888'
     JUPYTER_CONTENT_API_PATH = JUPYTER_SERVER_PATH + '/api/contents'
     JUPYTER_SESSION_API_PATH = JUPYTER_SERVER_PATH + '/api/sessions'
+    JUPYTER_KERNEL_API_PATH = JUPYTER_SERVER_PATH + '/api/kernels'
     JUPYTER_DEFAULT_PATH = 'work'

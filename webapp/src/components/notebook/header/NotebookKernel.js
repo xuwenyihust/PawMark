@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { JupyterKernelIcon } from '@datalayer/icons-react';
 import { VscTriangleDown } from "react-icons/vsc";
 import LoadingButton from '@mui/lab/LoadingButton';
-import NotebookModel from '../../../models/NotebookModel';
-import config from '../../../config';
+import KernelModel from '../../../models/KernelModel';
 
 const NotebookKernel = ({
   kernelId,
@@ -21,7 +20,7 @@ const NotebookKernel = ({
       setIsRestarting(true);
       setMenuOpen(false);
       setSparkAppId(null);
-      await NotebookModel.restartKernel(config.jupyterBaseUrl, kernelId);
+      await KernelModel.restartKernel(kernelId);
       setIsRestarting(false);
     } catch (error) {
       console.error('Failed to restart kernel:', error);
