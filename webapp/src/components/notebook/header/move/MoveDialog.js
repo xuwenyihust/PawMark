@@ -15,7 +15,7 @@ const MoveDialog = ({
 
   const jupyterBaseUrl= `${config.jupyterBaseUrl}`
   const baseUrl = `${jupyterBaseUrl}/api/contents`
-  const directoryUrl = `${baseUrl}/work`
+  const directoryUrl = `/work`
 
   const [directories, setDirectories] = useState([]);
   const [destinationDirectory, setDestinationDirectory] = useState('work');

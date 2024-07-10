@@ -2,6 +2,7 @@ import { CellStatus } from '../components/notebook/content/cell/CellStatus';
 import { OutputType } from '../components/notebook/content/cell/result/OutputType';
 import { CellExecuteResultType } from "../components/notebook/content/cell/CellExecuteResultType";
 import { v4 as uuidv4 } from 'uuid';
+import SessionModel from "./SessionModel"
 
 
 class NotebookModel {
@@ -69,41 +70,41 @@ class NotebookModel {
     }
   };
 
-  static async createSession(basePath = '', notebookPath = '') {
-    try {
-        const response = await fetch(basePath + '/api/sessions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                notebook: { path: `${basePath}/${notebookPath}` },
-                kernel: { id: null, name: 'python3' },
-            }),
-        });
+  // static async createSession(basePath = '', notebookPath = '') {
+  //   try {
+  //       const response = await fetch(basePath + '/api/sessions', {
+  //           method: 'POST',
+  //           headers: {
+  //               'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({
+  //               notebook: { path: `${basePath}/${notebookPath}` },
+  //               kernel: { id: null, name: 'python3' },
+  //           }),
+  //       });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //           throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
 
-        // The response will contain the session data
-        const session = await response.json();
-        console.log('Session created:', session);
-        // The kernel ID is in the 'id' property of the 'kernel' object
-        const kernelId = session.kernel.id;
+  //       // The response will contain the session data
+  //       const session = await response.json();
+  //       console.log('Session created:', session);
+  //       // The kernel ID is in the 'id' property of the 'kernel' object
+  //       const kernelId = session.kernel.id;
 
-        // Return the kernal ID
-        return kernelId;
-    } catch (error) {
-        console.error('Failed to create session:', error);
-    }
-  };
+  //       // Return the kernal ID
+  //       return kernelId;
+  //   } catch (error) {
+  //       console.error('Failed to create session:', error);
+  //   }
+  // };
 
   static async handleWebSocketError(error, baseUrl, notebook, cell, cellStatus, setCellStatus) {
     console.error('WebSocket connection error:', error);
     // Try to recreate the session
     try {
-      const newKernelId = await NotebookModel.createSession(baseUrl, notebook.path);
+      const newKernelId = await SessionModel.createSession(notebook.path);
       // Try to run the cell again
       const result = await NotebookModel.runCell(baseUrl, cell, newKernelId, cellStatus, setCellStatus);
       return { newKernelId, result };
@@ -398,7 +399,7 @@ class NotebookModel {
             // If there's no kernel ID, create a new session
             if (!kernelId) {
                 setCellStatus(i, CellStatus.INITIALIZING);
-                newKernelId = await NotebookModel.createSession(jupyterBaseUrl, notebook.path);
+                newKernelId = await SessionModel.createSession(notebook.path);
                 setKernelId(newKernelId);
             }
             // Call the API to run the cell

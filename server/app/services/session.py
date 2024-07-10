@@ -12,6 +12,7 @@ class Session:
 
   @staticmethod
   def create_session(notebook_path: str) -> None:
+    logger.info(f"Creating session for {notebook_path}")
     jupyter_api_path = app.config['JUPYTER_SESSION_API_PATH']
 
     data = {
@@ -30,6 +31,7 @@ class Session:
         json=data
       )
     except Exception as e:
+      logger.error(f"Met exception creating session: {e}")
       return Response(
         response=json.dumps({'message': 'Error creating session in Jupyter Server: ' + str(e)}), 
         status=404)
