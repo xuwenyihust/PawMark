@@ -41,13 +41,14 @@ const MoreButton = ({
     try {
       if (file.type === 'notebook') {
         await NotebookModel.renameNotebook(currentPath + '/' + file.name, newName);
+        setRefreshKey(oldKey => oldKey + 1);
       } else {
         await DirectoryModel.renameDirectory(currentPath + '/'  + file.name, currentPath + '/' + newName);
+        setRefreshKey(oldKey => oldKey + 1);
       }
     } catch (error) {
       console.error('Failed to rename item:', error);
     }
-    setRefreshKey(oldKey => oldKey + 1);
   }
 
   return (
