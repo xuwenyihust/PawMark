@@ -80,6 +80,39 @@ class Directory:
       status=response.status_code,
       mimetype='application/json'
     )
+  
+  @staticmethod
+  def delete_directory_by_path(directory_path: str = None):
+    jupyter_api_path = app.config['JUPYTER_API_PATH']
+
+    path = f"{jupyter_api_path}/{directory_path}"
+    response = requests.delete(path)
+
+    if response.status_code != 204:
+      return Response(
+        response=({'message': 'Failed to delete in jupyter server'}), 
+        status=404)
+    
+    directory = DirectoryModel.query.filter_by(path=directory_path).first()
+
+    if directory is None:
+      # If no directory was found with the given path, return a 404 error
+      return Response(
+        response=json.dumps({'message': 'Directory not found in DB'}), 
+        status=404)
+    
+    # Delete the directory
+    try:
+      db.session.delete(directory)
+      db.session.commit()
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Error deleting directory in DB: ' + str(e)}), 
+        status=404)
+    
+    return Response(
+      response=json.dumps({'message': 'Directory deleted'}), 
+      status=200)
 
   @staticmethod
   def rename_directory_by_path(directory_path: str = None, new_directory_path: str = None):

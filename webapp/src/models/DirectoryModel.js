@@ -80,30 +80,27 @@ class DirectoryModel {
       });
   }
 
-  static async deleteItem(basePath = '', item = '') {
-    const itemPath = basePath + item.path;
-    if (item.type === 'notebook') {
-        NotebookModel.deleteNotebook(item.path);
+  static async deleteDirectory(item = '') {
+    const itemPath = item.path;
+    
+    let folderItems = [];
+    await DirectoryModel.getChildren(itemPath)
+        .then((data) => {
+            folderItems = data;
+        })
+    if (folderItems.length > 0) {
+        alert('Directory is not empty');
     } else {
-        let folderItems = [];
-        await DirectoryModel.getChildren(itemPath)
-            .then((data) => {
-                folderItems = data;
-            })
-        if (folderItems.length > 0) {
-            alert('Directory is not empty');
-        } else {
-            console.log("Deleting item at path:", itemPath);
-            try {
-                const response = await fetch(itemPath, {
-                    method: 'DELETE'
-                });
-            } catch (error) {
-                alert(`Failed to delete directory: ${error.message}`);
-            }
+        console.log("Deleting item at path:", itemPath);
+        try {
+            // const response = await fetch(itemPath, {
+            //     method: 'DELETE'
+            // });
+        } catch (error) {
+            alert(`Failed to delete directory: ${error.message}`);
         }
     }
-}
+  }
   
 }
 

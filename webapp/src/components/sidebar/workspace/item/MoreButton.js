@@ -30,7 +30,7 @@ const MoreButton = ({
   const handleDelete = async (baseUrl, file) => {
     console.log('Delete:', file);
     try {
-      await DirectoryModel.deleteItem(baseUrl, file);
+      await DirectoryModel.deleteDirectory(file);
     } catch (error) {
       console.error('Failed to delete item:', error);
     }
