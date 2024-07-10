@@ -27,7 +27,7 @@ class KernelServiceTestCase(unittest.TestCase):
 
       # Create Session
       response_2 = Session.create_session(notebook_path_1)
-      self.assertEqual(response_2.status_code, 201)
+      self.assertEqual(response_2.status_code, 200)
       session = json.loads(response_2.data.decode('utf-8'))
       kernelId = session['kernel']['id']
 
