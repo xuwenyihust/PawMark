@@ -48,7 +48,7 @@ const App = () => {
   // Workspace
   useEffect(() => {
     if (openWorkspaceDrawer) {
-        DirectoryModel.getFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
+        DirectoryModel.getChildren(currentPath) // Fetch files from the root or specify a path
             .then(setWorkspaceFiles)
             .catch(error => console.error('Failed to fetch files:', error));
         console.log('Fetched workspace files:', workspaceFiles);

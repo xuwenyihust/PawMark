@@ -22,7 +22,7 @@ const MoveDialog = ({
 
   useEffect(() => {
     const fetchDirectories = async () => {
-      const items = await DirectoryModel.getAllItems(directoryUrl);
+      const items = await DirectoryModel.getSubDirectories(directoryUrl);
       setDirectories(items);
     };
 
