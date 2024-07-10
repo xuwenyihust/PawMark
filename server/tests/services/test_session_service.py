@@ -19,7 +19,7 @@ class SessionServiceTestCase(unittest.TestCase):
       self.assertEqual(response_0.status_code, 200)
 
       print(">>>>>>>")
-      print(response_0)
+      print(response_0.data)
 
       # Create session
 
