@@ -51,7 +51,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       # Delete directory
       response_1 = Directory.delete_directory_by_path('work/test_directory')
-      self.assertEqual(response_1.status_code, 204)
+      self.assertEqual(response_1.status_code, 200)
 
       # Check if deleted directory could not be detected
       response_2 = Directory.get_content_by_path('work')
