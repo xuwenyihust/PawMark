@@ -34,5 +34,3 @@ class KernelServiceTestCase(unittest.TestCase):
       # Restart kernel
       response_3 = Kernel.restart_kernel(kernelId)
       self.assertEqual(response_3.status_code, 200)
-
-      print(response_3.data)

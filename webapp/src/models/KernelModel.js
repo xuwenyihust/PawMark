@@ -2,13 +2,14 @@ class KernelModel {
   constructor() {
   }
 
-  static async restartKernel(kernelId = '') {
+  static async restartKernel(basePath = '', kernelId = '') {
     try {
-        await fetch(`${basePath}/api/kernels/${kernelId}/restart`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
+        // Wait for the kernel to restart
+        await fetch(`http://localhost:5002/kernel/restart/${kernelId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
         });
 
         let status;
@@ -29,3 +30,5 @@ class KernelModel {
   };
 
 }
+
+export default KernelModel;
