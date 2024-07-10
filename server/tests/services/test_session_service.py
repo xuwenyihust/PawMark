@@ -25,4 +25,8 @@ class SessionServiceTestCase(unittest.TestCase):
       response_1 = Session.create_session(notebook_path)
       self.assertEqual(response_1.status_code, 200)
 
-      print(response_1.data)
+      session = json.loads(response_1.data.decode('utf-8'))
+      self.assertIsNotNone(session["id"])
+      self.assertIsNotNone(session["kernel"]["id"])
+      self.assertEquals(session["kernel"]["name"], "python3")
+
