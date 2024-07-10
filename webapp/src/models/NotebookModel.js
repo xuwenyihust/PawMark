@@ -157,7 +157,7 @@ class NotebookModel {
     });
 
     if (!response.ok) {
-        throw new Error('Failed to create notebook');
+        throw new Error('Failed to delete notebook');
     } else {
         const data = await response.json();
         return data;
@@ -194,8 +194,8 @@ class NotebookModel {
     return data;
   };
 
-  static async renameNotebook(basePath = '', path = '', newName = '') {
-    console.log("Renaming notebook at path:", basePath + '/' + path, "to:", newName);
+  static async renameNotebook(path = '', newName = '') {
+    console.log("Renaming notebook at path:", path, "to:", newName);
     
     const response = await fetch("http://localhost:5002/notebook/" + path, {
         method: 'PATCH',
