@@ -16,6 +16,10 @@ def create_directory():
     directory_path = data.get('directoryPath', None)
     return Directory.create_directory(directory_path=directory_path)
 
+@directory_blueprint.route('/directory/<path:directory_path>', methods=['DELETE'])
+def delete_directory(directory_path):
+    return Directory.delete_directory_by_path(directory_path=directory_path)
+
 @directory_blueprint.route('/directory/<path:directory_path>', methods=['PATCH'])
 def rename_directory(directory_path):
     data = request.get_json()

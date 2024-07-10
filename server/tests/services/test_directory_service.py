@@ -40,6 +40,24 @@ class DirectoryServiceTestCase(unittest.TestCase):
       self.assertEqual(len(json.loads(response_2.data)['content']), 1)
       self.assertEqual(json.loads(response_2.data)['content'][0]['name'], 'test_directory')
 
+  def test_delete_directory_by_path(self):
+    with self.app.app_context():
+
+      # Create directory
+      response_0 = Directory.create_directory('work/test_directory')
+      directoryFromDB = DirectoryModel.query.filter_by(path='work/test_directory').first()
+      self.assertIsNotNone(directoryFromDB)
+      self.assertEqual(directoryFromDB.name, 'test_directory')
+
+      # Delete directory
+      response_1 = Directory.delete_directory_by_path('work/test_directory')
+      self.assertEqual(response_1.status_code, 200)
+
+      # Check if deleted directory could not be detected
+      response_2 = Directory.get_content_by_path('work')
+      self.assertEqual(response_2.status_code, 200)
+      self.assertEqual(json.loads(response_2.data)['content'], [])
+
   def test_rename_directory_by_path(self):
     with self.app.app_context():
 
