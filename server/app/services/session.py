@@ -25,6 +25,34 @@ class Session:
       status=200,
       mimetype='application/json'
     )
+  
+  @staticmethod
+  def get_session_by_path(notebook_path: str) -> None:
+    logger.info(f"Getting session for {notebook_path}")
+
+    all_sessions = Session.get_all_sessions()
+    if all_sessions.status_code != 200:
+      return Response(
+        response=json.dumps({'message': 'Error getting all sessions'}), 
+        status=404)
+    
+    sessions = json.loads(all_sessions.data.decode('utf-8'))
+    session = [x for x in sessions if x["path"] == notebook_path]
+
+    if len(session) == 0:
+      return Response(
+        response=json.dumps({'message': 'Session not found'}), 
+        status=404)
+    elif len(session) > 1:
+      return Response(
+        response=json.dumps({'message': 'Multiple sessions found'}), 
+        status=404)
+    else:
+      return Response(
+        response=session[0], 
+        status=200,
+        mimetype='application/json'
+      )
     
 
   @staticmethod
