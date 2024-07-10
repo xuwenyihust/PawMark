@@ -19,11 +19,14 @@ class KernelServiceTestCase(unittest.TestCase):
       self.assertEqual(response_0.status_code, 404)
 
       # Create Notebook
-      response_1 = Notebook.create_notebook('work/test_notebook')
-      self.assertEqual(response_1.status_code, 201)
+      response_1 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook_1.ipynb', notebook_path='')
+      self.assertEqual(response_1.status_code, 200)
+
+      notebook_1 = json.loads(response_1.data.decode('utf-8'))
+      notebook_path_1 = notebook_1['path']
 
       # Create Session
-      response_2 = Session.create_session('work/test_notebook')
+      response_2 = Session.create_session(notebook_path_1)
       self.assertEqual(response_2.status_code, 201)
       session = json.loads(response_2.data.decode('utf-8'))
       kernelId = session['kernel']['id']
