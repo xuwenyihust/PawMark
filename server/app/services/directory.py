@@ -13,7 +13,7 @@ class Directory:
 
   @staticmethod
   def get_content_by_path(path: str = None):     
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
     jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
     
     if path is None:
@@ -37,7 +37,7 @@ class Directory:
   def create_directory(directory_path: str = None) -> None:
     logger.info(f"Creating directory with path: {directory_path}")
 
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     if directory_path is None:
       logger.error("Directory path is None")
@@ -83,7 +83,7 @@ class Directory:
   
   @staticmethod
   def delete_directory_by_path(directory_path: str = None):
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     path = f"{jupyter_api_path}/{directory_path}"
     response = requests.delete(path)
@@ -116,7 +116,7 @@ class Directory:
 
   @staticmethod
   def rename_directory_by_path(directory_path: str = None, new_directory_path: str = None):
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     path = f"{jupyter_api_path}/{directory_path}"
     response = requests.patch(

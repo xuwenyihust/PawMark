@@ -27,7 +27,7 @@ class Notebook:
   def get_notebook_by_path(notebook_path: str = None):
     logger.info(f"Getting notebook with path: {notebook_path}")
 
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
     logger.info(f"Jupyter API Path: {jupyter_api_path}")
 
     try:
@@ -61,7 +61,7 @@ class Notebook:
   def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
     logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path}")
 
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     path = f"{jupyter_api_path}/{notebook_path}/{notebook_name}"
     data = {
@@ -114,7 +114,7 @@ class Notebook:
   def create_notebook_with_init_cells(notebook_name: str = None, notebook_path: str = None) -> None:
     logger.info(f"Creating notebook with init cells with name: {notebook_name} under path: {notebook_path}")
 
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
     jupyter_default_path = app.config['JUPYTER_DEFAULT_PATH']
 
     if not notebook_name or notebook_name == "":
@@ -172,7 +172,7 @@ class Notebook:
 
   @staticmethod
   def update_notebook(notebook_path: str, content: dict):
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     path = f"{jupyter_api_path}/{notebook_path}"
 
@@ -201,7 +201,7 @@ class Notebook:
 
   @staticmethod
   def delete_notebook_by_path(notebook_path: str = None):
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     path = f"{jupyter_api_path}/{notebook_path}"
     response = requests.delete(path)
@@ -236,7 +236,7 @@ class Notebook:
   
   @staticmethod
   def rename_notebook_by_path(notebook_path: str = None, new_notebook_name: str = None):
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     path = f"{jupyter_api_path}/{notebook_path}"
 
@@ -279,7 +279,7 @@ class Notebook:
   
   @staticmethod
   def move_notebook(notebook_path: str = None, new_notebook_path: str = None):
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
+    jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
     path = f"{jupyter_api_path}/{notebook_path}"
 

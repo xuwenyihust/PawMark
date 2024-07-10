@@ -6,6 +6,7 @@ import { ContentType } from './content/ContentType';
 import { CellStatus } from './content/cell/CellStatus';
 import { CellType } from './content/cell/CellType';
 import NotebookModel from '../../models/NotebookModel';
+import SessionModel from '../../models/SessionModel'
 import SparkModel from '../../models/SparkModel';
 import config from '../../config';
 import { Box } from '@mui/material';
@@ -226,10 +227,10 @@ function Notebook({
         
         // Assume getSession is a function that returns a kernel ID for a given notebook path
         setCellStatus(CellStatus.INITIALIZING);
-        let existingKernelId = await NotebookModel.getSession(jupyterBaseUrl, notebook.path);
+        let existingKernelId = await NotebookModel.getSession(notebook.path);
 
         if (!existingKernelId) {
-            newKernelId = await NotebookModel.createSession(jupyterBaseUrl, notebook.path);
+            newKernelId = await SessionModel.createSession(notebook.path);
             setKernelId(newKernelId)
         } else {
             newKernelId = existingKernelId;
