@@ -26,25 +26,21 @@ class DirectoryModel {
     return this.getDirectories().every(directory => directory.name !== name);
   }
 
-  static async getFiles(path = '') {
-    const url = new URL(path);
-    url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
-    const response = await fetch(url, {
-        method: 'GET',
-        redirect: "follow"
-    });
+  static async getChildren(path = '') {
+    const response = await fetch("http://localhost:5002/directory/" + path);
     if (!response.ok) {
         throw new Error('Failed to fetch files');
+    } else {
+        const data = await response.json();
+        return data.content;
     }
-    const data = await response.json();
-    return data.content; // Assuming the API returns a 'content' array
   }
 
-  static async getAllItems(path = '') {
-    const items = await this.getFiles(path);
+  static async getSubDirectories(path = '') {
+    const items = await this.getChildren(path);
     const promises = items.map(async (item) => {
       if (item.type === 'directory') {
-        item.children = await this.getAllItems(`${path}/${item.name}`);
+        item.children = await this.getSubDirectories(`${path}/${item.name}`);
       }
       return item;
     });
@@ -90,7 +86,7 @@ class DirectoryModel {
         NotebookModel.deleteNotebook(item.path);
     } else {
         let folderItems = [];
-        await DirectoryModel.getFiles(itemPath)
+        await DirectoryModel.getChildren(itemPath)
             .then((data) => {
                 folderItems = data;
             })

@@ -6,6 +6,10 @@ directory_blueprint = Blueprint('directory', __name__)
 
 logging.basicConfig(level=logging.INFO)
 
+@directory_blueprint.route('/directory/<path:directory_path>', methods=['GET'])
+def get_directory_content(directory_path):
+    return Directory.get_content_by_path(path=directory_path)
+
 @directory_blueprint.route('/directory', methods=['POST'])
 def create_directory():
     data = request.get_json()
