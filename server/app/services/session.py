@@ -12,9 +12,7 @@ class Session:
 
   @staticmethod
   def create_session(notebook_path: str) -> None:
-    jupyter_api_path = app.config['JUPYTER_API_PATH']
-
-    path = f"{jupyter_api_path}/api/sessions"
+    jupyter_api_path = app.config['JUPYTER_SESSION_API_PATH']
 
     data = {
       "notebook": {
@@ -28,7 +26,7 @@ class Session:
 
     try:
       response = requests.post(
-        path,
+        jupyter_api_path,
         json=data
       )
     except Exception as e:
