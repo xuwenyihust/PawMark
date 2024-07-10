@@ -68,7 +68,7 @@ function Notebook({
             });
             setCurrentName(notebook.name);
         }
-        NotebookModel.getSession(jupyterBaseUrl, notebook.path)
+        SessionModel.getSession(notebook.path)
             .then((kernelId) => {
                 setKernelId(kernelId);
             });
@@ -227,7 +227,7 @@ function Notebook({
         
         // Assume getSession is a function that returns a kernel ID for a given notebook path
         setCellStatus(CellStatus.INITIALIZING);
-        let existingKernelId = await NotebookModel.getSession(notebook.path);
+        let existingKernelId = await SessionModel.getSession(notebook.path);
 
         if (!existingKernelId) {
             newKernelId = await SessionModel.createSession(notebook.path);
