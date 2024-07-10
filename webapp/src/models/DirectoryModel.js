@@ -93,9 +93,12 @@ class DirectoryModel {
     } else {
         console.log("Deleting item at path:", itemPath);
         try {
-            // const response = await fetch(itemPath, {
-            //     method: 'DELETE'
-            // });
+            const response = await fetch("http://localhost:5002/directory/" + itemPath, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete directory');
+            }
         } catch (error) {
             alert(`Failed to delete directory: ${error.message}`);
         }
