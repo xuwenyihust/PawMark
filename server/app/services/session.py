@@ -49,7 +49,7 @@ class Session:
         status=404)
     else:
       return Response(
-        response=session[0], 
+        response=json.dumps(session[0]), 
         status=200,
         mimetype='application/json'
       )
