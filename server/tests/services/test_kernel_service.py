@@ -1,13 +1,16 @@
 import unittest
 from flask_cors import CORS
 from run import create_app
-from database import db
 from app.services.kernel import Kernel
 from app.services.notebook import Notebook
 from app.services.session import Session
 import json
 
 class KernelServiceTestCase(unittest.TestCase):
+
+  def setUp(self):
+    self.app = create_app()
+    self.client = self.app.test_client()
 
   def test_restart_kernel(self):
     with self.app.app_context():
