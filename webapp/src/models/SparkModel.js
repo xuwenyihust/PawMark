@@ -1,3 +1,6 @@
+import config from '../config';
+
+
 class SparkModel {
   constructor() {
   }
@@ -12,6 +15,22 @@ class SparkModel {
     const sparkInfo = doc.querySelector('h3');
     console.log('sparkInfo:', sparkInfo);
     return sparkInfo && sparkInfo.textContent === 'Spark Session Information';
+  }
+
+  static async storeSparkInfo(sparkAppId, notebookPath) {
+    const response = await fetch(`${config.serverBaseUrl}/spark_app/${sparkAppId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        'notebookPath':  notebookPath,
+       }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to store Spark application id: ${response.status}`);
+    }
   }
 
   static extractSparkAppId(html) {

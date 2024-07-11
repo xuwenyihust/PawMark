@@ -6,6 +6,7 @@ from app.routes.notebook import notebook_blueprint
 from app.routes.directory import directory_blueprint
 from app.routes.session import session_blueprint
 from app.routes.kernel import kernel_blueprint
+from app.routes.spark_app import spark_app_blueprint
 from config import DevelopmentConfig, IntegrationTestingConfig, TestingConfig
 
 def create_app():
@@ -32,6 +33,7 @@ app.register_blueprint(notebook_blueprint)
 app.register_blueprint(directory_blueprint)
 app.register_blueprint(session_blueprint)
 app.register_blueprint(kernel_blueprint)
+app.register_blueprint(spark_app_blueprint)
 
 
 if __name__ == '__main__':

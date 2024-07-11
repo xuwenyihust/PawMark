@@ -41,7 +41,6 @@ class NotebookModel {
   };
 
   static async fetchNotebook(path = '') {
-    console.log(config)
     const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'GET',
         headers: {

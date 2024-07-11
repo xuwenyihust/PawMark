@@ -52,5 +52,10 @@ def rename_or_move_notebook(notebook_path):
         new_notebook_path = data.get('newPath', None)
         return Notebook.move_notebook(notebook_path=notebook_path, new_notebook_path=new_notebook_path)
 
+@notebook_blueprint.route('/notebook/spark_app/<path:notebook_path>', methods=['GET'])
+def get_spark_app_by_notebook_path(notebook_path):
+    logging.info(f"Get spark apps by notebook path: {notebook_path}")
+    return Notebook.get_spark_app_by_notebook_path(notebook_path)
+
     
 
