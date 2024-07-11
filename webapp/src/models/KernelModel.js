@@ -2,7 +2,7 @@ class KernelModel {
   constructor() {
   }
 
-  static async restartKernel(basePath = '', kernelId = '') {
+  static async restartKernel(kernelId = '') {
     try {
         // Wait for the kernel to restart
         await fetch(`http://localhost:5002/kernel/restart/${kernelId}`, {
@@ -14,7 +14,7 @@ class KernelModel {
 
         let status;
         do {
-          const response = await fetch(`${basePath}/api/kernels/${kernelId}`);
+          const response = await fetch(`http://localhost:5002/kernel/${kernelId}`);
           const data = await response.json();
           status = data.execution_state;
           if (status === 'busy') {
