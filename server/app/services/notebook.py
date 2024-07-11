@@ -1,4 +1,6 @@
 from app.models.notebook import NotebookModel
+from app.models.notebook_spark_app import NotebookSparkAppModel
+from app.models.spark_app import SparkAppModel
 from flask import Response
 from datetime import datetime
 import requests
@@ -320,7 +322,10 @@ class Notebook:
 
     try:
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
-      logger.info(f"Notebook found in DB: {notebook}")
+      notebook_id = notebook.notebook_id
+      notebook_spark_app = NotebookSparkAppModel.query.filter_by(notebook_id=notebook_id).first()
+      spark_app_id = notebook_spark_app.spark_app_id
+      spark_app = SparkAppModel.query.filter_by(spark_app_id=spark_app_id).first()
     except Exception as e:
       return Response(
         response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
@@ -332,5 +337,5 @@ class Notebook:
         status=404)
     else:
       return Response(
-        response=json.dumps({'spark_app_id': notebook.spark_app_id}), 
+        response=json.dumps({'spark_app': spark_app}), 
         status=200)

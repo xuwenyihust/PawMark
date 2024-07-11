@@ -7,9 +7,7 @@ CREATE DATABASE server_db;
 CREATE TABLE notebooks (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    path VARCHAR(100) NOT NULL,
-    spark_app_id VARCHAR(100),
-    FOREIGN KEY (spark_app_id) REFERENCES spark_apps(spark_app_id)
+    path VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE directories (
@@ -19,7 +17,13 @@ CREATE TABLE directories (
 );
 
 CREATE TABLE spark_apps (
-    spark_app_id VARCHAR(100) PRIMARY KEY,
+    spark_app_id VARCHAR(100) PRIMARY KEY
+);
+
+CREATE TABLE notebook_spark_apps (
+    id SERIAL PRIMARY KEY,
+    notebook_id INT REFERENCES notebooks(id),
+    spark_app_id VARCHAR(100) REFERENCES spark_apps(spark_app_id)
 );
 
 GRANT ALL PRIVILEGES ON TABLE notebooks TO server;
@@ -30,7 +34,12 @@ GRANT ALL PRIVILEGES ON SEQUENCE directories_id_seq TO server;
 
 GRANT ALL PRIVILEGES ON TABLE spark_apps TO server;
 
+GRANT ALL PRIVILEGES ON TABLE notebook_spark_apps TO server;
+
 -- Add some initial data
+INSERT INTO notebooks (name, path) VALUES ('demo', 'work/demo');
+INSERT INTO notebooks (name, path) VALUES ('notebook', 'work/notebook');
+
 INSERT INTO directories (name, path) VALUES ('work', '/work');
 INSERT INTO directories (name, path) VALUES ('word-count', '/work/word-count');
 INSERT INTO directories (name, path) VALUES ('sg-resale-flat-prices', '/work/sg-resale-flat-prices');
@@ -42,12 +51,9 @@ INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0002');
 INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0003');
 INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0004');
 
-INSERT INTO notebooks (name, path, spark_app_id) VALUES 
-('demo', 'work/demo', 'app-0000-0000');
-INSERT INTO notebooks (name, path, spark_app_id) VALUES 
-('demo', 'work/demo', 'app-0000-0001');
-INSERT INTO notebooks (name, path, spark_app_id) VALUES 
-('demo', 'work/demo', 'app-0000-0002');
+INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (1, 'app-0000-0000');
+INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (1, 'app-0000-0001');
+INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (1, 'app-0000-0002');
 
-INSERT INTO notebooks (name, path, spark_app_id) VALUES 
-('notebook', 'work/notebook', 'app-0000-0003');
+INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (2, 'app-0000-0003');
+INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (2, 'app-0000-0004');
