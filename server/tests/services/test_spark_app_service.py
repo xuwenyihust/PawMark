@@ -4,6 +4,7 @@ from run import create_app
 from database import db
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
+from app.models.notebook_spark_app import NotebookSparkAppModel
 from app.services.notebook import Notebook
 from app.services.spark_app import SparkApp
 import json
@@ -38,6 +39,10 @@ class SparkAppServiceTestCase(unittest.TestCase):
       spark_app = SparkAppModel.query.filter_by(spark_app_id='1234').first()
       self.assertIsNotNone(spark_app)
 
-      # Check that spark app id is in the notebook
-      notebook = NotebookModel.query.filter_by(path=notebook_path).first()
-      self.assertEqual(notebook.spark_app_id, '1234')
+      # Check that spark app id is associated with the notebook id
+      notebook_id = notebook_dict['id']
+      notebook_spark_app = NotebookSparkAppModel.query \
+        .filter_by(notebook_id=notebook_id, spark_app_id='1234') \
+        .first()
+      
+      self.assertIsNotNone(notebook_spark_app)
