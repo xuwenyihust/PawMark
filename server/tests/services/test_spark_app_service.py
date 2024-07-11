@@ -31,6 +31,7 @@ class SparkAppServiceTestCase(unittest.TestCase):
       # Create spark app
       response_1 = SparkApp.create_spark_app(spark_app_id='1234', notebook_path=notebook_path)
       spark_app_dict = json.loads(response_1.data)
+      print(spark_app_dict)
       self.assertEqual(spark_app_dict['spark_app_id'], '1234')
 
       # Check that spark app is in the database
