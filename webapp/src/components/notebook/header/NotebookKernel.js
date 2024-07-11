@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { JupyterKernelIcon } from '@datalayer/icons-react';
 import { VscTriangleDown } from "react-icons/vsc";
 import LoadingButton from '@mui/lab/LoadingButton';
-import KernelModel from '../../../models/KernelModel';
+import KernelModel from '../../../models/KernelModel'
 import config from '../../../config';
 
 const NotebookKernel = ({
