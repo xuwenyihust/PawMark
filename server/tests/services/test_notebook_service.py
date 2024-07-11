@@ -286,8 +286,8 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       # Get Spark App
       response_2 = Notebook.get_spark_app_by_notebook_path(notebook_path='work/Notebook.ipynb')
+      print(response_2.data)
       self.assertEqual(response_2.status_code, 200)
-      print(response_2)
       self.assertEqual(json.loads(response_2.data)['spark_app_id'], '1234')
 
       # Get Spark App by non-exist Notebook path
