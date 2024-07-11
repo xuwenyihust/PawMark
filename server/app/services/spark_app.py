@@ -64,7 +64,7 @@ class SparkApp:
 
       # Update the notebook_spark_app relationship
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
-      notebook_id = notebook.notebook_id
+      notebook_id = notebook.id
 
       notebook_spark_app = NotebookSparkAppModel(
         notebook_id=notebook_id,
