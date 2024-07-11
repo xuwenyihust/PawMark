@@ -141,6 +141,22 @@ class NotebookModel {
     return data;
   };
 
+  static async getSparkApps(notebookPath = '') {
+    const response = await fetch(`${config.serverBaseUrl}/notebook/spark_app/${notebookPath}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) {
+        console.error('Failed to fetch Spark applications');
+        return null;
+    }
+    const data = await response.json();
+    return data;
+  };
+
   static async moveNotebook(path = '', destination = '') {
     console.log("Moving notebook at path:", path, "to:", destination);
     const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {

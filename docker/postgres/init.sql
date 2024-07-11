@@ -51,10 +51,3 @@ INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0001');
 INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0002');
 INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0003');
 INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0004');
-
-INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (1, 'app-0000-0000');
-INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (1, 'app-0000-0001');
-INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (1, 'app-0000-0002');
-
-INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (2, 'app-0000-0003');
-INSERT INTO notebook_spark_apps (notebook_id, spark_app_id) VALUES (2, 'app-0000-0004');
