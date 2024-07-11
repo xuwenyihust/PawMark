@@ -21,7 +21,7 @@ const NotebookKernel = ({
       setIsRestarting(true);
       setMenuOpen(false);
       setSparkAppId(null);
-      await KernelModel.restartKernel(config.jupyterBaseUrl, kernelId);
+      await KernelModel.restartKernel(kernelId);
       setIsRestarting(false);
     } catch (error) {
       console.error('Failed to restart kernel:', error);
