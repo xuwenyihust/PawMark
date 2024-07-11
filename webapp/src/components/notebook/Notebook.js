@@ -322,7 +322,10 @@ function Notebook({
                             saveNotebook={handleUpdateNotebook}
                             deleteNotebook={handleDeleteNotebook}
                             /> : 
-                        <Runs />)
+                        <Runs 
+                            notebook={notebook}
+                            contentType={contentType}
+                            />)
                     }
         
                 </Box>
