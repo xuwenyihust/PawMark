@@ -24,7 +24,7 @@ class SparkAppServiceTestCase(unittest.TestCase):
     with self.app.app_context():
       # Create notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Test Notebook', notebook_path='/path/to/notebook')
-      notebook_dict = json.loads(response_0.data.encode('utf8'))
+      notebook_dict = json.loads(response_0.data.decode('utf8'))
       notebook_path = notebook_dict['path']
 
       # Create spark app
@@ -35,5 +35,5 @@ class SparkAppServiceTestCase(unittest.TestCase):
 
       # Check that spark app id is in the notebook
       response_2 = Notebook.get_notebook_by_path(notebook_path)
-      notebook_dict = json.loads(response_2.data.encode('utf8'))
+      notebook_dict = json.loads(response_2.data.decode('utf8'))
       self.assertEqual(notebook_dict['spark_app_id'], '1234')
