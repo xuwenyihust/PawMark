@@ -3,6 +3,8 @@ from flask_cors import CORS
 from run import create_app
 from database import db
 from app.models.notebook_spark_app import NotebookSparkAppModel
+from app.models.notebook import NotebookModel
+from app.models.spark_app import SparkAppModel
 
 class NotebookSparkAppModelTestCase(unittest.TestCase):
     def setUp(self):
@@ -18,7 +20,15 @@ class NotebookSparkAppModelTestCase(unittest.TestCase):
 
     def test_notebook_spark_app_model(self):
         with self.app.app_context():
-            notebook_spark_app = NotebookSparkAppModel(notebook_id=1, spark_app_id='Test Spark App')
+            notebook = NotebookModel(name='Test Notebook', path='')
+            db.session.add(notebook)
+            db.session.commit()
+
+            spark_app = SparkAppModel(spark_app_id='Test Spark App')
+            db.session.add(spark_app)
+            db.session.commit()
+
+            notebook_spark_app = NotebookSparkAppModel(notebook_id=notebook.id, spark_app_id='Test Spark App')
             db.session.add(notebook_spark_app)
             db.session.commit()
 
