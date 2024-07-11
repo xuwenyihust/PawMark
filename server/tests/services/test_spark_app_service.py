@@ -3,6 +3,7 @@ from flask_cors import CORS
 from run import create_app
 from database import db
 from app.models.spark_app import SparkAppModel
+from app.models.notebook import NotebookModel
 from app.services.notebook import Notebook
 from app.services.spark_app import SparkApp
 import json
@@ -32,7 +33,10 @@ class SparkAppServiceTestCase(unittest.TestCase):
       spark_app_dict = json.loads(response_1.data)
       self.assertEqual(spark_app_dict['spark_app_id'], '1234')
 
+      # Check that spark app is in the database
+      spark_app = SparkAppModel.query.filter_by(spark_app_id='1234').first()
+      self.assertIsNotNone(spark_app)
+
       # Check that spark app id is in the notebook
-      response_2 = Notebook.get_notebook_by_path(notebook_path)
-      notebook_dict = json.loads(response_2.data.decode('utf8'))
-      self.assertEqual(notebook_dict['spark_app_id'], '1234')
+      notebook = NotebookModel.query.filter_by(path=notebook_path).first()
+      self.assertEqual(notebook.spark_app_id, '1234')
