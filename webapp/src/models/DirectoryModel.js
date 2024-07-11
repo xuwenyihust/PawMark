@@ -1,4 +1,4 @@
-import NotebookModel from "./NotebookModel";
+import config from '../config';
 
 class DirectoryModel {
   constructor(path, files) {
@@ -27,7 +27,7 @@ class DirectoryModel {
   }
 
   static async getChildren(path = '') {
-    const response = await fetch("http://localhost:5002/directory/" + path);
+    const response = await fetch(`${config.serverBaseUrl}/directory/` + path);
     if (!response.ok) {
         throw new Error('Failed to fetch files');
     } else {
@@ -49,7 +49,7 @@ class DirectoryModel {
   
   static async createDirectory(path = '', directoryName = '') {
     console.log("Creating directory at path:", path + '/' + directoryName);
-    const response = await fetch("http://localhost:5002/directory", {
+    const response = await fetch(`${config.serverBaseUrl}/directory`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ class DirectoryModel {
 
   static async renameDirectory(oldPath='', newPath='') {
     console.log("Renaming item at path:", oldPath, "to", newPath);
-    const response = await fetch("http://localhost:5002/directory/" + oldPath, {
+    const response = await fetch(`${config.serverBaseUrl}/directory/` + oldPath, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ class DirectoryModel {
     } else {
         console.log("Deleting item at path:", itemPath);
         try {
-            const response = await fetch("http://localhost:5002/directory/" + itemPath, {
+            const response = await fetch(`${config.serverBaseUrl}/directory/` + itemPath, {
                 method: 'DELETE',
             });
             if (!response.ok) {
