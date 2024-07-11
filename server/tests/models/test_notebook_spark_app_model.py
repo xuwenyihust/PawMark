@@ -2,7 +2,7 @@ import unittest
 from flask_cors import CORS
 from run import create_app
 from database import db
-from server.app.models.notebook_spark_app import NotebookSparkAppModel
+from app.models.notebook_spark_app import NotebookSparkAppModel
 
 class NotebookSparkAppModelTestCase(unittest.TestCase):
     def setUp(self):

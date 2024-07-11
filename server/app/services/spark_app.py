@@ -58,9 +58,13 @@ class SparkApp:
         status=404)
 
     try:
+      # Create the spark app
       spark_app = SparkAppModel(
         spark_app_id=spark_app_id,
       )
+
+      db.session.add(spark_app)
+      db.session.commit()
 
       # Update the notebook_spark_app relationship
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
@@ -71,7 +75,6 @@ class SparkApp:
         spark_app_id=spark_app_id
       )
 
-      db.session.add(spark_app)
       db.session.add(notebook_spark_app)
       db.session.commit()
 
