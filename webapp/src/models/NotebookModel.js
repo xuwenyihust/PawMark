@@ -3,6 +3,7 @@ import { OutputType } from '../components/notebook/content/cell/result/OutputTyp
 import { CellExecuteResultType } from "../components/notebook/content/cell/CellExecuteResultType";
 import { v4 as uuidv4 } from 'uuid';
 import SessionModel from "./SessionModel"
+import config from '../config';
 
 
 class NotebookModel {
@@ -40,7 +41,8 @@ class NotebookModel {
   };
 
   static async fetchNotebook(path = '') {
-    const response = await fetch("http://localhost:5002/notebook/" + path, {
+    console.log(config)
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -55,7 +57,7 @@ class NotebookModel {
   }
 
   static async createNotebook(path = '', notebookName = '') {
-    const response = await fetch("http://localhost:5002/notebook", {
+    const response = await fetch(`${config.serverBaseUrl}/notebook`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -75,7 +77,7 @@ class NotebookModel {
   }; 
 
   static async deleteNotebook(path = '') {
-    const response = await fetch("http://localhost:5002/notebook/" + path, {
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -103,7 +105,7 @@ class NotebookModel {
       updatedContent.metadata.uuid = uuidv4();
     }
 
-    const response = await fetch("http://localhost:5002/notebook/" + path, {
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -123,7 +125,7 @@ class NotebookModel {
   static async renameNotebook(path = '', newName = '') {
     console.log("Renaming notebook at path:", path, "to:", newName);
     
-    const response = await fetch("http://localhost:5002/notebook/" + path, {
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -140,9 +142,9 @@ class NotebookModel {
     return data;
   };
 
-  static async moveNotebook(basePath = '', path = '', destination = '') {
-    console.log("Moving notebook at path:", basePath + '/' + path, "to:", destination);
-    const response = await fetch("http://localhost:5002/notebook/" + path, {
+  static async moveNotebook(path = '', destination = '') {
+    console.log("Moving notebook at path:", path, "to:", destination);
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',

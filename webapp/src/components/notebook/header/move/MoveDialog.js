@@ -82,7 +82,7 @@ const MoveDialog = ({
         <Button 
           style={{ color: 'lightgrey' }}
           onClick={() => {
-            NotebookModel.moveNotebook(baseUrl, notebook.path, destinationDirectory + '/' + notebook.name);
+            NotebookModel.moveNotebook(notebook.path, destinationDirectory + '/' + notebook.name);
             setMoveDialogOpen(false);
           }}>
           Move
