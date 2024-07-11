@@ -24,6 +24,7 @@ class SparkAppServiceTestCase(unittest.TestCase):
     with self.app.app_context():
       # Create notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Test Notebook', notebook_path='/path/to/notebook')
+      print(response_0.data)
       notebook_dict = json.loads(response_0.data.decode('utf8'))
       notebook_path = notebook_dict['path']
 
