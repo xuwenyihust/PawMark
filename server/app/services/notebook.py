@@ -329,7 +329,7 @@ class Notebook:
         status=404)
   
     try:
-      notebook_spark_app = NotebookSparkAppModel.query.filter_by(notebook_id=notebook_id).first()
+      notebook_spark_app = NotebookSparkAppModel.query.filter_by(id=notebook_id).first()
       spark_app_id = notebook_spark_app.spark_app_id
     except Exception as e:
       return Response(
