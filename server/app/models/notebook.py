@@ -1,4 +1,3 @@
-from flask import jsonify
 from database import db
 
 class NotebookModel(db.Model):
@@ -8,6 +7,7 @@ class NotebookModel(db.Model):
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   name = db.Column(db.String, nullable=False)
   path = db.Column(db.String, nullable=False)
+  spark_app_id = db.Column(db.String, nullable=True)
 
   def __init__(self, name, path):
       self.name = name
@@ -17,7 +17,8 @@ class NotebookModel(db.Model):
       return {
           'id': self.id,
           'name': self.name,
-          'path': self.path
+          'path': self.path,
+          'spark_app_id': self.spark_app_id
       }
 
   

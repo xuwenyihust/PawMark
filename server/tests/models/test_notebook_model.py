@@ -30,7 +30,8 @@ class NotebookModelTestCase(unittest.TestCase):
             self.assertEqual(notebook_dict, {
                 'id': notebook.id,
                 'name': 'Test Notebook',
-                'path': '/path/to/notebook'
+                'path': '/path/to/notebook',
+                'spark_app_id': None
             })
 
 if __name__ == '__main__':
