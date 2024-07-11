@@ -40,7 +40,8 @@ class SparkAppServiceTestCase(unittest.TestCase):
       self.assertIsNotNone(spark_app)
 
       # Check that spark app id is associated with the notebook id
-      notebook_id = notebook_dict['id']
+      response_2 = Notebook.get_notebook_by_path(notebook_path)
+      notebook_id = json.loads(response_2.data.decode('utf-8'))['id']
       notebook_spark_app = NotebookSparkAppModel.query \
         .filter_by(notebook_id=notebook_id, spark_app_id='1234') \
         .first()
