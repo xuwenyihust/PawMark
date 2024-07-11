@@ -43,7 +43,7 @@ class SparkApp:
   
   @staticmethod
   def create_spark_app(spark_app_id: str = None, notebook_path: str = None):
-    logger.info(f"Creating spark app with id: {spark_app_id}")
+    logger.info(f"Creating spark app with id: {spark_app_id} for notebook path: {notebook_path}")
 
     if spark_app_id is None:
       logger.error("Spark app id is None")
@@ -80,6 +80,7 @@ class SparkApp:
 
       logger.info(f"Spark app created: {spark_app}")
     except Exception as e:
+      logger.error(f"Error creating spark app: {e}")
       return Response(
         response=json.dumps({'message': 'Error creating spark app: ' + str(e)}), 
         status=404)

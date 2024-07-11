@@ -35,10 +35,11 @@ GRANT ALL PRIVILEGES ON SEQUENCE directories_id_seq TO server;
 GRANT ALL PRIVILEGES ON TABLE spark_apps TO server;
 
 GRANT ALL PRIVILEGES ON TABLE notebook_spark_apps TO server;
+GRANT ALL PRIVILEGES ON SEQUENCE notebook_spark_apps_id_seq TO server;
 
 -- Add some initial data
-INSERT INTO notebooks (name, path) VALUES ('demo', 'work/demo');
-INSERT INTO notebooks (name, path) VALUES ('notebook', 'work/notebook');
+INSERT INTO notebooks (name, path) VALUES ('demo.ipynb', 'work/demo.ipynb');
+INSERT INTO notebooks (name, path) VALUES ('notebook.ipynb', 'work/notebook.ipynb');
 
 INSERT INTO directories (name, path) VALUES ('work', '/work');
 INSERT INTO directories (name, path) VALUES ('word-count', '/work/word-count');
