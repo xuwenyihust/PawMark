@@ -329,14 +329,17 @@ class Notebook:
         status=404)
   
     try:
-      notebook_spark_app = NotebookSparkAppModel.query.filter_by(notebook_id=notebook_id).first()
-      spark_app_id = notebook_spark_app.spark_app_id
+      notebook_spark_apps = NotebookSparkAppModel.query.filter_by(notebook_id=notebook_id)
+      spark_app_ids = [notebook_spark_app.spark_app_id for notebook_spark_app in notebook_spark_apps]
     except Exception as e:
       return Response(
         response=json.dumps({'message': 'Error getting notebook - spark app relation from DB: ' + str(e)}), 
         status=404)
     try:
-      spark_app = SparkAppModel.query.filter_by(spark_app_id=spark_app_id).first()
+      spark_apps = []
+      for spark_app_id in spark_app_ids:
+        spark_app = SparkAppModel.query.filter_by(spark_app_id=spark_app_id).first()
+        spark_apps.append(spark_app)
     except Exception as e:
       return Response(
         response=json.dumps({'message': 'Error getting spark app from DB: ' + str(e)}), 
@@ -348,5 +351,5 @@ class Notebook:
         status=404)
     else:
       return Response(
-        response=json.dumps({'spark_app': spark_app}), 
+        response=json.dumps([x.to_dict() for x in spark_apps]), 
         status=200)
