@@ -14,6 +14,10 @@ class SparkModel {
     return sparkInfo && sparkInfo.textContent === 'Spark Session Information';
   }
 
+  static storeSparkInfo() {
+    
+  }
+
   static extractSparkAppId(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');

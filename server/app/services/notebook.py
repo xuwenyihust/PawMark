@@ -313,3 +313,24 @@ class Notebook:
     return Response(
       response=json.dumps({'message': 'Notebook moved'}), 
       status=200)
+  
+  @staticmethod
+  def get_spark_app_by_notebook_path(notebook_path: str = None):
+    logger.info(f"Getting spark app with notebook path: {notebook_path}")
+
+    try:
+      notebook = NotebookModel.query.filter_by(path=notebook_path).first()
+      logger.info(f"Notebook found in DB: {notebook}")
+    except Exception as e:
+      return Response(
+        response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
+        status=404)
+
+    if notebook is None:
+      return Response(
+        response=json.dumps({'message': 'Spark app not found in DB'}), 
+        status=404)
+    else:
+      return Response(
+        response=json.dumps({'spark_app_id': notebook.spark_app_id}), 
+        status=200)

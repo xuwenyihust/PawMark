@@ -61,6 +61,7 @@ class SparkApp:
         spark_app_id=spark_app_id,
       )
 
+      # Update the notebook with the spark app id
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
       notebook.spark_app_id = spark_app_id
 

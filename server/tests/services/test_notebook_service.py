@@ -5,6 +5,7 @@ from database import db
 from app.models.notebook import NotebookModel
 from app.services.notebook import Notebook
 from app.services.directory import Directory
+from app.services.spark_app import SparkApp
 import json
 
 class NotebookServiceTestCase(unittest.TestCase):
@@ -272,4 +273,23 @@ class NotebookServiceTestCase(unittest.TestCase):
       # Move non-exist Notebook
       response_6 = Notebook.move_notebook(notebook_path='work/Notebook666.ipynb', new_notebook_path='work/NotebookFolder/Notebook666.ipynb')
       self.assertEqual(response_6.status_code, 404)
+
+  def test_get_spark_app_by_notebook_path(self):
+    with self.app.app_context():
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
+
+      # Create Spark App
+      response_1 = SparkApp.create_spark_app(spark_app_id='1234', notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_1.status_code, 200)
+
+      # Get Spark App
+      response_2 = Notebook.get_spark_app_by_notebook_path(notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_2.status_code, 200)
+      self.assertEqual(json.loads(response_2.data)['spark_app_id'], '1234')
+
+      # Get Spark App by non-exist Notebook path
+      response_3 = Notebook.get_spark_app_by_notebook_path(notebook_path='work/Notebook666.ipynb')
+      self.assertEqual(response_3.status_code, 404)
       
