@@ -10,6 +10,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/xuwenyihust/datapulse)
 ![Apache Spark 3.5.0](https://img.shields.io/badge/Apache%20Spark-3.5.0-brightgreen?logo=apachespark)
 [![GitHub License](https://img.shields.io/github/license/xuwenyihust/Data-Platform?label=License)](https://github.com/xuwenyihust/Data-Platform/blob/main/LICENSE)
+[![Integration Test](https://github.com/xuwenyihust/PawMark/actions/workflows/integration-test.yml/badge.svg)](https://github.com/xuwenyihust/PawMark/actions/workflows/integration-test.yml)
 [![Test Web App](https://github.com/xuwenyihust/PawMark/actions/workflows/test-webapp.yml/badge.svg)](https://github.com/xuwenyihust/PawMark/actions/workflows/test-webapp.yml)
 
 ## Summary
@@ -78,6 +79,15 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 </details>
 
 <details>
+<summary>Server</summary>
+
+[![Build Docker - Server](https://github.com/xuwenyihust/PawMark/actions/workflows/build-docker-server.yml/badge.svg)](https://github.com/xuwenyihust/PawMark/actions/workflows/build-docker-server.yml)
+
+- [Dockerfile](./server/Dockerfile) 
+
+</details>
+
+<details>
 <summary>Spark</summary>
 
 [![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)
@@ -131,6 +141,7 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 ## Versions
 <details>
 <summary>Details</summary>
+
 | Component    | Version |
 |--------------|---------|
 | Scala        | 2.12    |
@@ -142,6 +153,7 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 | Airflow      | 2.9.1   |
 | Postgres     | 13      |
 | React        | 18.3.1  |
+
 </details>
 
 ## License

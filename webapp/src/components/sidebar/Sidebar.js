@@ -9,6 +9,7 @@ function Sidebar({
       onNewNotebookClick, 
       onExistinNotebookClick, 
       onHistoryServerClick,
+      onSchedulerClick,
       handleDirectoryClick,
       openWorkspaceDrawer,
       setOpenWorkspaceDrawer,
@@ -114,7 +115,7 @@ function Sidebar({
                       height: `${itemHeight}px`
                     }}>
                   <ListItemIcon>
-                      <CgAdd style={{ color: openCreateDrawer ? 'white' : 'lightgrey' }} />
+                      <CgAdd style={{ color: openCreateDrawer ? 'white' : 'white' }} />
                   </ListItemIcon>
                   <ListItemText>
                       <Typography 
@@ -122,7 +123,7 @@ function Sidebar({
                         sx={{ 
                           fontFamily: 'Roboto', 
                           fontSize: '15px',
-                          color: openCreateDrawer ? 'white' : 'lightgrey', 
+                          color: openCreateDrawer ? 'white' : 'white', 
                           marginLeft: '-30px'
                         }}>
                         Create
@@ -156,7 +157,7 @@ function Sidebar({
                     height: `${itemHeight}px`
                   }}>
                   <ListItemIcon>
-                      <CgAlbum style={{ color: openWorkspaceDrawer ? 'white' : 'lightgrey' }} />
+                      <CgAlbum style={{ color: openWorkspaceDrawer ? 'white' : 'white' }} />
                   </ListItemIcon>
                   <ListItemText>
                   <Typography 
@@ -164,7 +165,7 @@ function Sidebar({
                     sx={{ 
                       fontFamily: 'Roboto', 
                       fontSize: '15px',
-                      color: openWorkspaceDrawer ? 'white' : 'lightgrey', 
+                      color: openWorkspaceDrawer ? 'white' : 'white', 
                       marginLeft: '-30px' 
                     }}>
                     Workspace
@@ -200,7 +201,7 @@ function Sidebar({
                     height: `${itemHeight}px`
                   }}>
                   <ListItemIcon>
-                      <CgEye style={{ color: 'lightgrey' }} />
+                      <CgEye style={{ color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>
                     <Typography 
@@ -208,7 +209,7 @@ function Sidebar({
                       sx={{ 
                         fontFamily: 'Roboto', 
                         fontSize: '15px',
-                        color: 'lightgrey', 
+                        color: 'white', 
                         marginLeft: '-30px' 
                       }}>
                       History Server
@@ -218,6 +219,7 @@ function Sidebar({
 
                 {/* Scheduler */}
                 <ListItem button onClick={() => {
+                    onSchedulerClick();
                     setOpenWorkspaceDrawer(false); 
                     setOpenCreateDrawer(false);}
                   }
@@ -231,7 +233,7 @@ function Sidebar({
                     height: `${itemHeight}px`
                   }}>
                   <ListItemIcon>
-                      <CgCalendarToday style={{ color: 'lightgrey' }} />
+                      <CgCalendarToday style={{ color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>
                     <Typography 
@@ -239,7 +241,7 @@ function Sidebar({
                       sx={{ 
                         fontFamily: 'Roboto', 
                         fontSize: '15px',
-                        color: 'lightgrey', 
+                        color: 'white', 
                         marginLeft: '-30px' 
                       }}>
                       Scheduler

@@ -1,12 +1,12 @@
-import React from 'react';
-import { Box, AppBar, Toolbar } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, AppBar, Tabs, Tab } from '@mui/material';
 import NotebookTitle from './NotebookTitle';
-import NotebookToolbar from './NotebookToolbar';
 import NotebookKernel from './NotebookKernel';
 import SparkApplicationId from './SparkApplicationId';
+import { ContentType } from '../content/ContentType';
 
 function NotebookHeader({
-  notebook,
+  setContentType,
   kernelId,
   sparkAppId,
   setSparkAppId,
@@ -16,18 +16,34 @@ function NotebookHeader({
   handleClickNotebookName,
   handleChangeNotebookName,
   handleSaveNotebookName,
-  runAllCells,
-  saveNotebook, 
-  deleteNotebook}) {
+  clearOutputs}) {
+
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+
+      if (newValue === 0) {
+        setContentType(ContentType.CODE);
+      } else if (newValue === 1) {
+        setContentType(ContentType.Runs);
+      }
+    };
+  
+    const a11yProps = (index) => {
+      return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+      };
+    };
 
     return (
       <Box sx={{ 
         marginLeft: -3,
-        marginBottom: 5,
         position: 'sticky',
         top: 0, 
         zIndex: 1, 
-        backgroundColor: 'white' 
+        backgroundColor: 'white'
       }}> 
         <AppBar 
           position="static" 
@@ -37,8 +53,11 @@ function NotebookHeader({
             backgroundColor: '#fff',
             borderBottom: '0.2px solid grey'
             }}>
-            <Toolbar>
-              <Box sx={{ display: 'flex' }}>
+            <Box sx={{ 
+              display: 'flex',
+              marginLeft: 3,
+              }}>
+              <Box>
                 <Box sx={{ mt: 2 }}>
                     <NotebookTitle 
                       isNameEditing={isNameEditing}
@@ -48,14 +67,6 @@ function NotebookHeader({
                       handleChangeNotebookName={handleChangeNotebookName}
                       handleSaveNotebookName={handleSaveNotebookName}
                       />
-
-                    {/* Buttons */}
-                    <NotebookToolbar 
-                      notebook={notebook}
-                      runAllCells={runAllCells}
-                      saveNotebook={saveNotebook}
-                      deleteNotebook={deleteNotebook}
-                      />        
                 </Box>
               </Box>
 
@@ -69,10 +80,36 @@ function NotebookHeader({
 
                 <NotebookKernel
                   kernelId={kernelId}
-                  setSparkAppId={setSparkAppId}/>
+                  setSparkAppId={setSparkAppId}
+                  clearOutputs={clearOutputs}/>
               </Box>
+            </Box>
 
-            </Toolbar>
+            <Box 
+              sx={{ 
+                marginLeft: 3,
+                borderBottom: 0, 
+                borderColor: 'divider' }}>
+              <Tabs 
+                value={value} 
+                onChange={handleChange} 
+                sx={{
+                  height: '20px' 
+                }}
+                aria-label="basic tabs example">
+                <Tab label="Code" 
+                    {...a11yProps(0)}
+                    sx={{ 
+                      textTransform: 'none',
+                      height: '20px' }} />
+                <Tab label="Runs" 
+                    {...a11yProps(1)} 
+                    sx={{ 
+                      textTransform: 'none',
+                      height: '20px' }} />
+              </Tabs>
+            </Box>
+
         </AppBar>
       </Box>
     );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/notebook/Notebook';
 import HistoryServer from './components/HistoryServer';
+import Scheduler from './components/Scheduler';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import config from './config';
 import NotebookModel from './models/NotebookModel';
@@ -34,6 +35,7 @@ const App = () => {
   const baseUrl = `${config.jupyterBaseUrl}/api/contents/`
   
   const [showHistoryServer, setShowHistoryServer] = useState(false);
+  const [showScheduler, setShowScheduler] = useState(false);
 
   const [showNotebook, setShowNotebook] = useState(false);
   const [notebook, setNotebook] = useState({});
@@ -48,7 +50,7 @@ const App = () => {
   // Workspace
   useEffect(() => {
     if (openWorkspaceDrawer) {
-        DirectoryModel.getFiles(baseUrl + currentPath) // Fetch files from the root or specify a path
+        DirectoryModel.getChildren(currentPath) // Fetch files from the root or specify a path
             .then(setWorkspaceFiles)
             .catch(error => console.error('Failed to fetch files:', error));
         console.log('Fetched workspace files:', workspaceFiles);
@@ -75,11 +77,12 @@ const App = () => {
 
   const handleNewNotebookClick = () => {
     if (handleUnsavedChanges()) {
-      NotebookModel.createNotebook(`${baseUrl}work`).then((data) => {
-        const notebookPath = `${baseUrl}${data.path}`
+      NotebookModel.createNotebook('', '').then((data) => {
+        const notebookPath = `${data.path}`
         NotebookModel.fetchNotebook(notebookPath).then((data) => {
           setNotebook(data);
           setShowHistoryServer(false);
+          setShowScheduler(false);
           setShowNotebook(true);
         }).catch((error) => {
           console.error('Failed to fetch newly created notebook:', error);
@@ -93,10 +96,11 @@ const App = () => {
 
   const handleExistingNotebookClick = (path) => {
     if (handleUnsavedChanges()) {
-      NotebookModel.fetchNotebook(`${baseUrl}${path}`).then((data) => {
+      NotebookModel.fetchNotebook(`${path}`).then((data) => {
         console.log('Fetched notebook:', data);
         setNotebook(data);
         setShowHistoryServer(false);
+        setShowScheduler(false);
         setShowNotebook(true);
       }).catch((error) => {
         console.error('Failed to fetch notebook:', error);
@@ -106,7 +110,7 @@ const App = () => {
 
   const handleDeleteNotebook = () => {
     if (window.confirm('Are you sure you want to delete this notebook?')) {
-      NotebookModel.deleteNotebook(baseUrl + notebook.path).then((data) => {
+      NotebookModel.deleteNotebook(notebookState.path).then((data) => {
         setNotebookState({}); // Clear notebook content
         console.log('Notebook deleted:', notebookState);
     }).catch((error) => {
@@ -118,7 +122,19 @@ const App = () => {
   const handleHistoryServerClick = () => {
     if (handleUnsavedChanges()) {
       setShowNotebook(false);
+      setShowScheduler(false);
       setShowHistoryServer(true);
+    }
+  };
+
+  // Scheduler
+  const handleSchedulerClick = () => {
+    console.log(config.airflowBaseUrl)
+    console.log('Scheduler clicked');
+    if (handleUnsavedChanges()) {
+      setShowNotebook(false);
+      setShowHistoryServer(false);
+      setShowScheduler(true);
     }
   };
 
@@ -128,6 +144,7 @@ const App = () => {
           onNewNotebookClick={handleNewNotebookClick} 
           onExistinNotebookClick={handleExistingNotebookClick}
           onHistoryServerClick={handleHistoryServerClick} 
+          onSchedulerClick={handleSchedulerClick}
           handleDirectoryClick={handleDirectoryClick}
           openWorkspaceDrawer={openWorkspaceDrawer}
           setOpenWorkspaceDrawer={setOpenWorkspaceDrawer}
@@ -144,6 +161,7 @@ const App = () => {
           setIsNotebookModified={setIsNotebookModified}
           handleDeleteNotebook={handleDeleteNotebook} />
         <HistoryServer showHistoryServer={showHistoryServer} />
+        <Scheduler showScheduler={showScheduler} />
       </ThemeProvider>
   );
 };

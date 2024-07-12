@@ -34,7 +34,7 @@ const WorkspaceSidebarHeader = ({
     const directoryModel = new DirectoryModel(currentPath, workspaceFiles);
     if (directoryModel.isUniqueFolderName(folderName)) {
       console.log('Creating folder:', folderName);
-      DirectoryModel.createDirectory(`${baseUrl}${currentPath}`, folderName);
+      DirectoryModel.createDirectory(`${currentPath}`, folderName);
       setCreateFolderDialogOpen(false);
       handleCreateClose();
       setRefreshKey(oldKey => oldKey + 1);
@@ -48,7 +48,7 @@ const WorkspaceSidebarHeader = ({
     const directoryModel = new DirectoryModel(currentPath, workspaceFiles);
     if (directoryModel.isUniqueNotebookName(notebookName)) {
       console.log('Creating notebook:', notebookName);
-      NotebookModel.createNotebook(`${baseUrl}${currentPath}`, notebookName);
+      NotebookModel.createNotebook(`${currentPath}`, notebookName);
       setCreateNotebookDialogOpen(false);
       handleCreateClose();
       setRefreshKey(oldKey => oldKey + 1);

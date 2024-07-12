@@ -208,3 +208,4 @@ webapp/yarn-debug.log*
 webapp/yarn-error.log*
 webapp/node_modules/*
 node_modules/*
+.DS_Store

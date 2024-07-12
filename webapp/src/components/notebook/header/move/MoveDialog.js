@@ -15,14 +15,14 @@ const MoveDialog = ({
 
   const jupyterBaseUrl= `${config.jupyterBaseUrl}`
   const baseUrl = `${jupyterBaseUrl}/api/contents`
-  const directoryUrl = `${baseUrl}/work`
+  const directoryUrl = `/work`
 
   const [directories, setDirectories] = useState([]);
   const [destinationDirectory, setDestinationDirectory] = useState('work');
 
   useEffect(() => {
     const fetchDirectories = async () => {
-      const items = await DirectoryModel.getAllItems(directoryUrl);
+      const items = await DirectoryModel.getSubDirectories(directoryUrl);
       setDirectories(items);
     };
 
@@ -82,7 +82,7 @@ const MoveDialog = ({
         <Button 
           style={{ color: 'lightgrey' }}
           onClick={() => {
-            NotebookModel.moveNotebook(baseUrl, notebook.path, destinationDirectory + '/' + notebook.name);
+            NotebookModel.moveNotebook(notebook.path, destinationDirectory + '/' + notebook.name);
             setMoveDialogOpen(false);
           }}>
           Move

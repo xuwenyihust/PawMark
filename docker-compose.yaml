@@ -13,6 +13,20 @@ services:
           cpus: "1" 
           memory: 1g
 
+  server:
+    image: wenyixu101/server:latest
+    container_name: server
+    ports:
+      - "5002:5002"
+    environment:
+      - ENV=testing
+    pull_policy: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1" 
+          memory: 1g
+
   notebook:
     image: wenyixu101/notebook:latest
     container_name: notebook
@@ -23,7 +37,7 @@ services:
       - JUPYTER_ENABLE_LAB=no
       - ENVIRONMENT=development
       - PYSPARK_SUBMIT_ARGS=--packages io.delta:delta-spark_2.12:3.0.0 --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog pyspark-shell
-    command: ["jupyter", "notebook", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+    # command: ["jupyter", "notebook", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
     volumes:
       - ./data/spark-events:/opt/data/spark-events
       - ./data/spark-warehouse:/opt/data/spark-warehouse
@@ -185,7 +199,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      # - ./data/postgres:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     pull_policy: always
     deploy:
       resources:

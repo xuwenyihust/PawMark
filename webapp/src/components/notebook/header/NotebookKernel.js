@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { JupyterKernelIcon } from '@datalayer/icons-react';
 import { VscTriangleDown } from "react-icons/vsc";
 import LoadingButton from '@mui/lab/LoadingButton';
-import NotebookModel from '../../../models/NotebookModel';
+import KernelModel from '../../../models/KernelModel'
 import config from '../../../config';
 
 const NotebookKernel = ({
   kernelId,
-  setSparkAppId
+  setSparkAppId,
+  clearOutputs
 }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -20,17 +21,23 @@ const NotebookKernel = ({
       setIsRestarting(true);
       setMenuOpen(false);
       setSparkAppId(null);
-      await NotebookModel.restartKernel(config.jupyterBaseUrl, kernelId);
+      await KernelModel.restartKernel(kernelId);
       setIsRestarting(false);
     } catch (error) {
       console.error('Failed to restart kernel:', error);
     }
   }
 
+  const handleRestartKernelAndClearOutputs = async () => {
+    clearOutputs();
+    handleRestartKernel();
+  }
+
   return (
     <Box sx={{ 
         display: 'flex', 
-        marginLeft: 'auto' }}>
+        marginLeft: 'auto',
+        marginRight: '10px' }}>
       {
         kernelId === null ? 
           <Button 
@@ -77,10 +84,18 @@ const NotebookKernel = ({
           <MenuItem 
             style={{
               fontSize: '12px',
-              width: '115px',
+              width: '220px',
             }}
             onClick={handleRestartKernel}>
               Restart Kernel
+          </MenuItem>
+          <MenuItem 
+            style={{
+              fontSize: '12px',
+              width: '220px',
+            }}
+            onClick={handleRestartKernelAndClearOutputs}>
+              Restart Kernel and Clear Outputs
           </MenuItem>
         </Menu>
     </Box>

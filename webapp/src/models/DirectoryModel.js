@@ -1,4 +1,4 @@
-import NotebookModel from "./NotebookModel";
+import config from '../config';
 
 class DirectoryModel {
   constructor(path, files) {
@@ -26,80 +26,84 @@ class DirectoryModel {
     return this.getDirectories().every(directory => directory.name !== name);
   }
 
-  static async getFiles(path = '') {
-    const url = new URL(path);
-    url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
-    const response = await fetch(url, {
-        method: 'GET',
-        redirect: "follow"
-    });
+  static async getChildren(path = '') {
+    const response = await fetch(`${config.serverBaseUrl}/directory/` + path);
     if (!response.ok) {
         throw new Error('Failed to fetch files');
+    } else {
+        const data = await response.json();
+        return data.content;
     }
-    const data = await response.json();
-    return data.content; // Assuming the API returns a 'content' array
   }
 
-  static async getAllItems(path = '') {
-    const items = await this.getFiles(path);
+  static async getSubDirectories(path = '') {
+    const items = await this.getChildren(path);
     const promises = items.map(async (item) => {
       if (item.type === 'directory') {
-        item.children = await this.getAllItems(`${path}/${item.name}`);
+        item.children = await this.getSubDirectories(`${path}/${item.name}`);
       }
       return item;
     });
     return Promise.all(promises);
   }
-
   
-  static async createDirectory(path='', directoryName='') {
-    const response = await fetch(`${path}/${directoryName}`, {
-        method: 'PUT',
+  static async createDirectory(path = '', directoryName = '') {
+    console.log("Creating directory at path:", path + '/' + directoryName);
+    const response = await fetch(`${config.serverBaseUrl}/directory`, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          type: 'directory'
-        }),
-      });
-  }
+          'directoryPath': path + '/' + directoryName,
+        })
+    });
 
-  static async renameItem(oldPath='', newPath='') {
-    const response = await fetch(oldPath, {
+    if (!response.ok) {
+        throw new Error('Failed to create directory');
+    } else {
+        const data = await response.json();
+        return data;
+    }
+  }; 
+
+  static async renameDirectory(oldPath='', newPath='') {
+    console.log("Renaming item at path:", oldPath, "to", newPath);
+    const response = await fetch(`${config.serverBaseUrl}/directory/` + oldPath, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          path: newPath
+          newPath: newPath
         }),
       });
   }
 
-  static async deleteItem(basePath = '', item = '') {
-    const itemPath = basePath + item.path;
-    if (item.type === 'notebook') {
-        NotebookModel.deleteNotebook(itemPath);
+  static async deleteDirectory(item = '') {
+    const itemPath = item.path;
+    
+    let folderItems = [];
+    await DirectoryModel.getChildren(itemPath)
+        .then((data) => {
+            folderItems = data;
+        })
+    if (folderItems.length > 0) {
+        alert('Directory is not empty');
     } else {
-        let folderItems = [];
-        await DirectoryModel.getFiles(itemPath)
-            .then((data) => {
-                folderItems = data;
-            })
-        if (folderItems.length > 0) {
-            alert('Directory is not empty');
-        } else {
-            console.log("Deleting item at path:", itemPath);
-            try {
-                const response = await fetch(itemPath, {
-                    method: 'DELETE'
-                });
-            } catch (error) {
-                alert(`Failed to delete directory: ${error.message}`);
+        console.log("Deleting item at path:", itemPath);
+        try {
+            const response = await fetch(`${config.serverBaseUrl}/directory/` + itemPath, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete directory');
             }
+        } catch (error) {
+            alert(`Failed to delete directory: ${error.message}`);
         }
     }
-}
+  }
   
 }
 

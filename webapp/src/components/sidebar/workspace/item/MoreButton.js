@@ -3,6 +3,7 @@ import { CgMoreVerticalAlt } from "react-icons/cg";
 import { Menu, MenuItem } from '@mui/material';
 import config from '../../../../config';
 import DirectoryModel from '../../../../models/DirectoryModel';
+import NotebookModel from '../../../../models/NotebookModel';
 import DeleteDialog from './DeleteDialog';
 import RenameDialog from './RenameDialog';
 
@@ -29,20 +30,25 @@ const MoreButton = ({
   const handleDelete = async (baseUrl, file) => {
     console.log('Delete:', file);
     try {
-      await DirectoryModel.deleteItem(baseUrl, file);
+      await DirectoryModel.deleteDirectory(file);
     } catch (error) {
       console.error('Failed to delete item:', error);
     }
     setRefreshKey(oldKey => oldKey + 1);
   }
 
-  const handleRename = async (baseUrl, file, newName) => {
+  const handleRename = async (file, newName) => {
     try {
-      await DirectoryModel.renameItem(baseUrl + currentPath + '/'  + file.name, currentPath + '/' + newName);
+      if (file.type === 'notebook') {
+        await NotebookModel.renameNotebook(currentPath + '/' + file.name, newName);
+        setRefreshKey(oldKey => oldKey + 1);
+      } else {
+        await DirectoryModel.renameDirectory(currentPath + '/'  + file.name, currentPath + '/' + newName);
+        setRefreshKey(oldKey => oldKey + 1);
+      }
     } catch (error) {
       console.error('Failed to rename item:', error);
     }
-    setRefreshKey(oldKey => oldKey + 1);
   }
 
   return (
@@ -98,13 +104,11 @@ const MoreButton = ({
             Rename
         </MenuItem>
         <RenameDialog 
-          baseUrl={baseUrl}
           file={file}
           renameDialogOpen={renameDialogOpen}
           setRenameDialogOpen={setRenameDialogOpen}
           handleMoreClose={handleMoreClose}
           handleRename={handleRename}/>
-
       </Menu>
     </div> 
   );

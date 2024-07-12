@@ -52,13 +52,13 @@ function CreateSidebar({
               }}>
               <ListItemIcon>
                   <CgNotes style={{ 
-                    color: 'lightgrey',
+                    color: 'white',
                     marginLeft: '10px'  }} />
               </ListItemIcon>
               <ListItemText>
                   <Typography 
                     variant="body1" 
-                    style={{ color: 'lightgrey' }}
+                    style={{ color: 'white' }}
                     sx={{
                       marginLeft: '-10px'
                     }}>

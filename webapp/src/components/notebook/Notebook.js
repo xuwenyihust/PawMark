@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Tooltip } from '@mui/material';
 import NotebookHeader from './header/NotebookHeader';
-import Cell from './cell/Cell';
-import { CellStatus } from './cell/CellStatus';
-import { CellType } from './cell/CellType';
+import Code from './content/Code';
+import Runs from './content/Runs';
+import { ContentType } from './content/ContentType';
+import { CellStatus } from './content/cell/CellStatus';
+import { CellType } from './content/cell/CellType';
 import NotebookModel from '../../models/NotebookModel';
+import SessionModel from '../../models/SessionModel'
 import SparkModel from '../../models/SparkModel';
 import config from '../../config';
+import { Box } from '@mui/material';
 
 
 function Notebook({ 
@@ -25,6 +28,9 @@ function Notebook({
     const [sparkAppId, setSparkAppId] = useState(null);
     const [isNameEditing, setIsNameEditing] = useState(false);
     const [currentName, setCurrentName] = useState(notebook.name);
+
+    const [contentType, setContentType] = useState(ContentType.CODE)
+
     // Cells
     const [cellStatuses, setCellStatuses] = useState(notebookState.content ? notebookState.content.cells.map(() => CellStatus.IDLE) : []);
     const [cellExecutedStatuses, setCellExecutedStatuses] = useState(notebookState.content ? notebookState.content.cells.map(cell => cell.cell_type === 'markdown') : []);
@@ -50,8 +56,8 @@ function Notebook({
             const notebookContentWithCustomFields = notebook.content.cells.map(cell => ({
                 ...cell,
                 isExecuted: cell.cell_type === 'code' ? false : cell.cell_type === 'markdown' ? true : cell.isExecuted,
-                lastExecutionResult: null, 
-                lastExecutionTime: null,
+                lastExecutionResult: cell.lastExecutionResult === null? null : cell.lastExecutionResult, 
+                lastExecutionTime: cell.lastExecutionTime === null? null : cell.lastExecutionTime
               }));
             setNotebookState({
                 ...notebook,
@@ -62,12 +68,26 @@ function Notebook({
             });
             setCurrentName(notebook.name);
         }
-        NotebookModel.getSession(jupyterBaseUrl, notebook.path)
+        SessionModel.getSession(notebook.path)
             .then((kernelId) => {
                 setKernelId(kernelId);
             });
         setSparkAppId(null);
     }, [notebook]);
+
+    const clearOutputs = () => {
+        setNotebookState(prevState => {
+            const newState = {...prevState};
+            newState.content.cells.forEach(cell => {
+                if (cell.cell_type === 'code') {
+                    cell.outputs = [];
+                    cell.lastExecutionResult = null;
+                    cell.lastExecutionTime = null;
+                }
+            });
+            return newState;
+        });
+    }
 
     const handleClickNotebookName = () => {
         setIsNameEditing(true);
@@ -81,7 +101,14 @@ function Notebook({
         console.log('Saving notebook name:', currentName);
         setIsNameEditing(false);
         setCurrentName(currentName);
-        NotebookModel.renameNotebook(baseUrl, notebook.path, currentName).then((data) => {
+        setNotebookState(prevState => {
+            return {
+                ...prevState,
+                name: currentName,
+                path: 'work/' + currentName,
+            }
+        });
+        NotebookModel.renameNotebook(notebook.path, currentName).then((data) => {
             console.log('Notebook name saved:', data);
         }).catch((error) => {
             console.error('Failed to save notebook name:', error);
@@ -89,7 +116,7 @@ function Notebook({
     }
 
     const handleUpdateNotebook = () => {
-        NotebookModel.updateNotebook(baseUrl + notebook.path, notebookState.content).then((data) => {
+        NotebookModel.updateNotebook(notebook.path, notebookState.content).then((data) => {
             setIsNotebookModified(false)
         }).catch((error) => {
             console.error('Failed to save notebook:', error);
@@ -200,10 +227,10 @@ function Notebook({
         
         // Assume getSession is a function that returns a kernel ID for a given notebook path
         setCellStatus(CellStatus.INITIALIZING);
-        let existingKernelId = await NotebookModel.getSession(jupyterBaseUrl, notebook.path);
+        let existingKernelId = await SessionModel.getSession(notebook.path);
 
         if (!existingKernelId) {
-            newKernelId = await NotebookModel.createSession(jupyterBaseUrl, notebook.path);
+            newKernelId = await SessionModel.createSession(notebook.path);
             setKernelId(newKernelId)
         } else {
             newKernelId = existingKernelId;
@@ -228,6 +255,7 @@ function Notebook({
             // Check if contains a spark app id
             if (result[0] && result[0].data && result[0].data['text/html'] && SparkModel.isSparkInfo(result[0].data['text/html'])) {
                 setSparkAppId(SparkModel.extractSparkAppId(result[0].data['text/html']));
+                SparkModel.storeSparkInfo(SparkModel.extractSparkAppId(result[0].data['text/html']), notebook.path)
             }
             console.log('Spark app id:', sparkAppId);
 
@@ -237,12 +265,19 @@ function Notebook({
     };
 
     return (
-        <div style={{ paddingLeft: 20, paddingRight: 0, marginLeft: 200 }}> {/* Adjust marginLeft based on your sidebar width */}
+        <div>
             {showNotebook && (
-                <div>
+                <Box 
+                    style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        paddingLeft: 20, 
+                        paddingRight: 0, 
+                        marginLeft: 200 }}>
                     {notebookState.name && 
                         <NotebookHeader 
                             notebook={notebook}
+                            setContentType={setContentType}
                             kernelId={kernelId}
                             sparkAppId={sparkAppId}
                             setSparkAppId={setSparkAppId}
@@ -252,6 +287,28 @@ function Notebook({
                             handleClickNotebookName={handleClickNotebookName}
                             handleChangeNotebookName={handleChangeNotebookName}
                             handleSaveNotebookName={handleSaveNotebookName}
+                            clearOutputs={clearOutputs}/>
+                    }
+
+                    {
+                        notebookState.name && 
+                        (contentType === ContentType.CODE ? 
+                        <Code
+                            notebook={notebook}
+                            notebookState={notebookState}
+                            cellStatuses={cellStatuses}
+                            setCellStatus={setCellStatus}
+                            cellExecutedStatuses={cellExecutedStatuses}
+                            setCellExecutedStatus={setCellExecutedStatus}
+                            handleChangeCell={handleChangeCell}
+                            handleDeleteCell={handleDeleteCell}
+                            handleChangeCellType={handleChangeCellType}
+                            handleMoveCell={handleMoveCell}
+                            handleRunCodeCell={handleRunCodeCell}
+                            handleCopyCell={handleCopyCell}
+                            handleCreateCell={handleCreateCell}
+                            kernelId={kernelId}
+                            setKernelId={setKernelId}
                             runAllCells={
                                 () => NotebookModel.runAllCells(
                                     jupyterBaseUrl, 
@@ -263,60 +320,15 @@ function Notebook({
                                     cellExecutedStatuses,
                                     setCellExecutedStatus)}
                             saveNotebook={handleUpdateNotebook}
-                            deleteNotebook={handleDeleteNotebook}/>
+                            deleteNotebook={handleDeleteNotebook}
+                            /> : 
+                        <Runs 
+                            notebook={notebook}
+                            contentType={contentType}
+                            />)
                     }
-                    {notebookState.content && 
-                        notebookState.content.cells && 
-                        notebookState.content.cells.map((cell, index) => (
-                        <div style={{ position: 'relative' }}>
-                            <Cell
-                                cell={cell}
-                                index={index}
-                                key={index}
-                                notebookState={notebookState}
-                                cellStatus={cellStatuses[index]}
-                                setCellStatus={status => setCellStatus(index, status)}
-                                cellExecutedStatus={cellExecutedStatuses[index]}
-                                setCellExecutedStatus={executed => setCellExecutedStatus(index, executed)}
-                                handleChangeCell={handleChangeCell}
-                                handleDeleteCell={handleDeleteCell} 
-                                handleChangeCellType={handleChangeCellType}
-                                handleMoveCell={handleMoveCell}
-                                handleRunCodeCell={handleRunCodeCell}
-                                handleCopyCell={handleCopyCell}
-                                handelRunAllAboveCells={
-                                    (index) => NotebookModel.runAllAboveCells(
-                                            index,
-                                            jupyterBaseUrl, 
-                                            notebookState, 
-                                            kernelId, 
-                                            setKernelId, 
-                                            cellStatuses, 
-                                            setCellStatus,
-                                            cellExecutedStatuses,
-                                            setCellExecutedStatus)}/>
-                            <div 
-                                style={{ 
-                                    display: 'flex',
-                                    justifyContent: 'center'}}>
-                                <Tooltip title="Add Code Cell" 
-                                    sx={{fontSize: 11,
-                                    color: "grey"}}>
-                                    <Button onClick={() => handleCreateCell('code', index + 1)}>
-                                        + Code
-                                    </Button>
-                                </Tooltip>
-                                <Tooltip title="Add Code Cell"
-                                    sx={{fontSize: 11,
-                                    color: "grey"}}>
-                                    <Button onClick={() => handleCreateCell('markdown', index + 1)}>
-                                        + Markdown
-                                    </Button>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        
+                </Box>
             )}
         </div>
     );

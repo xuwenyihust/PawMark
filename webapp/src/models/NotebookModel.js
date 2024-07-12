@@ -1,6 +1,9 @@
-import { CellStatus } from '../components/notebook/cell/CellStatus';
-import { OutputType } from '../components/notebook/cell/result/OutputType';
-import { CellExecuteResultType } from "../components/notebook/cell/CellExecuteResultType";
+import { CellStatus } from '../components/notebook/content/cell/CellStatus';
+import { OutputType } from '../components/notebook/content/cell/result/OutputType';
+import { CellExecuteResultType } from "../components/notebook/content/cell/CellExecuteResultType";
+import { v4 as uuidv4 } from 'uuid';
+import SessionModel from "./SessionModel"
+import config from '../config';
 
 
 class NotebookModel {
@@ -23,86 +26,11 @@ class NotebookModel {
     }
   }
 
-  static async restartKernel(basePath = '', kernelId = '') {
-    try {
-        await fetch(`${basePath}/api/kernels/${kernelId}/restart`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        let status;
-        do {
-          const response = await fetch(`${basePath}/api/kernels/${kernelId}`);
-          const data = await response.json();
-          status = data.execution_state;
-          if (status === 'busy') {
-            // Wait for a second before checking again
-            await new Promise(resolve => setTimeout(resolve, 1000));
-          }
-        } while (status === 'busy');
-
-        console.log('Kernel restart completed');
-      } catch (error) {
-        console.error('Failed to restart kernel:', error);
-      }
-  };
-
-  static async getSession(basePath = '', notebookPath = '') {
-    try {
-        const response = await fetch(basePath + '/api/sessions', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        const session = await response.json();
-        const associatedSession = session.find(session => session.notebook.path === basePath + '/' + notebookPath);
-        const kernelId = associatedSession
-            .kernel.id;
-        return kernelId;
-    } catch (error) {
-        console.error('Failed to get session:', error);
-        return null;
-    }
-  };
-
-  static async createSession(basePath = '', notebookPath = '') {
-    try {
-        const response = await fetch(basePath + '/api/sessions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                notebook: { path: `${basePath}/${notebookPath}` },
-                kernel: { id: null, name: 'python3' },
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        // The response will contain the session data
-        const session = await response.json();
-        console.log('Session created:', session);
-        // The kernel ID is in the 'id' property of the 'kernel' object
-        const kernelId = session.kernel.id;
-
-        // Return the kernal ID
-        return kernelId;
-    } catch (error) {
-        console.error('Failed to create session:', error);
-    }
-  };
-
   static async handleWebSocketError(error, baseUrl, notebook, cell, cellStatus, setCellStatus) {
     console.error('WebSocket connection error:', error);
     // Try to recreate the session
     try {
-      const newKernelId = await NotebookModel.createSession(baseUrl, notebook.path);
+      const newKernelId = await SessionModel.createSession(notebook.path);
       // Try to run the cell again
       const result = await NotebookModel.runCell(baseUrl, cell, newKernelId, cellStatus, setCellStatus);
       return { newKernelId, result };
@@ -113,126 +41,96 @@ class NotebookModel {
   };
 
   static async fetchNotebook(path = '') {
-    const url = new URL(path);
-    url.searchParams.append('t', Date.now()); // Append current timestamp as query parameter
-    const response = await fetch(url, {
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'GET',
-        redirect: "follow",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
     });
 
+    if (!response.ok) {
+        throw new Error('Failed to fetch notebook');
+    }
     const data = await response.json();
     return data;
   }
 
-  static async createNotebook(path = '', notebookName='') {
-    if (notebookName === '') {
-        const timestamp = Date.now();
-        notebookName = `notebook-${timestamp}.ipynb`;
-    } else {
-        notebookName = `${notebookName}.ipynb`;
-    }
-    const notebookPath = `${path}/${notebookName}`;
-  
-    const initCells = [
-        { 
-            cell_type: 'markdown', 
-            metadata: {},
-            source: '# My Notebook' },
-        { 
-            cell_type: 'code', 
-            execution_count: 1,
-            metadata: {},
-            outputs: [],
-            source: '# SparkSession: spark is already created\nspark' },
-    ];
-
-    const notebookData = {
-        type: 'notebook',
-        content: {
-            cells: initCells,
-            metadata: {
-                kernelspec: {
-                    name: 'python3',
-                    display_name: 'Python 3'
-                },
-                language_info: {
-                    name: 'python'
-                }
-            },
-            nbformat: 4,
-            nbformat_minor: 4
-        }
-    };
-
-    const response = await fetch(notebookPath, {
-        method: 'PUT',
+  static async createNotebook(path = '', notebookName = '') {
+    const response = await fetch(`${config.serverBaseUrl}/notebook`, {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(notebookData)
+        body: JSON.stringify({
+          'name': notebookName,
+          'path': path
+        })
     });
 
     if (!response.ok) {
         throw new Error('Failed to create notebook');
+    } else {
+        const data = await response.json();
+        return data;
     }
-    const data = await response.json();
-    return data;
   }; 
+
+  static async deleteNotebook(path = '') {
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete notebook');
+    } else {
+        const data = await response.json();
+        return data;
+    }
+  };
   
   static async updateNotebook(path = '', content = {}) {
-    console.log("Updating notebook at path with content:", path, content);
     const updatedContent = { ...content };
   
     updatedContent.cells = updatedContent.cells.map(cell => {
       const updatedCell = { ...cell };
-      delete updatedCell.isExecuted;
       return updatedCell;
       });
+
+    // Check if notebook content.metadata has uuid
+    if (!updatedContent.metadata.hasOwnProperty('uuid')) {
+      updatedContent.metadata.uuid = uuidv4();
+    }
+
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'content': updatedContent
+        })
+    });
   
-    const response = await fetch(path, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              content: updatedContent,
-              type: 'notebook'
-          })
-      });
-  
-      if (!response.ok) {
-          throw new Error('Failed to update notebook');
-      }
-      const data = await response.json();
-      return data;
+    if (!response.ok) {
+        throw new Error('Failed to update notebook');
+    }
+    const data = await response.json();
+    return data;
   };
 
-  static async deleteNotebook(path = '') {
-    console.log("Deleting notebook at path:", path);
-    const response = await fetch(path, {
-          method: 'DELETE'
-      });
-  
-      if (!response.ok) {
-          throw new Error('Failed to delete notebook');
-      }
-      const data = response.status !== 204 ? await response.json() : {};
-      return data;
-  };
-
-  static async renameNotebook(basePath = '', path = '', newName = '') {
-    const newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName;
-    console.log("Renaming notebook at path:", path, "to:", newPath);
-    const response = await fetch(basePath + path, {
+  static async renameNotebook(path = '', newName = '') {
+    console.log("Renaming notebook at path:", path, "to:", newName);
+    
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            path: newPath
+            'newName': newName
         })
     });
 
@@ -243,16 +141,31 @@ class NotebookModel {
     return data;
   };
 
-  static async moveNotebook(basePath = '', path = '', destination = '') {
-    console.log("Moving notebook at path:", basePath + '/' + path, "to:", destination);
-    const response = await fetch(basePath + '/' + path, {
+  static async getSparkApps(notebookPath = '') {
+    const response = await fetch(`${config.serverBaseUrl}/notebook/spark_app/${notebookPath}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) {
+        console.error('Failed to fetch Spark applications');
+        return null;
+    }
+    const data = await response.json();
+    return data;
+  };
+
+  static async moveNotebook(path = '', destination = '') {
+    console.log("Moving notebook at path:", path, "to:", destination);
+    const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          // 'type': 'notebook',
-          'path': destination
+            'newPath': destination
         })
     });
 
@@ -428,7 +341,7 @@ class NotebookModel {
             // If there's no kernel ID, create a new session
             if (!kernelId) {
                 setCellStatus(i, CellStatus.INITIALIZING);
-                newKernelId = await NotebookModel.createSession(jupyterBaseUrl, notebook.path);
+                newKernelId = await SessionModel.createSession(notebook.path);
                 setKernelId(newKernelId);
             }
             // Call the API to run the cell
