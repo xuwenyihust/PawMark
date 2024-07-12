@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import SparkModel from '../../../models/SparkModel';
 import NotebookModel from '../../../models/NotebookModel';
-import { Box, Typography, Card, CardHeader, CardContent, List, ListItem, ListItemText } from '@mui/material';
+import { Link, Button, Box, Typography, Card, CardHeader, CardContent, List, ListItem, ListItemText } from '@mui/material';
+import config from '../../../config';
 
 
 function Runs({
@@ -50,7 +51,13 @@ function Runs({
             <List>
               {sparkApps.map((app, index) => (
                 <ListItem key={index}>
-                  <ListItemText primary={app.spark_app_id} />
+                  <Button 
+                    onClick={() => { window.open(`${config.sparkUiBaseUrl}/history/${app.spark_app_id}/jobs/`) }}
+                    sx={{ textTransform: 'none' }}>
+                    <Link to={`${config.sparkUiBaseUrl}/history/${app.spark_app_id}/jobs/`}>
+                      <ListItemText primary={app.spark_app_id} />
+                    </Link>
+                  </Button>
                 </ListItem>
               ))}
           </List>
