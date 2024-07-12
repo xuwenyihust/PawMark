@@ -40,6 +40,8 @@ GRANT ALL PRIVILEGES ON SEQUENCE notebook_spark_apps_id_seq TO server;
 -- Add some initial data
 INSERT INTO notebooks (name, path) VALUES ('demo.ipynb', 'work/demo.ipynb');
 INSERT INTO notebooks (name, path) VALUES ('notebook.ipynb', 'work/notebook.ipynb');
+INSERT INTO notebooks (name, path) VALUES ('quickstart.ipynb', 'work/quickstart.ipynb');
+INSERT INTO notebooks (name, path) VALUES ('sg-resale-flat-prices.ipynb', 'work/sg-resale-flat-prices/sg-resale-flat-prices.ipynb');
 
 INSERT INTO directories (name, path) VALUES ('work', '/work');
 INSERT INTO directories (name, path) VALUES ('word-count', '/work/word-count');
