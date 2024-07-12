@@ -79,6 +79,15 @@ PawMark is a platform for big data and AI. It is based on Apache Spark and Kuber
 </details>
 
 <details>
+<summary>Server</summary>
+
+[![Build Docker - Server](https://github.com/xuwenyihust/PawMark/actions/workflows/build-docker-server.yml/badge.svg)](https://github.com/xuwenyihust/PawMark/actions/workflows/build-docker-server.yml)
+
+- [Dockerfile](./server/Dockerfile) 
+
+</details>
+
+<details>
 <summary>Spark</summary>
 
 [![Build Docker - Spark](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml/badge.svg)](https://github.com/xuwenyihust/DataPulse/actions/workflows/build-docker-spark.yml)

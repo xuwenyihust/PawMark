@@ -18,3 +18,6 @@ RUN python3 -m ipykernel install --user --name python3 --display-name "Python 3"
 # Set JAVA_HOME environment variable
 ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 
+COPY webserver_config.py /opt/airflow/webserver_config.py
+COPY airflow.cfg /opt/airflow/airflow.cfg
+

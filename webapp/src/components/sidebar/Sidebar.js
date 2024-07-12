@@ -9,6 +9,7 @@ function Sidebar({
       onNewNotebookClick, 
       onExistinNotebookClick, 
       onHistoryServerClick,
+      onSchedulerClick,
       handleDirectoryClick,
       openWorkspaceDrawer,
       setOpenWorkspaceDrawer,
@@ -218,6 +219,7 @@ function Sidebar({
 
                 {/* Scheduler */}
                 <ListItem button onClick={() => {
+                    onSchedulerClick();
                     setOpenWorkspaceDrawer(false); 
                     setOpenCreateDrawer(false);}
                   }
