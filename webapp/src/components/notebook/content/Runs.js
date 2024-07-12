@@ -18,7 +18,7 @@ function Runs({
     };
   
     fetchSparkApps();
-  }, [contentType]);
+  }, [contentType, notebook]);
 
   return (
     <Box sx={{
@@ -55,7 +55,7 @@ function Runs({
               ))}
           </List>
           )
-            : ('Loading...')}
+            : ('No Spark Applications associated with this notebook.')}
         </CardContent>
       </Card>
     </Box>
