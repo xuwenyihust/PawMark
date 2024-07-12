@@ -129,6 +129,7 @@ const App = () => {
 
   // Scheduler
   const handleSchedulerClick = () => {
+    console.log(config.airflowBaseUrl)
     console.log('Scheduler clicked');
     if (handleUnsavedChanges()) {
       setShowNotebook(false);
