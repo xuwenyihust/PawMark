@@ -20,18 +20,18 @@ class UserModelTestCase(unittest.TestCase):
   def test_password_setter(self):
     with self.app.app_context():
       user = UserModel(username='testuser', email='testuser@example.com')
-      db.session.add(user)
-      db.session.commit()
       password = 'test_password'
       user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
       assert user.password_hash is not None
 
   def test_check_password(self):
     with self.app.app_context():
       user = UserModel(username='testuser', email='testuser@example.com')
-      db.session.add(user)
-      db.session.commit()
       password = 'test_password'
       user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
       assert user.check_password(password)
       assert not user.check_password('wrong_password')
