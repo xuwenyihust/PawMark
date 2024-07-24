@@ -1,4 +1,3 @@
-from flask import jsonify
 from database import db
 
 class DirectoryModel(db.Model):
