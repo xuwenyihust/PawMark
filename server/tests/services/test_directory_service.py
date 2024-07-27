@@ -49,8 +49,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       response_1 = Directory.get_content_by_path('work')
       self.assertEqual(response_1.status_code, 200)
-      print(json.loads(response_1.data)['content'])
-      # self.assertTrue(json.loads(response_3.data)['content'])
+      self.assertEqual(len([x for x in json.loads(response_3.data)['content'] if x['name'] == 'test_directory']), 1)
 
       # Delete directory
       response_2 = Directory.delete_directory_by_path('work/test_directory')
@@ -59,7 +58,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
       # Check if deleted directory could not be detected
       response_3 = Directory.get_content_by_path('work')
       self.assertEqual(response_3.status_code, 200)
-      # self.assertEqual(json.loads(response_3.data)['content'], [])
+      self.assertEqual(len([x for x in json.loads(response_3.data)['content'] if x['name'] == 'test_directory']), 0)
 
   def test_rename_directory_by_path(self):
     with self.app.app_context():
