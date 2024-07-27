@@ -154,7 +154,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       db.session.add(user)
       db.session.commit()
       g.user = user
-      
+
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
       self.assertEqual(response_0.status_code, 200)
@@ -218,64 +218,69 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook_3['content']['cells'][2]['source'], 'print(x)')
 
   
-  # def test_delete_notebook(self):
-  #   with self.app.app_context():
-  #     # Create User
-  #     user = UserModel(name='testuser', email='testuser@example.com')
-  #     password = 'test_password'
-  #     user.set_password(password)
-  #     g.user = user
+  def test_delete_notebook(self):
+    with self.app.app_context():
+      # Create User
+      user = UserModel(name='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
 
-  #     # Create Notebook
-  #     response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
-  #     self.assertEqual(response_0.status_code, 200)
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
 
-  #     # Delete Notebook
-  #     response_1 = Notebook.delete_notebook_by_path(notebook_path='work/Notebook.ipynb')
-  #     self.assertEqual(response_1.status_code, 200)
+      # Delete Notebook
+      response_1 = Notebook.delete_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_1.status_code, 200)
 
-  #     # Get Notebook
-  #     response_2 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
-  #     self.assertEqual(response_2.status_code, 404)
+      # Get Notebook
+      response_2 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_2.status_code, 404)
 
-  #     notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
-  #     self.assertIsNone(notebook_1)
+      notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
+      self.assertIsNone(notebook_1)
 
-  #     # Delete non-exist Notebook
-  #     response_3 = Notebook.delete_notebook_by_path(notebook_path='work/Notebook666.ipynb')
-  #     self.assertEqual(response_3.status_code, 404)
+      # Delete non-exist Notebook
+      response_3 = Notebook.delete_notebook_by_path(notebook_path='work/Notebook666.ipynb')
+      self.assertEqual(response_3.status_code, 404)
 
-  # def test_rename_notebook(self):
-  #   with self.app.app_context():
-  #     # Create User
-  #     user = UserModel(name='testuser', email='testuser@example.com')
-  #     password = 'test_password'
-  #     user.set_password(password)
-  #     g.user = user
-  #     # Create Notebook
-  #     response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
-  #     self.assertEqual(response_0.status_code, 200)
+  def test_rename_notebook(self):
+    with self.app.app_context():
+      # Create User
+      user = UserModel(name='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+      
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
 
-  #     # Rename Notebook
-  #     response_1 = Notebook.rename_notebook_by_path(notebook_path='work/Notebook.ipynb', new_notebook_name='NewNotebook.ipynb')
-  #     self.assertEqual(response_1.status_code, 200)
-  #     self.assertEqual(json.loads(response_1.data)['message'], 'Notebook renamed')
+      # Rename Notebook
+      response_1 = Notebook.rename_notebook_by_path(notebook_path='work/Notebook.ipynb', new_notebook_name='NewNotebook.ipynb')
+      self.assertEqual(response_1.status_code, 200)
+      self.assertEqual(json.loads(response_1.data)['message'], 'Notebook renamed')
 
-  #     # Get Notebook
-  #     response_2 = Notebook.get_notebook_by_path(notebook_path='work/NewNotebook.ipynb')
-  #     self.assertEqual(response_2.status_code, 200)
-  #     self.assertEqual(json.loads(response_2.data)['name'], 'NewNotebook.ipynb')
-  #     self.assertEqual(json.loads(response_2.data)['path'], 'work/NewNotebook.ipynb')
+      # Get Notebook
+      response_2 = Notebook.get_notebook_by_path(notebook_path='work/NewNotebook.ipynb')
+      self.assertEqual(response_2.status_code, 200)
+      self.assertEqual(json.loads(response_2.data)['name'], 'NewNotebook.ipynb')
+      self.assertEqual(json.loads(response_2.data)['path'], 'work/NewNotebook.ipynb')
 
-  #     notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
-  #     self.assertIsNone(notebook_1)
+      notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
+      self.assertIsNone(notebook_1)
 
-  #     notebook_2 = NotebookModel.query.filter_by(path='work/NewNotebook.ipynb').first()
-  #     self.assertIsNotNone(notebook_2)
-  #     self.assertEqual(notebook_2.name, 'NewNotebook.ipynb')
-  #     self.assertEqual(notebook_2.path, 'work/NewNotebook.ipynb')
+      notebook_2 = NotebookModel.query.filter_by(path='work/NewNotebook.ipynb').first()
+      self.assertIsNotNone(notebook_2)
+      self.assertEqual(notebook_2.name, 'NewNotebook.ipynb')
+      self.assertEqual(notebook_2.path, 'work/NewNotebook.ipynb')
 
-  #     # Rename non-exist Notebook
+      # Rename non-exist Notebook
 
   # def test_move_notebook(self):
   #   with self.app.app_context():
