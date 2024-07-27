@@ -40,10 +40,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       db.session.commit()
 
       # Create User
-      user = UserModel(username='testuser', email='testuser@example.com')
-      password = 'test_password'
-      user.set_password(password)
-      g.user = user
+      g.user = user_0
 
       response = Notebook.get_all_notebooks()
       notebooks = json.loads(response.data)
