@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 from app.services.notebook import Notebook
 import logging
 
