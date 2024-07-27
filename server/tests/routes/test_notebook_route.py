@@ -17,6 +17,7 @@ class NotebookRouteTestCase(unittest.TestCase):
       db.drop_all()
 
   def test_get_all_notebooks(self):
-    response = self.client.get('/notebook/all')
-    print(response.data)
-    self.assertEqual(response.status_code, 200)
+    with self.app.app_context():
+      response = self.client.get('/notebook/all')
+      print(response.data)
+      self.assertEqual(response.status_code, 200)
