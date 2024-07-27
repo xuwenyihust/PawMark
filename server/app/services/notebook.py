@@ -67,7 +67,7 @@ class Notebook:
     # Get the authenticated user
     user = g.user
 
-    logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path} for user: {user}")
+    logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path} for user: {user.name}")
 
     jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
