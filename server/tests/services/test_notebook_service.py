@@ -39,6 +39,12 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       db.session.commit()
 
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
+
       response = Notebook.get_all_notebooks()
       notebooks = json.loads(response.data)
       self.assertEqual(len(notebooks), 2)
@@ -52,6 +58,12 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_create_and_get_notebook(self):
     with self.app.app_context():
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
+
       # Create with name but without path & get by path
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
       self.assertEqual(response_0.status_code, 200)
@@ -200,6 +212,12 @@ class NotebookServiceTestCase(unittest.TestCase):
   
   def test_delete_notebook(self):
     with self.app.app_context():
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
+
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
       self.assertEqual(response_0.status_code, 200)
