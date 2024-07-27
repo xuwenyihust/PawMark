@@ -17,15 +17,23 @@ def notebook():
 
 @notebook_blueprint.route('/notebook/all', methods=['GET'])
 def get_all_notebooks():
+    # TODO: Implement user authentication
     g.user = User.get_mock_user()
+
     return Notebook.get_all_notebooks()
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['GET'])
 def get_notebook_by_path(notebook_path):
+    # TODO: Implement user authentication
+    g.user = User.get_mock_user()
+
     return Notebook.get_notebook_by_path(notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook', methods=['POST'])
 def create_notebook():
+    # TODO: Implement user authentication
+    g.user = User.get_mock_user()
+
     data = request.get_json()
     notebook_name = data.get('name', None)
     notebook_path = data.get('path', None)
@@ -33,17 +41,26 @@ def create_notebook():
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['PUT'])
 def update_notebook(notebook_path):
+    # TODO: Implement user authentication
+    g.user = User.get_mock_user()
+
     data = request.get_json()
     content = data.get('content', None)
     return Notebook.update_notebook(notebook_path=notebook_path, content=content)
     
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['DELETE'])
 def delete_notebook(notebook_path):
+    # TODO: Implement user authentication
+    g.user = User.get_mock_user()
+    
     logging.info(f"Deleting notebook with path: {notebook_path}")
     return Notebook.delete_notebook_by_path(notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['PATCH'])
 def rename_or_move_notebook(notebook_path):
+    # TODO: Implement user authentication
+    g.user = User.get_mock_user()
+
     data = request.get_json()
     if 'newName' in data:
         logging.info(f"Renaming notebook with path: {notebook_path} to {data['newName']}")
@@ -56,6 +73,9 @@ def rename_or_move_notebook(notebook_path):
 
 @notebook_blueprint.route('/notebook/spark_app/<path:notebook_path>', methods=['GET'])
 def get_spark_app_by_notebook_path(notebook_path):
+    # TODO: Implement user authentication
+    g.user = User.get_mock_user()
+    
     logging.info(f"Get spark apps by notebook path: {notebook_path}")
     return Notebook.get_spark_app_by_notebook_path(notebook_path)
 

@@ -21,5 +21,14 @@ class NotebookRouteTestCase(unittest.TestCase):
   def test_get_all_notebooks(self):
     with self.app.app_context():
       response = self.client.get('/notebook/all')
+      self.assertEqual(response.status_code, 200)
+
+  def test_create_notebook(self):
+    with self.app.app_context():
+      data = {
+        "name": "test_notebook",
+        "path": "test_path"
+      }
+      response = self.client.post('/notebook', json=data)
       print(response.data)
       self.assertEqual(response.status_code, 200)
