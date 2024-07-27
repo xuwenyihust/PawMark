@@ -18,4 +18,5 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_get_all_notebooks(self):
     response = self.client.get('/notebook/all')
+    print(response.data)
     self.assertEqual(response.status_code, 200)
