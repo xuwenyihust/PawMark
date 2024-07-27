@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, g
 from app.services.notebook import Notebook
+from app.services.user import User
 import logging
 
 notebook_blueprint = Blueprint('notebook', __name__)
@@ -16,6 +17,7 @@ def notebook():
 
 @notebook_blueprint.route('/notebook/all', methods=['GET'])
 def get_all_notebooks():
+    g.user = User.get_mock_user()
     return Notebook.get_all_notebooks()
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['GET'])
