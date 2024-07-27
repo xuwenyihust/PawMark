@@ -1,5 +1,6 @@
 import unittest
 from flask_cors import CORS
+from flask import g
 from run import create_app
 from database import db
 from app.models.notebook import NotebookModel

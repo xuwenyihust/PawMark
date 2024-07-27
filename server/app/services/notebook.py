@@ -1,7 +1,7 @@
 from app.models.notebook import NotebookModel
 from app.models.notebook_spark_app import NotebookSparkAppModel
 from app.models.spark_app import SparkAppModel
-from flask import Response
+from flask import g, Response
 from datetime import datetime
 import requests
 import logging
@@ -15,7 +15,10 @@ class Notebook:
 
   @staticmethod
   def get_all_notebooks():
-    notebooks = NotebookModel.query.all()
+    # Get the authenticated user
+    user = g.user
+
+    notebooks = NotebookModel.query.filter_by(user_id=user.id).all()
 
     # Convert the notebooks to dictionaries
     notebooks_dict = [notebook.to_dict() for notebook in notebooks]
@@ -61,7 +64,10 @@ class Notebook:
 
   @staticmethod
   def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
-    logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path}")
+    # Get the authenticated user
+    user = g.user
+
+    logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path} for user: {user}")
 
     jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
@@ -97,7 +103,8 @@ class Notebook:
     try:
       notebook = NotebookModel(
         name=notebook_name,
-        path=f'{notebook_path}/{notebook_name}'
+        path=f'{notebook_path}/{notebook_name}',
+        user_id=user.id
       )
 
       db.session.add(notebook)
