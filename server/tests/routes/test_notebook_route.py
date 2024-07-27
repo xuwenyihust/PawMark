@@ -1,8 +1,10 @@
 import unittest
+import json
 from flask_cors import CORS
 from database import db
 from run import create_app
 from app.routes.notebook import notebook_blueprint
+from app.services.directory import Directory
 
 class NotebookRouteTestCase(unittest.TestCase):
 
@@ -25,10 +27,16 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_create_notebook(self):
     with self.app.app_context():
+
+      # Create directory
+      response_1 = Directory.create_directory('work/test_create_notebook_directory')
+      self.assertEqual(response_1.status_code, 201)
+
       data = {
         "name": "test_notebook",
-        "path": ""
+        "path": "work/test_create_notebook_directory"
       }
-      response = self.client.post('/notebook', json=data)
-      print(response.data)
-      self.assertEqual(response.status_code, 200)
+      response_2 = self.client.post('/notebook', json=data)
+      print(response_2.data)
+      self.assertEqual(response_2.status_code, 200)
+      self.assertEqual(len(json.loads(response_2.data)), 0)
