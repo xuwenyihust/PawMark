@@ -2,11 +2,13 @@ import unittest
 from flask_cors import CORS
 from database import db
 from run import create_app
+from app.routes.notebook import notebook_blueprint
 
 class NotebookRouteTestCase(unittest.TestCase):
 
   def setUp(self):
     self.app = create_app()
+    self.app.register_blueprint(notebook_blueprint)
     self.client = self.app.test_client()
     with self.app.app_context():
       db.create_all()
