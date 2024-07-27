@@ -29,7 +29,7 @@ class KernelServiceTestCase(unittest.TestCase):
       self.assertEqual(response_0.status_code, 404)
 
       # Create User
-      user = UserModel(username='testuser', email='testuser@example.com')
+      user = UserModel(name='testuser', email='testuser@example.com')
       password = 'test_password'
       user.set_password(password)
       g.user = user
