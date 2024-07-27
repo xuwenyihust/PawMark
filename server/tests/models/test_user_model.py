@@ -17,6 +17,15 @@ class UserModelTestCase(unittest.TestCase):
       db.session.remove()
       db.drop_all()
 
+  def test_user_model(self):
+    with self.app.app_context():
+      user = UserModel(name='testuser', email='testuser@example.com')
+      db.session.add(user)
+      db.session.commit()
+      assert user.id is not None
+      assert user.name == 'testuser'
+      assert user.email == 'testuser@example.com'
+
   def test_password_setter(self):
     with self.app.app_context():
       user = UserModel(name='testuser', email='testuser@example.com')
