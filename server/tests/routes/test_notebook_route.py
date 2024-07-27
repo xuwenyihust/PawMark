@@ -27,7 +27,7 @@ class NotebookRouteTestCase(unittest.TestCase):
     with self.app.app_context():
       data = {
         "name": "test_notebook",
-        "path": "test_path"
+        "path": ""
       }
       response = self.client.post('/notebook', json=data)
       print(response.data)

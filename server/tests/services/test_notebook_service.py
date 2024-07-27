@@ -68,7 +68,6 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(response_0.status_code, 200)
 
       response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
-      print(response_1.data)
       
       notebook_1 = json.loads(response_1.data.decode('utf-8'))
       status_code_1 = response_1.status_code
