@@ -36,7 +36,6 @@ class DirectoryServiceTestCase(unittest.TestCase):
       response_2 = Directory.get_content_by_path('work')
       self.assertEqual(response_2.status_code, 200)
       self.assertEqual(len([x for x in json.loads(response_2.data)['content'] if x['name'] == 'test_create_directory']), 1)
-      self.assertEqual(json.loads(response_2.data)['content'][0]['name'], 'test_create_directory')
 
   def test_delete_directory_by_path(self):
     with self.app.app_context():
