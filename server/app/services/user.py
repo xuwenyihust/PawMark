@@ -12,7 +12,7 @@ class User:
 
   @staticmethod
   def get_mock_user():
-    mock_user = User.query.filter_by(username='testuser0').first()
+    mock_user = UserModel.query.filter_by(username='testuser0').first()
     if mock_user is None:
       mock_user = UserModel(name='testuser0', email='testuser0@example.com')
       password = 'test_password'
