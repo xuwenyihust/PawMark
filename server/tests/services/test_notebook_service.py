@@ -145,74 +145,77 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(notebook_7['path'], notebook_path_6)
       self.assertEqual(len(notebook_7['content']['cells']), 2)
 
-  # def test_update_notebook(self):
-  #   with self.app.app_context():
-  #     # Create User
-  #     user = UserModel(name='testuser', email='testuser@example.com')
-  #     password = 'test_password'
-  #     user.set_password(password)
-  #     g.user = user
-  #     # Create Notebook
-  #     response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
-  #     self.assertEqual(response_0.status_code, 200)
+  def test_update_notebook(self):
+    with self.app.app_context():
+      # Create User
+      user = UserModel(name='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+      
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
 
-  #     # Check Notebook
-  #     response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
-  #     notebook_1 = json.loads(response_1.data.decode('utf-8'))
-  #     self.assertEqual(notebook_1['name'], 'Notebook.ipynb')
-  #     self.assertEqual(notebook_1['path'], 'work/Notebook.ipynb')
-  #     self.assertEqual(len(notebook_1['content']['cells']), 2)
+      # Check Notebook
+      response_1 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      notebook_1 = json.loads(response_1.data.decode('utf-8'))
+      self.assertEqual(notebook_1['name'], 'Notebook.ipynb')
+      self.assertEqual(notebook_1['path'], 'work/Notebook.ipynb')
+      self.assertEqual(len(notebook_1['content']['cells']), 2)
 
-  #     self.assertEqual(notebook_1['content']['cells'][0]['cell_type'], 'markdown')
-  #     self.assertEqual(notebook_1['content']['cells'][0]['source'], '# My Notebook')
+      self.assertEqual(notebook_1['content']['cells'][0]['cell_type'], 'markdown')
+      self.assertEqual(notebook_1['content']['cells'][0]['source'], '# My Notebook')
 
-  #     self.assertEqual(notebook_1['content']['cells'][1]['cell_type'], 'code')
-  #     self.assertEqual(notebook_1['content']['cells'][1]['source'], '# SparkSession: spark is already created\nspark')
+      self.assertEqual(notebook_1['content']['cells'][1]['cell_type'], 'code')
+      self.assertEqual(notebook_1['content']['cells'][1]['source'], '# SparkSession: spark is already created\nspark')
 
-  #     # Update Notebook
-  #     updated_cells = [
-  #       {
-  #         "cell_type": 'markdown',
-  #         "metadata": {},
-  #         "source": '# My Updated Notebook'
-  #       }, {
-  #         "cell_type": 'code',
-  #         "execution_count": 1,
-  #         "metadata": {},
-  #         "outputs": [],
-  #         "source": 'x = 666'
-  #       }, {
-  #         "cell_type": 'code',
-  #         "execution_count": 1,
-  #         "metadata": {},
-  #         "outputs": [],
-  #         "source": 'print(x)'
-  #       }
-  #     ]
+      # Update Notebook
+      updated_cells = [
+        {
+          "cell_type": 'markdown',
+          "metadata": {},
+          "source": '# My Updated Notebook'
+        }, {
+          "cell_type": 'code',
+          "execution_count": 1,
+          "metadata": {},
+          "outputs": [],
+          "source": 'x = 666'
+        }, {
+          "cell_type": 'code',
+          "execution_count": 1,
+          "metadata": {},
+          "outputs": [],
+          "source": 'print(x)'
+        }
+      ]
 
-  #     updated_notebook = notebook_1
-  #     # Update notebook_1 with updated_cells
-  #     updated_notebook['content']['cells'] = updated_cells
+      updated_notebook = notebook_1
+      # Update notebook_1 with updated_cells
+      updated_notebook['content']['cells'] = updated_cells
 
-  #     response_2 = Notebook.update_notebook(notebook_path='work/Notebook.ipynb', content=updated_notebook['content'])
-  #     self.assertEqual(response_2.status_code, 200)
-  #     self.assertEqual(json.loads(response_2.data)['message'], 'Notebook updated')
+      response_2 = Notebook.update_notebook(notebook_path='work/Notebook.ipynb', content=updated_notebook['content'])
+      self.assertEqual(response_2.status_code, 200)
+      self.assertEqual(json.loads(response_2.data)['message'], 'Notebook updated')
 
-  #     # Check Updated Notebook
-  #     response_3 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
-  #     notebook_3 = json.loads(response_3.data.decode('utf-8'))
-  #     self.assertEqual(notebook_3['name'], 'Notebook.ipynb')
-  #     self.assertEqual(notebook_3['path'], 'work/Notebook.ipynb')
-  #     self.assertEqual(len(notebook_3['content']['cells']), 3)
+      # Check Updated Notebook
+      response_3 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      notebook_3 = json.loads(response_3.data.decode('utf-8'))
+      self.assertEqual(notebook_3['name'], 'Notebook.ipynb')
+      self.assertEqual(notebook_3['path'], 'work/Notebook.ipynb')
+      self.assertEqual(len(notebook_3['content']['cells']), 3)
 
-  #     self.assertEqual(notebook_3['content']['cells'][0]['cell_type'], 'markdown')
-  #     self.assertEqual(notebook_3['content']['cells'][0]['source'], '# My Updated Notebook')
+      self.assertEqual(notebook_3['content']['cells'][0]['cell_type'], 'markdown')
+      self.assertEqual(notebook_3['content']['cells'][0]['source'], '# My Updated Notebook')
 
-  #     self.assertEqual(notebook_3['content']['cells'][1]['cell_type'], 'code')
-  #     self.assertEqual(notebook_3['content']['cells'][1]['source'], 'x = 666')
+      self.assertEqual(notebook_3['content']['cells'][1]['cell_type'], 'code')
+      self.assertEqual(notebook_3['content']['cells'][1]['source'], 'x = 666')
 
-  #     self.assertEqual(notebook_3['content']['cells'][2]['cell_type'], 'code')
-  #     self.assertEqual(notebook_3['content']['cells'][2]['source'], 'print(x)')
+      self.assertEqual(notebook_3['content']['cells'][2]['cell_type'], 'code')
+      self.assertEqual(notebook_3['content']['cells'][2]['source'], 'print(x)')
 
   
   # def test_delete_notebook(self):
