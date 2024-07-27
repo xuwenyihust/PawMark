@@ -256,7 +256,7 @@ class NotebookServiceTestCase(unittest.TestCase):
       db.session.add(user)
       db.session.commit()
       g.user = user
-      
+
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
       self.assertEqual(response_0.status_code, 200)
@@ -282,73 +282,79 @@ class NotebookServiceTestCase(unittest.TestCase):
 
       # Rename non-exist Notebook
 
-  # def test_move_notebook(self):
-  #   with self.app.app_context():
-  #     # Create User
-  #     user = UserModel(name='testuser', email='testuser@example.com')
-  #     password = 'test_password'
-  #     user.set_password(password)
-  #     g.user = user
-  #     # Create Notebook
-  #     response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
-  #     self.assertEqual(response_0.status_code, 200)
+  def test_move_notebook(self):
+    with self.app.app_context():
+      # Create User
+      user = UserModel(name='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
 
-  #     # Move Notebook to non-exist path
-  #     response_1 = Notebook.move_notebook(notebook_path='work/Notebook.ipynb', new_notebook_path='work/NotebookFolder/Notebook.ipynb')
-  #     self.assertEqual(response_1.status_code, 404)
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
 
-  #     # Create path
-  #     response_2 = Directory.create_directory('work/NotebookFolder')
-  #     self.assertEqual(response_2.status_code, 201)
+      # Move Notebook to non-exist path
+      response_1 = Notebook.move_notebook(notebook_path='work/Notebook.ipynb', new_notebook_path='work/NotebookFolder/Notebook.ipynb')
+      self.assertEqual(response_1.status_code, 404)
 
-  #     # Move Notebook
-  #     response_3 = Notebook.move_notebook(notebook_path='work/Notebook.ipynb', new_notebook_path='work/NotebookFolder/Notebook.ipynb')
-  #     self.assertEqual(response_3.status_code, 200)
+      # Create path
+      response_2 = Directory.create_directory('work/NotebookFolder')
+      self.assertEqual(response_2.status_code, 201)
 
-  #     # Get Notebook
-  #     response_4 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
-  #     self.assertEqual(response_4.status_code, 404)
+      # Move Notebook
+      response_3 = Notebook.move_notebook(notebook_path='work/Notebook.ipynb', new_notebook_path='work/NotebookFolder/Notebook.ipynb')
+      self.assertEqual(response_3.status_code, 200)
 
-  #     response_5 = Notebook.get_notebook_by_path(notebook_path='work/NotebookFolder/Notebook.ipynb')
-  #     self.assertEqual(response_5.status_code, 200)
-  #     self.assertEqual(json.loads(response_5.data)['name'], 'Notebook.ipynb')
-  #     self.assertEqual(json.loads(response_5.data)['path'], 'work/NotebookFolder/Notebook.ipynb')
+      # Get Notebook
+      response_4 = Notebook.get_notebook_by_path(notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_4.status_code, 404)
 
-  #     notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
-  #     self.assertIsNone(notebook_1)
+      response_5 = Notebook.get_notebook_by_path(notebook_path='work/NotebookFolder/Notebook.ipynb')
+      self.assertEqual(response_5.status_code, 200)
+      self.assertEqual(json.loads(response_5.data)['name'], 'Notebook.ipynb')
+      self.assertEqual(json.loads(response_5.data)['path'], 'work/NotebookFolder/Notebook.ipynb')
 
-  #     notebook_2 = NotebookModel.query.filter_by(path='work/NotebookFolder/Notebook.ipynb').first()
-  #     self.assertIsNotNone(notebook_2)
-  #     self.assertEqual(notebook_2.name, 'Notebook.ipynb')
-  #     self.assertEqual(notebook_2.path, 'work/NotebookFolder/Notebook.ipynb')
+      notebook_1 = NotebookModel.query.filter_by(path='work/Notebook.ipynb').first()
+      self.assertIsNone(notebook_1)
 
-  #     # Move non-exist Notebook
-  #     response_6 = Notebook.move_notebook(notebook_path='work/Notebook666.ipynb', new_notebook_path='work/NotebookFolder/Notebook666.ipynb')
-  #     self.assertEqual(response_6.status_code, 404)
+      notebook_2 = NotebookModel.query.filter_by(path='work/NotebookFolder/Notebook.ipynb').first()
+      self.assertIsNotNone(notebook_2)
+      self.assertEqual(notebook_2.name, 'Notebook.ipynb')
+      self.assertEqual(notebook_2.path, 'work/NotebookFolder/Notebook.ipynb')
 
-  # def test_get_spark_app_by_notebook_path(self):
-  #   with self.app.app_context():
-  #     # Create User
-  #     user = UserModel(name='testuser', email='testuser@example.com')
-  #     password = 'test_password'
-  #     user.set_password(password)
-  #     g.user = user
-  #     # Create Notebook
-  #     response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
-  #     self.assertEqual(response_0.status_code, 200)
+      # Move non-exist Notebook
+      response_6 = Notebook.move_notebook(notebook_path='work/Notebook666.ipynb', new_notebook_path='work/NotebookFolder/Notebook666.ipynb')
+      self.assertEqual(response_6.status_code, 404)
 
-  #     # Create Spark App
-  #     response_1 = SparkApp.create_spark_app(spark_app_id='1234', notebook_path='work/Notebook.ipynb')
-  #     self.assertEqual(response_1.status_code, 200)
+  def test_get_spark_app_by_notebook_path(self):
+    with self.app.app_context():
+      # Create User
+      user = UserModel(name='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
 
-  #     # Get Spark App
-  #     response_2 = Notebook.get_spark_app_by_notebook_path(notebook_path='work/Notebook.ipynb')
-  #     self.assertEqual(response_2.status_code, 200)
-  #     spark_apps = json.loads(response_2.data.decode('utf-8'))
-  #     self.assertEqual(len(spark_apps), 1)
-  #     self.assertEqual(spark_apps[0]['spark_app_id'], '1234')
+      # Create Notebook
+      response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
+      self.assertEqual(response_0.status_code, 200)
 
-  #     # Get Spark App by non-exist Notebook path
-  #     response_3 = Notebook.get_spark_app_by_notebook_path(notebook_path='work/Notebook666.ipynb')
-  #     self.assertEqual(response_3.status_code, 404)
+      # Create Spark App
+      response_1 = SparkApp.create_spark_app(spark_app_id='1234', notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_1.status_code, 200)
+
+      # Get Spark App
+      response_2 = Notebook.get_spark_app_by_notebook_path(notebook_path='work/Notebook.ipynb')
+      self.assertEqual(response_2.status_code, 200)
+      spark_apps = json.loads(response_2.data.decode('utf-8'))
+      self.assertEqual(len(spark_apps), 1)
+      self.assertEqual(spark_apps[0]['spark_app_id'], '1234')
+
+      # Get Spark App by non-exist Notebook path
+      response_3 = Notebook.get_spark_app_by_notebook_path(notebook_path='work/Notebook666.ipynb')
+      self.assertEqual(response_3.status_code, 404)
       
