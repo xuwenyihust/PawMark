@@ -24,13 +24,6 @@ class KernelServiceTestCase(unittest.TestCase):
 
   def test_get_kernel_by_id(self):
     with self.app.app_context():
-      user = UserModel(name='testuser0', email='testuser0@example.com')
-      password = 'test_password'
-      user.set_password(password)
-      db.session.add(user)
-      db.session.commit()
-      g.user = user
-
       # Get non-exist kernel
       response_0 = Kernel.get_kernel_by_id('kernel_id')
       self.assertEqual(response_0.status_code, 404)
