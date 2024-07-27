@@ -20,6 +20,8 @@ class UserModelTestCase(unittest.TestCase):
   def test_user_model(self):
     with self.app.app_context():
       user = UserModel(name='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
       db.session.add(user)
       db.session.commit()
       assert user.id is not None
