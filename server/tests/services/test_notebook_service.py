@@ -147,6 +147,11 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_update_notebook(self):
     with self.app.app_context():
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
       self.assertEqual(response_0.status_code, 200)
@@ -239,6 +244,11 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_rename_notebook(self):
     with self.app.app_context():
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
       self.assertEqual(response_0.status_code, 200)
@@ -266,6 +276,11 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_move_notebook(self):
     with self.app.app_context():
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
       self.assertEqual(response_0.status_code, 200)
@@ -305,6 +320,11 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_get_spark_app_by_notebook_path(self):
     with self.app.app_context():
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='work')
       self.assertEqual(response_0.status_code, 200)
