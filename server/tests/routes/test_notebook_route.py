@@ -18,6 +18,7 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_get_all_notebooks(self):
     with self.app.app_context():
+      print(self.app.url_map) # This will print all the routes registered with the app
       response = self.client.get('/notebook/all')
       print(response.data)
       self.assertEqual(response.status_code, 200)
