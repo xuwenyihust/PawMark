@@ -12,10 +12,12 @@ class User:
 
   @staticmethod
   def get_mock_user():
-    mock_user = UserModel(name='testuser0', email='testuser0@example.com')
-    password = 'test_password'
-    mock_user.set_password(password)
-    db.session.add(mock_user)
-    db.session.commit()
+    mock_user = User.query.filter_by(username='testuser0').first()
+    if mock_user is None:
+      mock_user = UserModel(name='testuser0', email='testuser0@example.com')
+      password = 'test_password'
+      mock_user.set_password(password)
+      db.session.add(mock_user)
+      db.session.commit()
 
     return mock_user
