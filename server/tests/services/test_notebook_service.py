@@ -3,6 +3,7 @@ from flask_cors import CORS
 from run import create_app
 from database import db
 from app.models.notebook import NotebookModel
+from app.models.user import UserModel
 from app.services.notebook import Notebook
 from app.services.directory import Directory
 from app.services.spark_app import SparkApp
@@ -23,10 +24,16 @@ class NotebookServiceTestCase(unittest.TestCase):
 
   def test_get_all_notebooks(self):
     with self.app.app_context():
-      notebook_0 = NotebookModel(name='Notebook0', path='path_to_notebook0')
+      user_0 = UserModel(username='testuser0', email='testuser0@example.com')
+      password = 'test_password'
+      user_0.set_password(password)
+      db.session.add(user_0)
+      db.session.commit()
+
+      notebook_0 = NotebookModel(name='Notebook0', path='path_to_notebook0', user_id=user_0.id)
       db.session.add(notebook_0)
 
-      notebook_1 = NotebookModel(name='Notebook1', path='path_to_notebook1')
+      notebook_1 = NotebookModel(name='Notebook1', path='path_to_notebook1', user_id=user_0.id)
       db.session.add(notebook_1)
 
       db.session.commit()
@@ -36,8 +43,11 @@ class NotebookServiceTestCase(unittest.TestCase):
       self.assertEqual(len(notebooks), 2)
       self.assertEqual(notebooks[0]['name'], 'Notebook0')
       self.assertEqual(notebooks[0]['path'], 'path_to_notebook0')
+      self.assertEqual(notebooks[0]['user_id'], user_0.id)
+
       self.assertEqual(notebooks[1]['name'], 'Notebook1')
       self.assertEqual(notebooks[1]['path'], 'path_to_notebook1')
+      self.assertEqual(notebooks[1]['user_id'], user_0.id)
 
   def test_create_and_get_notebook(self):
     with self.app.app_context():
