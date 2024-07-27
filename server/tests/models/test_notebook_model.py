@@ -20,7 +20,7 @@ class NotebookModelTestCase(unittest.TestCase):
     def test_notebook_model(self):
         with self.app.app_context():
             # Create user first
-            user = UserModel(username='testuser', email='testuser@example.com')
+            user = UserModel(name='testuser', email='testuser@example.com')
             password = 'test_password'
             user.set_password(password)
             db.session.add(user)

@@ -21,7 +21,7 @@ class NotebookSparkAppModelTestCase(unittest.TestCase):
 
     def test_notebook_spark_app_model(self):
         with self.app.app_context():
-            user = UserModel(username='testuser', email='testuser@example.com')
+            user = UserModel(name='testuser', email='testuser@example.com')
             password = 'test_password'
             user.set_password(password)
             db.session.add(user)

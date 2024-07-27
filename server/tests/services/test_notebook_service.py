@@ -56,7 +56,7 @@ class NotebookServiceTestCase(unittest.TestCase):
   def test_create_and_get_notebook(self):
     with self.app.app_context():
       # Create User
-      user = UserModel(username='testuser', email='testuser@example.com')
+      user = UserModel(name='testuser', email='testuser@example.com')
       password = 'test_password'
       user.set_password(password)
       g.user = user

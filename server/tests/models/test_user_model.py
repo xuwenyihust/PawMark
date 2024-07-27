@@ -19,7 +19,7 @@ class UserModelTestCase(unittest.TestCase):
 
   def test_password_setter(self):
     with self.app.app_context():
-      user = UserModel(username='testuser', email='testuser@example.com')
+      user = UserModel(name='testuser', email='testuser@example.com')
       password = 'test_password'
       user.set_password(password)
       db.session.add(user)
@@ -28,7 +28,7 @@ class UserModelTestCase(unittest.TestCase):
 
   def test_check_password(self):
     with self.app.app_context():
-      user = UserModel(username='testuser', email='testuser@example.com')
+      user = UserModel(name='testuser', email='testuser@example.com')
       password = 'test_password'
       user.set_password(password)
       db.session.add(user)
