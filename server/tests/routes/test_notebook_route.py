@@ -32,11 +32,11 @@ class NotebookRouteTestCase(unittest.TestCase):
       response_1 = Directory.create_directory('work/test_create_notebook_directory')
       self.assertEqual(response_1.status_code, 201)
 
+      # Create notebook
       data = {
         "name": "test_notebook",
         "path": "work/test_create_notebook_directory"
       }
       response_2 = self.client.post('/notebook', json=data)
-      print(response_2.data)
       self.assertEqual(response_2.status_code, 200)
-      self.assertEqual(len(json.loads(response_2.data)), 0)
+      self.assertEqual(len(json.loads(response_2.data)["content"]), 1)

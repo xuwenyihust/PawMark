@@ -49,7 +49,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       response_1 = Directory.get_content_by_path('work')
       self.assertEqual(response_1.status_code, 200)
-      print(json.loads(response_3.data)['content'])
+      print(json.loads(response_1.data)['content'])
       # self.assertTrue(json.loads(response_3.data)['content'])
 
       # Delete directory
