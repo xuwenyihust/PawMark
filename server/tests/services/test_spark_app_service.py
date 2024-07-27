@@ -31,7 +31,7 @@ class SparkAppServiceTestCase(unittest.TestCase):
       user_0.set_password(password)
       db.session.add(user_0)
       db.session.commit()
-      g.user = user
+      g.user = user_0
 
       # Create notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Test Notebook', notebook_path='')
