@@ -1,6 +1,8 @@
 import unittest
 from flask_cors import CORS
+from flask import g
 from run import create_app
+from app.models.user import UserModel
 from app.services.kernel import Kernel
 from app.services.notebook import Notebook
 from app.services.session import Session
@@ -17,6 +19,12 @@ class KernelServiceTestCase(unittest.TestCase):
       # Get non-exist kernel
       response_0 = Kernel.get_kernel_by_id('kernel_id')
       self.assertEqual(response_0.status_code, 404)
+
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
 
       # Create Notebook
       response_1 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook_1.ipynb', notebook_path='')
@@ -40,6 +48,12 @@ class KernelServiceTestCase(unittest.TestCase):
       # Restart non-exist kernel
       response_0 = Kernel.restart_kernel('kernel_id')
       self.assertEqual(response_0.status_code, 404)
+
+      # Create User
+      user = UserModel(username='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      g.user = user
 
       # Create Notebook
       response_1 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook_1.ipynb', notebook_path='')
