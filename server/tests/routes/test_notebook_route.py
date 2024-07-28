@@ -123,6 +123,7 @@ class NotebookRouteTestCase(unittest.TestCase):
         }
       }
       response_3 = self.client.put('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', json=data, auth=auth)
+      print(response_3.data)
       self.assertEqual(response_3.status_code, 200)
 
       # Check if notebook is updated
