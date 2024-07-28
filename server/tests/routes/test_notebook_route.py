@@ -87,7 +87,7 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_2.status_code, 200)
 
       # Get notebook
-      response_3 = self.client.get('/notebook/work/test_get_notebook_by_path_directory/test_notebook.ipynb')
+      response_3 = self.client.get('/notebook/work/test_get_notebook_by_path_directory/test_notebook.ipynb', auth=auth)
       self.assertEqual(response_3.status_code, 200)
       self.assertEqual(json.loads(response_3.data)["name"], 'test_notebook.ipynb')
       self.assertEqual(json.loads(response_3.data)["path"], 'work/test_get_notebook_by_path_directory/test_notebook.ipynb')
