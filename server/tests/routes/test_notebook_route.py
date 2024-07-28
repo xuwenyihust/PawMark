@@ -111,13 +111,21 @@ class NotebookRouteTestCase(unittest.TestCase):
       # Update notebook
       data = {
         "content": {
+          "metadata": {
+              "language_info": {
+                  "name": "python",
+                  "version": "3.8.5",
+              }
+          },
+          "nbformat": 4,
+          "nbformat_minor": 4,
           "cells": [
             {
               "cell_type": "code",
               "execution_count": 1,
               "metadata": {},
               "outputs": [],
-              "source": ["print('Hello, World!')"]
+              "source": "print('Hello, World!')"
             }
           ]
         }

@@ -24,7 +24,7 @@ def get_all_notebooks():
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['GET'])
 @auth_required
 def get_notebook_by_path(notebook_path):
-    logging.info(f"Getting notebook with path: {notebook_path} for user: {g.user.name}")
+    logging.info(f"Getting notebook with path: {notebook_path} by user: {g.user.name}")
     return Notebook.get_notebook_by_path(notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook', methods=['POST'])
@@ -33,6 +33,7 @@ def create_notebook():
     data = request.get_json()
     notebook_name = data.get('name', None)
     notebook_path = data.get('path', None)
+    logging.info(f"Creating notebook with name: {notebook_name} and path: {notebook_path} by user {g.user.name}")
     return Notebook.create_notebook_with_init_cells(notebook_name=notebook_name, notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['PUT'])
@@ -40,6 +41,7 @@ def create_notebook():
 def update_notebook(notebook_path):
     data = request.get_json()
     content = data.get('content', None)
+    logging.info(f"Updating notebook with path: {notebook_path} by user: {g.user.name}")
     return Notebook.update_notebook(notebook_path=notebook_path, content=content)
     
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['DELETE'])
