@@ -28,10 +28,8 @@ def get_notebook_by_path(notebook_path):
     return Notebook.get_notebook_by_path(notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook', methods=['POST'])
+@auth_required
 def create_notebook():
-    # TODO: Implement user authentication
-    g.user = User.get_mock_user()
-
     data = request.get_json()
     notebook_name = data.get('name', None)
     notebook_path = data.get('path', None)

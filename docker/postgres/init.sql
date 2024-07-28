@@ -49,7 +49,8 @@ GRANT ALL PRIVILEGES ON TABLE notebook_spark_apps TO server;
 GRANT ALL PRIVILEGES ON SEQUENCE notebook_spark_apps_id_seq TO server;
 
 -- Add some initial data
-INSERT INTO users (name, password_hash, email) VALUES ('user_0', 'pbkdf2:sha256:150000$3Z6Z6Z6Z$e3', 'user_0@gmail.com');
+-- 12345A
+INSERT INTO users (name, password_hash, email) VALUES ('user_0', 'scrypt:32768:8:1$1k6HpQA8N58PkDz7$db383b0d69d7a2f6893116b1955da70cb217173dc44ce169acf57cfe6a79f63118ad7515563a0b4f8f39dda49510d061acdba26be8f7c8786c161dd54d7a91c1', 'user_0@gmail.com');
 INSERT INTO users (name, password_hash, email) VALUES ('user_1', 'pbkdf2:sha256:150000$3Z6Z6Z6Z$e3', 'user_1@gmail.com');
 
 INSERT INTO notebooks (name, path, user_id) VALUES ('demo.ipynb', 'work/demo.ipynb', 1);
