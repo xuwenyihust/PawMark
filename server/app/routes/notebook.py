@@ -45,18 +45,14 @@ def update_notebook(notebook_path):
     return Notebook.update_notebook(notebook_path=notebook_path, content=content)
     
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['DELETE'])
+@auth_required
 def delete_notebook(notebook_path):
-    # TODO: Implement user authentication
-    g.user = User.get_mock_user()
-    
     logging.info(f"Deleting notebook with path: {notebook_path}")
     return Notebook.delete_notebook_by_path(notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['PATCH'])
+@auth_required
 def rename_or_move_notebook(notebook_path):
-    # TODO: Implement user authentication
-    g.user = User.get_mock_user()
-
     data = request.get_json()
     if 'newName' in data:
         logging.info(f"Renaming notebook with path: {notebook_path} to {data['newName']}")
@@ -68,10 +64,8 @@ def rename_or_move_notebook(notebook_path):
         return Notebook.move_notebook(notebook_path=notebook_path, new_notebook_path=new_notebook_path)
 
 @notebook_blueprint.route('/notebook/spark_app/<path:notebook_path>', methods=['GET'])
+@auth_required
 def get_spark_app_by_notebook_path(notebook_path):
-    # TODO: Implement user authentication
-    g.user = User.get_mock_user()
-
     logging.info(f"Get spark apps by notebook path: {notebook_path}")
     return Notebook.get_spark_app_by_notebook_path(notebook_path)
 

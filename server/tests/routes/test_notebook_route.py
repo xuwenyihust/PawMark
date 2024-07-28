@@ -139,4 +139,81 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_4.status_code, 200)
       self.assertEqual(json.loads(response_4.data)["content"]["cells"][0]["source"], "print('Hello, World!')")
       
-      
+  def test_delete_notebook(self):
+    with self.app.app_context():
+      # Create directory
+      response_1 = Directory.create_directory('work/test_delete_notebook_directory')
+      self.assertEqual(response_1.status_code, 201)
+
+      # Create notebook
+      auth = ('test_user', 'test_password')
+      data = {
+        "name": "test_notebook",
+        "path": "work/test_delete_notebook_directory"
+      }
+      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      self.assertEqual(response_2.status_code, 200)
+
+      # Delete notebook
+      response_3 = self.client.delete('/notebook/work/test_delete_notebook_directory/test_notebook.ipynb', auth=auth)
+      self.assertEqual(response_3.status_code, 200)
+
+      # Check if notebook is deleted
+      response_4 = self.client.get('/notebook/work/test_delete_notebook_directory/test_notebook.ipynb', auth=auth)
+      self.assertEqual(response_4.status_code, 404) 
+
+  def test_rename_or_move_notebook(self):
+    with self.app.app_context():
+      # Create directory
+      response_1 = Directory.create_directory('work/test_rename_or_move_notebook_directory')
+      self.assertEqual(response_1.status_code, 201)
+
+      # Create notebook
+      auth = ('test_user', 'test_password')
+      data = {
+        "name": "test_notebook",
+        "path": "work/test_rename_or_move_notebook_directory"
+      }
+      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      self.assertEqual(response_2.status_code, 200)
+
+      # Rename notebook
+      data = {
+        "newName": "new_test_notebook"
+      }
+      response_3 = self.client.patch('/notebook/work/test_rename_or_move_notebook_directory/test_notebook.ipynb', json=data, auth=auth)
+      self.assertEqual(response_3.status_code, 200)
+
+      # Check if notebook is renamed
+      response_4 = self.client.get('/notebook/work/test_rename_or_move_notebook_directory/new_test_notebook.ipynb', auth=auth)
+      self.assertEqual(response_4.status_code, 200)
+
+      # Move notebook
+      data = {
+        "newPath": "work"
+      }
+      response_5 = self.client.patch('/notebook/work/test_rename_or_move_notebook_directory/new_test_notebook.ipynb', json=data, auth=auth)
+      self.assertEqual(response_5.status_code, 200)
+
+      # Check if notebook is moved
+      response_6 = self.client.get('/notebook/work/new_test_notebook.ipynb', auth=auth)
+      self.assertEqual(response_6.status_code, 200)
+
+  def test_get_spark_app_by_notebook_path(self):
+    with self.app.app_context():
+      # Create directory
+      response_1 = Directory.create_directory('work/test_get_spark_app_by_notebook_path_directory')
+      self.assertEqual(response_1.status_code, 201)
+
+      # Create notebook
+      auth = ('test_user', 'test_password')
+      data = {
+        "name": "test_notebook",
+        "path": "work/test_get_spark_app_by_notebook_path_directory"
+      }
+      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      self.assertEqual(response_2.status_code, 200)
+
+      # Get spark app by notebook path
+      response_3 = self.client.get('/notebook/spark_app/work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb', auth=auth)
+      self.assertEqual(response_3.status_code, 200)   
