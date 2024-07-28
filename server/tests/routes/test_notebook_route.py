@@ -78,11 +78,12 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
 
       # Create notebook
+      auth = ('test_user', 'test_password')
       data = {
         "name": "test_notebook",
         "path": "work/test_get_notebook_by_path_directory"
       }
-      response_2 = self.client.post('/notebook', json=data)
+      response_2 = self.client.post('/notebook', json=data, auth=auth)
       self.assertEqual(response_2.status_code, 200)
 
       # Get notebook

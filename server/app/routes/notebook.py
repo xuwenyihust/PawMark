@@ -19,17 +19,12 @@ def notebook():
 @notebook_blueprint.route('/notebook/all', methods=['GET'])
 @auth_required
 def get_all_notebooks():
-    # TODO: Implement user authentication
-    g.user = User.get_mock_user()
-
     return Notebook.get_all_notebooks()
 
 @notebook_blueprint.route('/notebook/<path:notebook_path>', methods=['GET'])
+@auth_required
 def get_notebook_by_path(notebook_path):
-    # TODO: Implement user authentication
-    g.user = User.get_mock_user()
     logging.info(f"Getting notebook with path: {notebook_path} for user: {g.user.name}")
-
     return Notebook.get_notebook_by_path(notebook_path=notebook_path)
 
 @notebook_blueprint.route('/notebook', methods=['POST'])
