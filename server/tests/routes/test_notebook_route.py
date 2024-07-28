@@ -189,10 +189,9 @@ class NotebookRouteTestCase(unittest.TestCase):
 
       # Move notebook
       data = {
-        "newPath": "work"
+        "newPath": "work/new_test_notebook.ipynb"
       }
       response_5 = self.client.patch('/notebook/work/test_rename_or_move_notebook_directory/new_test_notebook.ipynb', json=data, auth=auth)
-      print(response_5.data)
       self.assertEqual(response_5.status_code, 200)
 
       # Check if notebook is moved
