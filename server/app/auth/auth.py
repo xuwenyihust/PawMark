@@ -13,7 +13,7 @@ def auth_required(f):
                 status=401
             )
 
-        user = UserModel.query.filter_by(username=auth.username).first()
+        user = UserModel.query.filter_by(name=auth.username).first()
         if not user or not user.check_password(auth.password):
             return Response(
                 response=json.dumps({'message': 'Invalid credentials'}), 
