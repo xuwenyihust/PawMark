@@ -179,7 +179,7 @@ class NotebookRouteTestCase(unittest.TestCase):
 
       # Rename notebook
       data = {
-        "newName": "new_test_notebook"
+        "newName": "new_test_notebook.ipynb"
       }
       response_3 = self.client.patch('/notebook/work/test_rename_or_move_notebook_directory/test_notebook.ipynb', json=data, auth=auth)
       self.assertEqual(response_3.status_code, 200)
