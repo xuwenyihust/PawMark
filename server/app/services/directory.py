@@ -23,7 +23,6 @@ class Directory:
     try:
       response = requests.get(path)
       content = response.json()['content']
-      logger.info(f"Content: {content}")
     except Exception as e:
       return Response(
         response=json.dumps({'message': 'Error getting content from Jupyter Server: ' + str(e)}), 

@@ -30,13 +30,11 @@ class Notebook:
   
   @staticmethod
   def get_notebook_by_path(notebook_path: str = None):
-    logger.info(f"Getting notebook with path: {notebook_path}")
-
     jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
-    logger.info(f"Jupyter API Path: {jupyter_api_path}")
 
     try:
       path = f"{jupyter_api_path}/{notebook_path}"
+      logger.info(f"Getting notebook from Jupyter Server: {path}")
       response = requests.get(path)
       if response.status_code != 200:
         logger.error(f"Error getting notebook from Jupyter Server: {response.content}")
@@ -44,6 +42,7 @@ class Notebook:
           response=json.dumps({'message': 'Error getting notebook from Jupyter Server'}), 
           status=404)
     except Exception as e:
+      logger.error(f"Error getting notebook from Jupyter Server: {e}")
       return Response(
         response=json.dumps({'message': 'Error getting notebook from Jupyter Server: ' + str(e)}), 
         status=404)
@@ -52,6 +51,7 @@ class Notebook:
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
       logger.info(f"Notebook found in DB: {notebook}")
     except Exception as e:
+      logger.error(f"Error getting notebook from DB: {e}")
       return Response(
         response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
         status=404)

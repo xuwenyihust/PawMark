@@ -26,6 +26,7 @@ def get_all_notebooks():
 def get_notebook_by_path(notebook_path):
     # TODO: Implement user authentication
     g.user = User.get_mock_user()
+    logging.info(f"Getting notebook with path: {notebook_path} for user: {g.user.name}")
 
     return Notebook.get_notebook_by_path(notebook_path=notebook_path)
 
@@ -75,7 +76,7 @@ def rename_or_move_notebook(notebook_path):
 def get_spark_app_by_notebook_path(notebook_path):
     # TODO: Implement user authentication
     g.user = User.get_mock_user()
-    
+
     logging.info(f"Get spark apps by notebook path: {notebook_path}")
     return Notebook.get_spark_app_by_notebook_path(notebook_path)
 
