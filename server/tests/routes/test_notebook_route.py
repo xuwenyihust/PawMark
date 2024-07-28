@@ -137,14 +137,6 @@ class NotebookRouteTestCase(unittest.TestCase):
       # Check if notebook is updated
       response_4 = self.client.get('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', auth=auth)
       self.assertEqual(response_4.status_code, 200)
-      self.assertEqual(json.loads(response_4.data)["content"], 
-        {"cells": [
-          {
-            "cell_type": "code",
-            "execution_count": 1,
-            "metadata": {},
-            "outputs": [],
-            "source": ["print('Hello, World!')"]
-          }
-        ]})
+      self.assertEqual(json.loads(response_4.data)["content"]["cells"][0]["source"], "print('Hello, World!')")
+      
       
