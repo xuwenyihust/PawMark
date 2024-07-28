@@ -131,7 +131,6 @@ class NotebookRouteTestCase(unittest.TestCase):
         }
       }
       response_3 = self.client.put('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', json=data, auth=auth)
-      print(response_3.data)
       self.assertEqual(response_3.status_code, 200)
 
       # Check if notebook is updated
@@ -193,6 +192,7 @@ class NotebookRouteTestCase(unittest.TestCase):
         "newPath": "work"
       }
       response_5 = self.client.patch('/notebook/work/test_rename_or_move_notebook_directory/new_test_notebook.ipynb', json=data, auth=auth)
+      print(response_5.data)
       self.assertEqual(response_5.status_code, 200)
 
       # Check if notebook is moved
