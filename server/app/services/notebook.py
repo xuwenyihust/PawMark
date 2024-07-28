@@ -1,7 +1,7 @@
 from app.models.notebook import NotebookModel
 from app.models.notebook_spark_app import NotebookSparkAppModel
 from app.models.spark_app import SparkAppModel
-from flask import Response
+from flask import g, Response
 from datetime import datetime
 import requests
 import logging
@@ -15,7 +15,10 @@ class Notebook:
 
   @staticmethod
   def get_all_notebooks():
-    notebooks = NotebookModel.query.all()
+    # Get the authenticated user
+    user = g.user
+
+    notebooks = NotebookModel.query.filter_by(user_id=user.id).all()
 
     # Convert the notebooks to dictionaries
     notebooks_dict = [notebook.to_dict() for notebook in notebooks]
@@ -27,13 +30,11 @@ class Notebook:
   
   @staticmethod
   def get_notebook_by_path(notebook_path: str = None):
-    logger.info(f"Getting notebook with path: {notebook_path}")
-
     jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
-    logger.info(f"Jupyter API Path: {jupyter_api_path}")
 
     try:
       path = f"{jupyter_api_path}/{notebook_path}"
+      logger.info(f"Getting notebook from Jupyter Server: {path}")
       response = requests.get(path)
       if response.status_code != 200:
         logger.error(f"Error getting notebook from Jupyter Server: {response.content}")
@@ -41,6 +42,7 @@ class Notebook:
           response=json.dumps({'message': 'Error getting notebook from Jupyter Server'}), 
           status=404)
     except Exception as e:
+      logger.error(f"Error getting notebook from Jupyter Server: {e}")
       return Response(
         response=json.dumps({'message': 'Error getting notebook from Jupyter Server: ' + str(e)}), 
         status=404)
@@ -49,6 +51,7 @@ class Notebook:
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
       logger.info(f"Notebook found in DB: {notebook}")
     except Exception as e:
+      logger.error(f"Error getting notebook from DB: {e}")
       return Response(
         response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
         status=404)
@@ -61,7 +64,10 @@ class Notebook:
 
   @staticmethod
   def create_notebook(notebook_name: str = None, notebook_path: str = None) -> None:
-    logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path}")
+    # Get the authenticated user
+    user = g.user
+
+    logger.info(f"Creating notebook with name: {notebook_name} under path: {notebook_path} for user_name: {user.name} user_id: {user.id}")
 
     jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
@@ -97,7 +103,8 @@ class Notebook:
     try:
       notebook = NotebookModel(
         name=notebook_name,
-        path=f'{notebook_path}/{notebook_name}'
+        path=f'{notebook_path}/{notebook_name}',
+        user_id=user.id
       )
 
       db.session.add(notebook)

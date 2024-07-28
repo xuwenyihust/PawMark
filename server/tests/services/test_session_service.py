@@ -1,9 +1,12 @@
 import unittest
 from flask_cors import CORS
+from flask import g
 from run import create_app
+from database import db
 import json
 from app.services.session import Session
 from app.services.notebook import Notebook
+from app.models.user import UserModel
 
 
 class SessionServiceTestCase(unittest.TestCase):
@@ -11,9 +14,23 @@ class SessionServiceTestCase(unittest.TestCase):
   def setUp(self):
     self.app = create_app()
     self.client = self.app.test_client()
+    with self.app.app_context():
+      db.create_all()
+
+  def tearDown(self):
+    with self.app.app_context():
+      db.session.remove()
+      db.drop_all()
 
   def test_get_all_sessions(self):
     with self.app.app_context():
+      user = UserModel(name='testuser0', email='testuser0@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook_0.ipynb', notebook_path='')
       self.assertEqual(response_0.status_code, 200)
@@ -49,6 +66,13 @@ class SessionServiceTestCase(unittest.TestCase):
 
   def test_get_session_by_path(self):
     with self.app.app_context():
+      user = UserModel(name='testuser0', email='testuser0@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook_0.ipynb', notebook_path='')
       self.assertEqual(response_0.status_code, 200)
@@ -88,6 +112,13 @@ class SessionServiceTestCase(unittest.TestCase):
 
   def test_create_session(self):
     with self.app.app_context():
+      user = UserModel(name='testuser0', email='testuser0@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+      
       # Create Notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Notebook.ipynb', notebook_path='')
       self.assertEqual(response_0.status_code, 200)

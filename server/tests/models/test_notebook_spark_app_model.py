@@ -5,6 +5,7 @@ from database import db
 from app.models.notebook_spark_app import NotebookSparkAppModel
 from app.models.notebook import NotebookModel
 from app.models.spark_app import SparkAppModel
+from app.models.user import UserModel
 
 class NotebookSparkAppModelTestCase(unittest.TestCase):
     def setUp(self):
@@ -20,7 +21,13 @@ class NotebookSparkAppModelTestCase(unittest.TestCase):
 
     def test_notebook_spark_app_model(self):
         with self.app.app_context():
-            notebook = NotebookModel(name='Test Notebook', path='')
+            user = UserModel(name='testuser', email='testuser@example.com')
+            password = 'test_password'
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+
+            notebook = NotebookModel(name='Test Notebook', path='', user_id=user.id)
             db.session.add(notebook)
             db.session.commit()
 

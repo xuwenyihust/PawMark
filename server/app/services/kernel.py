@@ -4,9 +4,7 @@ import requests
 import json
 from flask import current_app as app
 
-
 logger = logging.getLogger(__name__)
-
 
 class Kernel:
 

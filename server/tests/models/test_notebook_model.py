@@ -3,6 +3,7 @@ from flask_cors import CORS
 from run import create_app
 from database import db
 from app.models.notebook import NotebookModel
+from app.models.user import UserModel
 
 class NotebookModelTestCase(unittest.TestCase):
     def setUp(self):
@@ -18,7 +19,15 @@ class NotebookModelTestCase(unittest.TestCase):
 
     def test_notebook_model(self):
         with self.app.app_context():
-            notebook = NotebookModel(name='Test Notebook', path='/path/to/notebook')
+            # Create user first
+            user = UserModel(name='testuser', email='testuser@example.com')
+            password = 'test_password'
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+
+            # Create notebook
+            notebook = NotebookModel(name='Test Notebook', path='/path/to/notebook', user_id=user.id)
             db.session.add(notebook)
             db.session.commit()
 
@@ -30,7 +39,8 @@ class NotebookModelTestCase(unittest.TestCase):
             self.assertEqual(notebook_dict, {
                 'id': notebook.id,
                 'name': 'Test Notebook',
-                'path': '/path/to/notebook'
+                'path': '/path/to/notebook',
+                'user_id': user.id
             })
 
 if __name__ == '__main__':

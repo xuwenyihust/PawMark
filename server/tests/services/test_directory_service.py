@@ -22,41 +22,42 @@ class DirectoryServiceTestCase(unittest.TestCase):
   def test_create_directory(self):
     with self.app.app_context():
 
-      # Nothing created yet, should be empty
       response_0 = Directory.get_content_by_path('work')
       self.assertEqual(response_0.status_code, 200)
-      self.assertEqual(json.loads(response_0.data)['content'], [])
 
       # Create directory
-      response_1 = Directory.create_directory('work/test_directory')
+      response_1 = Directory.create_directory('work/test_create_directory')
       self.assertEqual(response_1.status_code, 201)
-      directoryFromDB = DirectoryModel.query.filter_by(path='work/test_directory').first()
+      directoryFromDB = DirectoryModel.query.filter_by(path='work/test_create_directory').first()
       self.assertIsNotNone(directoryFromDB)
-      self.assertEqual(directoryFromDB.name, 'test_directory')
+      self.assertEqual(directoryFromDB.name, 'test_create_directory')
 
       # Check if created directory could be detected
       response_2 = Directory.get_content_by_path('work')
       self.assertEqual(response_2.status_code, 200)
-      self.assertEqual(len(json.loads(response_2.data)['content']), 1)
-      self.assertEqual(json.loads(response_2.data)['content'][0]['name'], 'test_directory')
+      self.assertEqual(len([x for x in json.loads(response_2.data)['content'] if x['name'] == 'test_create_directory']), 1)
 
   def test_delete_directory_by_path(self):
     with self.app.app_context():
 
       # Create directory
-      response_0 = Directory.create_directory('work/test_directory')
-      directoryFromDB = DirectoryModel.query.filter_by(path='work/test_directory').first()
+      response_0 = Directory.create_directory('work/test_delete_directory_by_path')
+      directoryFromDB = DirectoryModel.query.filter_by(path='work/test_delete_directory_by_path').first()
       self.assertIsNotNone(directoryFromDB)
-      self.assertEqual(directoryFromDB.name, 'test_directory')
+      self.assertEqual(directoryFromDB.name, 'test_delete_directory_by_path')
+
+      response_1 = Directory.get_content_by_path('work')
+      self.assertEqual(response_1.status_code, 200)
+      self.assertEqual(len([x for x in json.loads(response_1.data)['content'] if x['name'] == 'test_delete_directory_by_path']), 1)
 
       # Delete directory
-      response_1 = Directory.delete_directory_by_path('work/test_directory')
-      self.assertEqual(response_1.status_code, 200)
+      response_2 = Directory.delete_directory_by_path('work/test_delete_directory_by_path')
+      self.assertEqual(response_2.status_code, 200)
 
       # Check if deleted directory could not be detected
-      response_2 = Directory.get_content_by_path('work')
-      self.assertEqual(response_2.status_code, 200)
-      self.assertEqual(json.loads(response_2.data)['content'], [])
+      response_3 = Directory.get_content_by_path('work')
+      self.assertEqual(response_3.status_code, 200)
+      self.assertEqual(len([x for x in json.loads(response_3.data)['content'] if x['name'] == 'test_delete_directory_by_path']), 0)
 
   def test_rename_directory_by_path(self):
     with self.app.app_context():

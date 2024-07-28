@@ -1,9 +1,11 @@
 import unittest
 from flask_cors import CORS
+from flask import g
 from run import create_app
 from database import db
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
+from app.models.user import UserModel
 from app.models.notebook_spark_app import NotebookSparkAppModel
 from app.services.notebook import Notebook
 from app.services.spark_app import SparkApp
@@ -24,6 +26,13 @@ class SparkAppServiceTestCase(unittest.TestCase):
 
   def test_create_spark_app(self):
     with self.app.app_context():
+      user_0 = UserModel(name='testuser0', email='testuser0@example.com')
+      password = 'test_password'
+      user_0.set_password(password)
+      db.session.add(user_0)
+      db.session.commit()
+      g.user = user_0
+
       # Create notebook
       response_0 = Notebook.create_notebook_with_init_cells(notebook_name='Test Notebook', notebook_path='')
       notebook_dict = json.loads(response_0.data.decode('utf8'))
