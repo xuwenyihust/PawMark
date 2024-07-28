@@ -5,6 +5,7 @@ from database import db
 from run import create_app
 from app.routes.notebook import notebook_blueprint
 from app.services.directory import Directory
+from app.models.user import UserModel
 
 class NotebookRouteTestCase(unittest.TestCase):
 
@@ -13,6 +14,10 @@ class NotebookRouteTestCase(unittest.TestCase):
     self.app.register_blueprint(notebook_blueprint)
     self.client = self.app.test_client()
     with self.app.app_context():
+      user = UserModel(name='test_user', email='test_email')
+      user.set_password('test_password')
+      db.session.add(user)
+      db.session.commit()
       db.create_all()
 
   def tearDown(self):
