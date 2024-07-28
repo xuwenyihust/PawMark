@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, g
 from app.services.notebook import Notebook
 from app.services.user import User
+from app.auth.auth import auth_required
 import logging
 
 notebook_blueprint = Blueprint('notebook', __name__)
@@ -16,6 +17,7 @@ def notebook():
     )
 
 @notebook_blueprint.route('/notebook/all', methods=['GET'])
+@auth_required
 def get_all_notebooks():
     # TODO: Implement user authentication
     g.user = User.get_mock_user()
