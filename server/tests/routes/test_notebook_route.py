@@ -55,23 +55,6 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response.status_code, 401)
       self.assertEqual(json.loads(response.data)["message"], 'Invalid credentials')
 
-  def test_create_notebook(self):
-    with self.app.app_context():
-      # Create directory
-      response_1 = Directory.create_directory('work/test_create_notebook_directory')
-      self.assertEqual(response_1.status_code, 201)
-
-      # Create notebook
-      auth = ('test_user', 'test_password')
-      data = {
-        "name": "test_notebook",
-        "path": "work/test_create_notebook_directory"
-      }
-      response_2 = self.client.post('/notebook', json=data, auth=auth)
-      self.assertEqual(response_2.status_code, 200)
-      self.assertEqual(json.loads(response_2.data)["name"], 'test_notebook.ipynb')
-      self.assertEqual(json.loads(response_2.data)["path"], 'work/test_create_notebook_directory/test_notebook.ipynb')
-
   def test_get_notebook_by_path(self):
     with self.app.app_context():
       # Create directory
@@ -92,3 +75,67 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_3.status_code, 200)
       self.assertEqual(json.loads(response_3.data)["name"], 'test_notebook.ipynb')
       self.assertEqual(json.loads(response_3.data)["path"], 'work/test_get_notebook_by_path_directory/test_notebook.ipynb')
+
+  def test_create_notebook(self):
+    with self.app.app_context():
+      # Create directory
+      response_1 = Directory.create_directory('work/test_create_notebook_directory')
+      self.assertEqual(response_1.status_code, 201)
+
+      # Create notebook
+      auth = ('test_user', 'test_password')
+      data = {
+        "name": "test_notebook",
+        "path": "work/test_create_notebook_directory"
+      }
+      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      self.assertEqual(response_2.status_code, 200)
+      self.assertEqual(json.loads(response_2.data)["name"], 'test_notebook.ipynb')
+      self.assertEqual(json.loads(response_2.data)["path"], 'work/test_create_notebook_directory/test_notebook.ipynb')
+
+  def test_update_notebook(self):
+    with self.app.app_context():
+      # Create directory
+      response_1 = Directory.create_directory('work/test_update_notebook_directory')
+      self.assertEqual(response_1.status_code, 201)
+
+      # Create notebook
+      auth = ('test_user', 'test_password')
+      data = {
+        "name": "test_notebook",
+        "path": "work/test_update_notebook_directory"
+      }
+      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      self.assertEqual(response_2.status_code, 200)
+
+      # Update notebook
+      data = {
+        "content": {
+          "cells": [
+            {
+              "cell_type": "code",
+              "execution_count": 1,
+              "metadata": {},
+              "outputs": [],
+              "source": ["print('Hello, World!')"]
+            }
+          ]
+        }
+      }
+      response_3 = self.client.put('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', json=data, auth=auth)
+      self.assertEqual(response_3.status_code, 200)
+
+      # Check if notebook is updated
+      response_4 = self.client.get('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', auth=auth)
+      self.assertEqual(response_4.status_code, 200)
+      self.assertEqual(json.loads(response_4.data)["content"], 
+        {"cells": [
+          {
+            "cell_type": "code",
+            "execution_count": 1,
+            "metadata": {},
+            "outputs": [],
+            "source": ["print('Hello, World!')"]
+          }
+        ]})
+      
