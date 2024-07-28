@@ -33,8 +33,27 @@ class NotebookRouteTestCase(unittest.TestCase):
         path,
         auth=auth
       )
-      print(response.data)
       self.assertEqual(response.status_code, 200)
+
+  def test_get_all_notebooks_without_auth(self):
+    with self.app.app_context():
+      path = '/notebook/all'
+      response = self.client.get(
+        path
+      )
+      self.assertEqual(response.status_code, 401)
+      self.assertEqual(json.loads(response.data)["message"], 'Missing credentials')
+
+  def test_get_all_notebooks_with_invalid_auth(self):
+    with self.app.app_context():
+      path = '/notebook/all'
+      auth = ('test_user', 'invalid_password')
+      response = self.client.get(
+        path,
+        auth=auth
+      )
+      self.assertEqual(response.status_code, 401)
+      self.assertEqual(json.loads(response.data)["message"], 'Invalid credentials')
 
   def test_create_notebook(self):
     with self.app.app_context():
