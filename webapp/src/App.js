@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import LoginForm from './components/auth/LoginForm';
 import Sidebar from './components/sidebar/Sidebar';
 import Notebook from './components/notebook/Notebook';
 import HistoryServer from './components/HistoryServer';
@@ -32,7 +33,7 @@ const theme = createTheme({
 });
 
 const App = () => {
-  const baseUrl = `${config.jupyterBaseUrl}/api/contents/`
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   const [showHistoryServer, setShowHistoryServer] = useState(false);
   const [showScheduler, setShowScheduler] = useState(false);
@@ -137,6 +138,10 @@ const App = () => {
       setShowScheduler(true);
     }
   };
+
+  if (!isLoggedIn) {
+    return <LoginForm onLogin={() => setIsLoggedIn(true)} />;
+  }
 
   return (
       <ThemeProvider theme={theme}>
