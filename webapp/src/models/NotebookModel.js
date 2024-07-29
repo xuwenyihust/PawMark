@@ -41,10 +41,16 @@ class NotebookModel {
   };
 
   static async fetchNotebook(path = '') {
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
     const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         }
     });
 
