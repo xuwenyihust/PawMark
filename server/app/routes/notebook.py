@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request, g
 from app.services.notebook import Notebook
-from app.services.user import User
 from app.auth.auth import auth_required
 import logging
 

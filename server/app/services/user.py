@@ -21,3 +21,61 @@ class User:
       db.session.commit()
 
     return mock_user
+  
+  @staticmethod
+  def get_user_by_name(name):
+    user = UserModel.query.filter_by(name=name).first()
+    return user
+  
+  @staticmethod
+  def get_user_by_email(email):
+    user = UserModel.query.filter_by(email=email).first()
+    return user
+  
+  @staticmethod
+  def create_user(name, email, password):
+    user = UserModel(name=name, email=email)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return user
+  
+  @staticmethod
+  def delete_user(name):
+    user = UserModel.query.filter_by(name=name).first()
+    db.session.delete(user)
+    db.session.commit()
+    return Response(
+      response=json.dumps({'message': 'User deleted successfully'}),
+      status=200
+    )
+  
+  @staticmethod
+  def update_user(name, email, password):
+    user = UserModel.query.filter_by(name=name).first()
+    user.email = email
+    user.set_password(password)
+    db.session.commit()
+    return Response(
+      response=json.dumps({'message': 'User updated successfully'}),
+      status=200
+    )
+  
+  @staticmethod
+  def get_all_users():
+    users = UserModel.query.all()
+    return users
+  
+  @staticmethod
+  def validate_user_by_name(name, password):
+    user = UserModel.query.filter_by(name=name).first()
+    if user is None:
+      return False
+    return user.check_password(password)
+  
+  @staticmethod
+  def validate_user_by_email(email, password):
+    user = UserModel.query.filter_by(email=email).first()
+    if user is None:
+      return False
+    return user.check_password(password)
