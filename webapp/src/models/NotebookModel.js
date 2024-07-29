@@ -41,10 +41,16 @@ class NotebookModel {
   };
 
   static async fetchNotebook(path = '') {
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
     const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         }
     });
 
@@ -56,10 +62,16 @@ class NotebookModel {
   }
 
   static async createNotebook(path = '', notebookName = '') {
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
     const response = await fetch(`${config.serverBaseUrl}/notebook`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         },
         body: JSON.stringify({
           'name': notebookName,
@@ -76,10 +88,16 @@ class NotebookModel {
   }; 
 
   static async deleteNotebook(path = '') {
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
     const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         }
     });
 
@@ -92,6 +110,12 @@ class NotebookModel {
   };
   
   static async updateNotebook(path = '', content = {}) {
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
+
     const updatedContent = { ...content };
   
     updatedContent.cells = updatedContent.cells.map(cell => {
@@ -108,6 +132,7 @@ class NotebookModel {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         },
         body: JSON.stringify({
             'content': updatedContent
@@ -122,12 +147,19 @@ class NotebookModel {
   };
 
   static async renameNotebook(path = '', newName = '') {
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
+
     console.log("Renaming notebook at path:", path, "to:", newName);
     
     const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         },
         body: JSON.stringify({
             'newName': newName
@@ -142,10 +174,16 @@ class NotebookModel {
   };
 
   static async getSparkApps(notebookPath = '') {
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
     const response = await fetch(`${config.serverBaseUrl}/notebook/spark_app/${notebookPath}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         }
     });
 
@@ -159,10 +197,16 @@ class NotebookModel {
 
   static async moveNotebook(path = '', destination = '') {
     console.log("Moving notebook at path:", path, "to:", destination);
+    // TODO: Replace with actual username and password
+    const username = config.username;
+    const password = config.password;
+
+    const credentials = btoa(`${username}:${password}`);
     const response = await fetch(`${config.serverBaseUrl}/notebook/` + path, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Basic ${credentials}`,
         },
         body: JSON.stringify({
             'newPath': destination
