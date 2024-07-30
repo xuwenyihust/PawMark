@@ -25,6 +25,9 @@ function LoginForm({ onLogin }) {
             // You might want to save the username and password in the session storage here
             // And redirect the user to the home page
             console.log('Logged in successfully');
+            const data = await response.json();
+            const token = data.access_token;
+            sessionStorage.setItem('token', token);
             onLogin(username, password);
         } else {
             // The login failed
