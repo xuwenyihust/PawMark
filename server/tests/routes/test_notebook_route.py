@@ -25,13 +25,23 @@ class NotebookRouteTestCase(unittest.TestCase):
       db.session.remove()
       db.drop_all()
 
+  def login_and_get_token(self):
+    response = self.client.post('/login', json={
+      'username': 'test_user',
+      'password': 'test_password'
+    })
+    return response.json['access_token']
+
   def test_get_all_notebooks(self):
     with self.app.app_context():
       path = '/notebook/all'
-      auth = ('test_user', 'test_password')
+      token = self.login_and_get_token()
+      headers = {
+        'Authorization': f'Bearer {token}',
+      }
       response = self.client.get(
         path,
-        auth=auth
+        headers=headers
       )
       self.assertEqual(response.status_code, 200)
 
@@ -47,10 +57,11 @@ class NotebookRouteTestCase(unittest.TestCase):
   def test_get_all_notebooks_with_invalid_auth(self):
     with self.app.app_context():
       path = '/notebook/all'
-      auth = ('test_user', 'invalid_password')
       response = self.client.get(
         path,
-        auth=auth
+        headers={
+          'Authorization': 'Bearer invalid_token'
+        }
       )
       self.assertEqual(response.status_code, 401)
       self.assertEqual(json.loads(response.data)["message"], 'Invalid credentials')
@@ -62,16 +73,19 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
 
       # Create notebook
-      auth = ('test_user', 'test_password')
+      token = self.login_and_get_token()
+      headers = {
+        'Authorization': f'Bearer {token}',
+      }
       data = {
         "name": "test_notebook",
         "path": "work/test_get_notebook_by_path_directory"
       }
-      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      response_2 = self.client.post('/notebook', json=data, headers=headers)
       self.assertEqual(response_2.status_code, 200)
 
       # Get notebook
-      response_3 = self.client.get('/notebook/work/test_get_notebook_by_path_directory/test_notebook.ipynb', auth=auth)
+      response_3 = self.client.get('/notebook/work/test_get_notebook_by_path_directory/test_notebook.ipynb', headers=headers)
       self.assertEqual(response_3.status_code, 200)
       self.assertEqual(json.loads(response_3.data)["name"], 'test_notebook.ipynb')
       self.assertEqual(json.loads(response_3.data)["path"], 'work/test_get_notebook_by_path_directory/test_notebook.ipynb')
@@ -83,12 +97,15 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
 
       # Create notebook
-      auth = ('test_user', 'test_password')
+      token = self.login_and_get_token()
+      headers = {
+        'Authorization': f'Bearer {token}',
+      }
       data = {
         "name": "test_notebook",
         "path": "work/test_create_notebook_directory"
       }
-      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      response_2 = self.client.post('/notebook', json=data, headers=headers)
       self.assertEqual(response_2.status_code, 200)
       self.assertEqual(json.loads(response_2.data)["name"], 'test_notebook.ipynb')
       self.assertEqual(json.loads(response_2.data)["path"], 'work/test_create_notebook_directory/test_notebook.ipynb')
@@ -100,12 +117,15 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
 
       # Create notebook
-      auth = ('test_user', 'test_password')
+      token = self.login_and_get_token()
+      headers = {
+        'Authorization': f'Bearer {token}',
+      }
       data = {
         "name": "test_notebook",
         "path": "work/test_update_notebook_directory"
       }
-      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      response_2 = self.client.post('/notebook', json=data, headers=headers)
       self.assertEqual(response_2.status_code, 200)
 
       # Update notebook
@@ -130,11 +150,11 @@ class NotebookRouteTestCase(unittest.TestCase):
           ]
         }
       }
-      response_3 = self.client.put('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', json=data, auth=auth)
+      response_3 = self.client.put('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', json=data, headers=headers)
       self.assertEqual(response_3.status_code, 200)
 
       # Check if notebook is updated
-      response_4 = self.client.get('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', auth=auth)
+      response_4 = self.client.get('/notebook/work/test_update_notebook_directory/test_notebook.ipynb', headers=headers)
       self.assertEqual(response_4.status_code, 200)
       self.assertEqual(json.loads(response_4.data)["content"]["cells"][0]["source"], "print('Hello, World!')")
       
@@ -145,20 +165,23 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
 
       # Create notebook
-      auth = ('test_user', 'test_password')
+      token = self.login_and_get_token()
+      headers = {
+        'Authorization': f'Bearer {token}',
+      }
       data = {
         "name": "test_notebook",
         "path": "work/test_delete_notebook_directory"
       }
-      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      response_2 = self.client.post('/notebook', json=data, headers=headers)
       self.assertEqual(response_2.status_code, 200)
 
       # Delete notebook
-      response_3 = self.client.delete('/notebook/work/test_delete_notebook_directory/test_notebook.ipynb', auth=auth)
+      response_3 = self.client.delete('/notebook/work/test_delete_notebook_directory/test_notebook.ipynb', headers=headers)
       self.assertEqual(response_3.status_code, 200)
 
       # Check if notebook is deleted
-      response_4 = self.client.get('/notebook/work/test_delete_notebook_directory/test_notebook.ipynb', auth=auth)
+      response_4 = self.client.get('/notebook/work/test_delete_notebook_directory/test_notebook.ipynb', headers=headers)
       self.assertEqual(response_4.status_code, 404) 
 
   def test_rename_or_move_notebook(self):
@@ -168,23 +191,26 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
 
       # Create notebook
-      auth = ('test_user', 'test_password')
+      token = self.login_and_get_token()
+      headers = {
+        'Authorization': f'Bearer {token}',
+      }
       data = {
         "name": "test_notebook",
         "path": "work/test_rename_or_move_notebook_directory"
       }
-      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      response_2 = self.client.post('/notebook', json=data, headers=headers)
       self.assertEqual(response_2.status_code, 200)
 
       # Rename notebook
       data = {
         "newName": "new_test_notebook.ipynb"
       }
-      response_3 = self.client.patch('/notebook/work/test_rename_or_move_notebook_directory/test_notebook.ipynb', json=data, auth=auth)
+      response_3 = self.client.patch('/notebook/work/test_rename_or_move_notebook_directory/test_notebook.ipynb', json=data, headers=headers)
       self.assertEqual(response_3.status_code, 200)
 
       # Check if notebook is renamed
-      response_4 = self.client.get('/notebook/work/test_rename_or_move_notebook_directory/new_test_notebook.ipynb', auth=auth)
+      response_4 = self.client.get('/notebook/work/test_rename_or_move_notebook_directory/new_test_notebook.ipynb', headers=headers)
       self.assertEqual(response_4.status_code, 200)
 
       # Move notebook
@@ -195,7 +221,7 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_5.status_code, 200)
 
       # Check if notebook is moved
-      response_6 = self.client.get('/notebook/work/new_test_notebook.ipynb', auth=auth)
+      response_6 = self.client.get('/notebook/work/new_test_notebook.ipynb', headers=headers)
       self.assertEqual(response_6.status_code, 200)
 
   def test_get_spark_app_by_notebook_path(self):
@@ -205,14 +231,17 @@ class NotebookRouteTestCase(unittest.TestCase):
       self.assertEqual(response_1.status_code, 201)
 
       # Create notebook
-      auth = ('test_user', 'test_password')
+      token = self.login_and_get_token()
+      headers = {
+        'Authorization': f'Bearer {token}',
+      }
       data = {
         "name": "test_notebook",
         "path": "work/test_get_spark_app_by_notebook_path_directory"
       }
-      response_2 = self.client.post('/notebook', json=data, auth=auth)
+      response_2 = self.client.post('/notebook', json=data, headers=headers)
       self.assertEqual(response_2.status_code, 200)
 
       # Get spark app by notebook path
-      response_3 = self.client.get('/notebook/spark_app/work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb', auth=auth)
+      response_3 = self.client.get('/notebook/spark_app/work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb', headers=headers)
       self.assertEqual(response_3.status_code, 200)   

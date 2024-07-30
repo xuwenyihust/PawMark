@@ -1,6 +1,6 @@
 from flask import Blueprint, Response, g
-from app.services.user import User
-from app.auth.auth import auth_required
+from flask_jwt_extended import create_access_token
+from app.auth.auth import password_required
 import logging
 import json
 
@@ -9,16 +9,16 @@ login_blueprint = Blueprint('login', __name__)
 logging.basicConfig(level=logging.INFO)
 
 @login_blueprint.route('/login', methods=['POST'])
-@auth_required
+@password_required
 def login():
     logging.info(f"Logging in user: {g.user.name}")
-
-    # name = data.get('name', None)
-    # password = data.get('password', None)
-    # return User.validate_user_by_name(name=name, password=password)
+    access_token = create_access_token(identity=g.user.name)
 
     return Response(
-        response=json.dumps({'message': 'Login successful'}),
+        response=json.dumps({
+            'message': 'Login successful',
+            'access_token': access_token
+            }),
         status=200
     )
 
