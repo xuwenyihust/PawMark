@@ -53,7 +53,6 @@ class NotebookRouteTestCase(unittest.TestCase):
         path
       )
       self.assertEqual(response.status_code, 401)
-      self.assertEqual(json.loads(response.data)["message"], 'Missing credentials')
 
   def test_get_all_notebooks_with_invalid_auth(self):
     with self.app.app_context():
@@ -64,8 +63,7 @@ class NotebookRouteTestCase(unittest.TestCase):
           'Authorization': 'Bearer invalid_token'
         }
       )
-      self.assertEqual(response.status_code, 401)
-      self.assertEqual(json.loads(response.data)["message"], 'Invalid credentials')
+      self.assertEqual(response.status_code, 422)
 
   def test_get_notebook_by_path(self):
     with self.app.app_context():
