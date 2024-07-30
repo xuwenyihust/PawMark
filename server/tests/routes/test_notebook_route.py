@@ -26,7 +26,7 @@ class NotebookRouteTestCase(unittest.TestCase):
       db.drop_all()
 
   def login_and_get_token(self):
-    response = self.client.post('/login', json={
+    response = self.client.post('/login', auth={
       'username': 'test_user',
       'password': 'test_password'
     })
