@@ -31,8 +31,7 @@ class NotebookRouteTestCase(unittest.TestCase):
   def login_and_get_token(self):
     with self.app.app_context():
       response = self.client.post('/login', auth=('test_user', 'test_password'))
-      print(response.data)
-      return response.json['access_token']
+      return json.loads(response.data)['access_token']
 
   def test_get_all_notebooks(self):
     with self.app.app_context():
