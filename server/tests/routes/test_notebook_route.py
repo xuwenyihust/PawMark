@@ -8,6 +8,7 @@ from app.routes.login import login_blueprint
 from app.services.directory import Directory
 from app.models.user import UserModel
 
+
 class NotebookRouteTestCase(unittest.TestCase):
 
   def setUp(self):

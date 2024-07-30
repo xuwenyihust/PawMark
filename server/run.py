@@ -20,6 +20,15 @@ def create_app():
     elif os.environ.get('ENV', 'development') == 'integration':
         app.config.from_object(IntegrationTestingConfig)
 
+    # Set the secret key for JWT
+    try:
+        from app_secrets import JWT_SECRET_KEY
+    except ImportError:
+        JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'default_secret_key')
+
+    app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
+    jwt = JWTManager(app)
+
     db.init_app(app)
 
     allowed_origins = ["http://localhost:5001", "http://localhost:3000"]
@@ -38,14 +47,6 @@ app.register_blueprint(kernel_blueprint)
 app.register_blueprint(spark_app_blueprint)
 app.register_blueprint(login_blueprint)
 
-# Set the secret key for JWT
-try:
-    from app_secrets import JWT_SECRET_KEY
-except ImportError:
-    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'default_secret_key')
-
-app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
-jwt = JWTManager(app)
 
 
 if __name__ == '__main__':
