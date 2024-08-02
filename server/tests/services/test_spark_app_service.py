@@ -6,7 +6,6 @@ from database import db
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
 from app.models.user import UserModel
-from app.models.notebook_spark_app import NotebookSparkAppModel
 from app.services.notebook import Notebook
 from app.services.spark_app import SparkApp
 import json

@@ -7,6 +7,8 @@ from app.routes.notebook import notebook_blueprint
 from app.routes.login import login_blueprint
 from app.services.directory import Directory
 from app.models.user import UserModel
+from app.models.spark_app import SparkAppModel
+from app.models.notebook import NotebookModel
 
 
 class NotebookRouteTestCase(unittest.TestCase):
@@ -240,6 +242,14 @@ class NotebookRouteTestCase(unittest.TestCase):
       }
       response_2 = self.client.post('/notebook', json=data, headers=headers)
       self.assertEqual(response_2.status_code, 200)
+
+      # Get notebook id
+      notebook = NotebookModel.query.filter_by(path='work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb').first()
+
+      # Create spark app
+      spark_app = SparkAppModel(
+        spark_app_id='1234', 
+        notebook_id=notebook.id)
 
       # Get spark app by notebook path
       response_3 = self.client.get('/notebook/spark_app/work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb', headers=headers)
