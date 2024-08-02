@@ -34,7 +34,10 @@ class Directory:
 
   @staticmethod
   def create_directory(directory_path: str = None) -> None:
-    logger.info(f"Creating directory with path: {directory_path}")
+    # Get the authenticated user
+    user = g.user
+
+    logger.info(f"Creating directory with path: {directory_path} for user: {user.name}")
 
     jupyter_api_path = app.config['JUPYTER_CONTENT_API_PATH']
 
@@ -63,7 +66,8 @@ class Directory:
 
     notebook = DirectoryModel(
       name=directory_name,
-      path=directory_path
+      path=directory_path,
+      user_id=user.id,
     )
 
     try:

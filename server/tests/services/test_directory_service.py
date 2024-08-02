@@ -1,8 +1,10 @@
 import unittest
 from flask_cors import CORS
+from flask import g
 from run import create_app
 from database import db
 from app.models.directory import DirectoryModel
+from app.models.user import UserModel
 from app.services.directory import Directory
 import json
 
@@ -24,6 +26,14 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
       response_0 = Directory.get_content_by_path('work')
       self.assertEqual(response_0.status_code, 200)
+
+      # Create User
+      user = UserModel(name='testuser', email='testuser@example.com')
+      password = 'test_password'
+      user.set_password(password)
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
 
       # Create directory
       response_1 = Directory.create_directory('work/test_create_directory')

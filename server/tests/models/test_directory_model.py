@@ -3,6 +3,7 @@ from flask_cors import CORS
 from run import create_app
 from database import db
 from app.models.directory import DirectoryModel
+from app.models.user import UserModel
 
 class DirectoryModelTestCase(unittest.TestCase):
 
@@ -19,7 +20,15 @@ class DirectoryModelTestCase(unittest.TestCase):
 
     def test_directory_model(self):
         with self.app.app_context():
-            directory = DirectoryModel(name='Test Directory', path='/path/to/directory')
+            # Create user first
+            user = UserModel(name='testuser', email='testuser@example.com')
+            password = 'test_password'
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+
+            # Create directory
+            directory = DirectoryModel(name='Test Directory', path='/path/to/directory', user_id=user.id)
             db.session.add(directory)
             db.session.commit()
 
@@ -31,5 +40,6 @@ class DirectoryModelTestCase(unittest.TestCase):
             self.assertEqual(directory_dict, {
                 'id': directory.id,
                 'name': 'Test Directory',
-                'path': '/path/to/directory'
+                'path': '/path/to/directory',
+                'user_id': user.id
             })
