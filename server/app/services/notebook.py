@@ -1,5 +1,4 @@
 from app.models.notebook import NotebookModel
-from app.models.notebook_spark_app import NotebookSparkAppModel
 from app.models.spark_app import SparkAppModel
 from flask import g, Response
 from datetime import datetime
@@ -330,33 +329,28 @@ class Notebook:
     try:
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
       notebook_id = notebook.id
+      logger.info(f"Notebook found in DB: {notebook.id}, {notebook.name}")
     except Exception as e:
+      logger.error(f"Error getting notebook from DB: {e}")
       return Response(
         response=json.dumps({'message': 'Error getting notebook from DB: ' + str(e)}), 
         status=404)
   
     try:
-      notebook_spark_apps = NotebookSparkAppModel.query.filter_by(notebook_id=notebook_id)
-      spark_app_ids = [notebook_spark_app.spark_app_id for notebook_spark_app in notebook_spark_apps]
+      spark_apps = SparkAppModel.query.filter_by(notebook_id=notebook_id).all()
+      if len(spark_apps) == 0:
+        logger.warning(f"No spark app found for notebook: {notebook_path}")
+        return Response(
+          response=json.dumps({'message': 'No spark app found for notebook'}), 
+          status=404)
+      else:
+        logger.info(f"Spark app found in DB: {spark_apps}")
     except Exception as e:
+      logger.error(f"Error getting spark app from DB: {e}")
       return Response(
-        response=json.dumps({'message': 'Error getting notebook - spark app relation from DB: ' + str(e)}), 
-        status=404)
-    try:
-      spark_apps = []
-      for spark_app_id in spark_app_ids:
-        spark_app = SparkAppModel.query.filter_by(spark_app_id=spark_app_id).first()
-        spark_apps.append(spark_app)
-    except Exception as e:
-      return Response(
-        response=json.dumps({'message': 'Error getting spark app from DB: ' + str(e)}), 
+        response=json.dumps({'message': 'Error getting spark app from DB: ' + str(e)}),
         status=404)
 
-    if notebook is None:
-      return Response(
-        response=json.dumps({'message': 'Spark app not found in DB'}), 
-        status=404)
-    else:
-      return Response(
-        response=json.dumps([x.to_dict() for x in spark_apps]), 
-        status=200)
+    return Response(
+      response=json.dumps([x.to_dict() for x in spark_apps]), 
+      status=200)

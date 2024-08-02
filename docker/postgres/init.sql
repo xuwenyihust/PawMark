@@ -25,13 +25,8 @@ CREATE TABLE directories (
 );
 
 CREATE TABLE spark_apps (
-    spark_app_id VARCHAR(100) PRIMARY KEY
-);
-
-CREATE TABLE notebook_spark_apps (
-    id SERIAL PRIMARY KEY,
-    notebook_id INT REFERENCES notebooks(id),
-    spark_app_id VARCHAR(100) REFERENCES spark_apps(spark_app_id)
+    spark_app_id VARCHAR(100) PRIMARY KEY,
+    notebook_id INT REFERENCES notebooks(id)
 );
 
 GRANT ALL PRIVILEGES ON TABLE users TO server;
@@ -45,8 +40,6 @@ GRANT ALL PRIVILEGES ON SEQUENCE directories_id_seq TO server;
 
 GRANT ALL PRIVILEGES ON TABLE spark_apps TO server;
 
-GRANT ALL PRIVILEGES ON TABLE notebook_spark_apps TO server;
-GRANT ALL PRIVILEGES ON SEQUENCE notebook_spark_apps_id_seq TO server;
 
 -- Add some initial data
 -- 12345A
@@ -63,8 +56,8 @@ INSERT INTO directories (name, path) VALUES ('word-count', '/work/word-count');
 INSERT INTO directories (name, path) VALUES ('sg-resale-flat-prices', '/work/sg-resale-flat-prices');
 INSERT INTO directories (name, path) VALUES ('output', '/work/sg-resale-flat-prices/output');
 
-INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0000');
-INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0001');
-INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0002');
-INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0003');
-INSERT INTO spark_apps (spark_app_id) VALUES ('app-0000-0004');
+INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES ('app-0000-0000', 1);
+INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES ('app-0000-0001', 1);
+INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES ('app-0000-0002', 1);
+INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES ('app-0000-0003', 2);
+INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES ('app-0000-0004', 2);
