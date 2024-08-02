@@ -21,7 +21,7 @@ class SparkAppModelTestCase(unittest.TestCase):
     def test_spark_app_model(self):
         with self.app.app_context():
             # Create notebook
-            notebook = NotebookModel(name='Test Notebook', path='Test Path')
+            notebook = NotebookModel(name='Test Notebook', path='Test Path', user_id=1)
             db.session.add(notebook)
             db.session.commit()
 
