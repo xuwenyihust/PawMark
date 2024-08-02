@@ -33,7 +33,7 @@ class SparkAppModelTestCase(unittest.TestCase):
             db.session.add(notebook)
             db.session.commit()
 
-            spark_app = SparkAppModel(spark_app_id='Test Spark App', notebook_id=notebook.notebook_id)
+            spark_app = SparkAppModel(spark_app_id='Test Spark App', notebook_id=notebook.id)
             db.session.add(spark_app)
             db.session.commit()
 
