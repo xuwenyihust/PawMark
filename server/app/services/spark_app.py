@@ -1,6 +1,5 @@
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
-from app.models.notebook_spark_app import NotebookSparkAppModel
 from flask import Response
 from datetime import datetime
 import json
@@ -58,24 +57,17 @@ class SparkApp:
         status=404)
 
     try:
-      # Create the spark app
-      spark_app = SparkAppModel(
-        spark_app_id=spark_app_id,
-      )
-
-      db.session.add(spark_app)
-      db.session.commit()
-
-      # Update the notebook_spark_app relationship
+      # Get the notebook id
       notebook = NotebookModel.query.filter_by(path=notebook_path).first()
       notebook_id = notebook.id
 
-      notebook_spark_app = NotebookSparkAppModel(
+      # Create the spark app
+      spark_app = SparkAppModel(
+        spark_app_id=spark_app_id,
         notebook_id=notebook_id,
-        spark_app_id=spark_app_id
       )
 
-      db.session.add(notebook_spark_app)
+      db.session.add(spark_app)
       db.session.commit()
 
       logger.info(f"Spark app created: {spark_app}")

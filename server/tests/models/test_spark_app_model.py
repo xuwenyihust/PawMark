@@ -3,6 +3,7 @@ from flask_cors import CORS
 from run import create_app
 from database import db
 from app.models.spark_app import SparkAppModel
+from app.models.notebook import NotebookModel
 
 class SparkAppModelTestCase(unittest.TestCase):
 
@@ -19,7 +20,12 @@ class SparkAppModelTestCase(unittest.TestCase):
 
     def test_spark_app_model(self):
         with self.app.app_context():
-            spark_app = SparkAppModel(spark_app_id='Test Spark App')
+            # Create notebook
+            notebook = NotebookModel(notebook_id='Test Notebook', notebook_path='Test Path')
+            db.session.add(notebook)
+            db.session.commit()
+
+            spark_app = SparkAppModel(spark_app_id='Test Spark App', notebook_id=notebook.notebook_id)
             db.session.add(spark_app)
             db.session.commit()
 
@@ -27,5 +33,6 @@ class SparkAppModelTestCase(unittest.TestCase):
 
             spark_app_dict = spark_app.to_dict()
             self.assertEqual(spark_app_dict, {
-                'spark_app_id': 'Test Spark App'
+                'spark_app_id': 'Test Spark App',
+                'notebook_id': notebook.notebook_id
             })
