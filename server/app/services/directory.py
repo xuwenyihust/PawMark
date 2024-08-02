@@ -1,5 +1,6 @@
 from app.models.directory import DirectoryModel
 from flask import Response
+from flask import g
 import json
 from datetime import datetime
 import requests
