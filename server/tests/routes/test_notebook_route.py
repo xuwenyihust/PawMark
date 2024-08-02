@@ -1,6 +1,7 @@
 import unittest
 import json
 from flask_cors import CORS
+from flask import g
 from database import db
 from run import create_app
 from app.routes.notebook import notebook_blueprint
@@ -69,6 +70,13 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_get_notebook_by_path(self):
     with self.app.app_context():
+      # Create user
+      user = UserModel(name='test_user', email='test_email')
+      user.set_password('test_password')
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+
       # Create directory
       response_1 = Directory.create_directory('work/test_get_notebook_by_path_directory')
       self.assertEqual(response_1.status_code, 201)
@@ -93,6 +101,13 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_create_notebook(self):
     with self.app.app_context():
+      # Create user
+      user = UserModel(name='test_user', email='test_email')
+      user.set_password('test_password')
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+
       # Create directory
       response_1 = Directory.create_directory('work/test_create_notebook_directory')
       self.assertEqual(response_1.status_code, 201)
@@ -113,6 +128,13 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_update_notebook(self):
     with self.app.app_context():
+      # Create user
+      user = UserModel(name='test_user', email='test_email')
+      user.set_password('test_password')
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+
       # Create directory
       response_1 = Directory.create_directory('work/test_update_notebook_directory')
       self.assertEqual(response_1.status_code, 201)
@@ -161,6 +183,13 @@ class NotebookRouteTestCase(unittest.TestCase):
       
   def test_delete_notebook(self):
     with self.app.app_context():
+      # Create user
+      user = UserModel(name='test_user', email='test_email')
+      user.set_password('test_password')
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+
       # Create directory
       response_1 = Directory.create_directory('work/test_delete_notebook_directory')
       self.assertEqual(response_1.status_code, 201)
@@ -187,6 +216,13 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_rename_or_move_notebook(self):
     with self.app.app_context():
+      # Create user
+      user = UserModel(name='test_user', email='test_email')
+      user.set_password('test_password')
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+
       # Create directory
       response_1 = Directory.create_directory('work/test_rename_or_move_notebook_directory')
       self.assertEqual(response_1.status_code, 201)
@@ -227,6 +263,13 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_get_spark_app_by_notebook_path(self):
     with self.app.app_context():
+      # Create user
+      user = UserModel(name='test_user', email='test_email')
+      user.set_password('test_password')
+      db.session.add(user)
+      db.session.commit()
+      g.user = user
+      
       # Create directory
       response_1 = Directory.create_directory('work/test_get_spark_app_by_notebook_path_directory')
       self.assertEqual(response_1.status_code, 201)
