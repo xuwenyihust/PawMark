@@ -250,6 +250,9 @@ class NotebookRouteTestCase(unittest.TestCase):
       spark_app = SparkAppModel(
         spark_app_id='1234', 
         notebook_id=notebook.id)
+      
+      db.session.add(spark_app)
+      db.session.commit()
 
       # Get spark app by notebook path
       response_3 = self.client.get('work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb', headers=headers)
