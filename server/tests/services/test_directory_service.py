@@ -4,7 +4,7 @@ from flask import g
 from run import create_app
 from database import db
 from app.models.directory import DirectoryModel
-from app.models.user import UserModel
+from app.services.user import User
 from app.services.directory import Directory
 import json
 
@@ -27,13 +27,7 @@ class DirectoryServiceTestCase(unittest.TestCase):
       response_0 = Directory.get_content_by_path('work')
       self.assertEqual(response_0.status_code, 200)
 
-      # Create User
-      user = UserModel(name='testuser', email='testuser@example.com')
-      password = 'test_password'
-      user.set_password(password)
-      db.session.add(user)
-      db.session.commit()
-      g.user = user
+      g.user = User.get_mock_user()
 
       # Create directory
       response_1 = Directory.create_directory('work/test_create_directory')
@@ -49,6 +43,8 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
   def test_delete_directory_by_path(self):
     with self.app.app_context():
+
+      g.user = User.get_mock_user()
 
       # Create directory
       response_0 = Directory.create_directory('work/test_delete_directory_by_path')
@@ -71,6 +67,8 @@ class DirectoryServiceTestCase(unittest.TestCase):
 
   def test_rename_directory_by_path(self):
     with self.app.app_context():
+
+      g.user = User.get_mock_user()
 
       response_0 = Directory.get_content_by_path('work')
       contents = json.loads(response_0.data)['content']
