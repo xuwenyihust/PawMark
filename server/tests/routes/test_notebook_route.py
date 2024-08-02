@@ -8,6 +8,7 @@ from app.routes.notebook import notebook_blueprint
 from app.routes.login import login_blueprint
 from app.services.directory import Directory
 from app.models.user import UserModel
+from app.services.user import User
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
 
@@ -25,7 +26,6 @@ class NotebookRouteTestCase(unittest.TestCase):
       user.set_password('test_password')
       db.session.add(user)
       db.session.commit()
-      g.user = user
 
   def tearDown(self):
     with self.app.app_context():
@@ -71,6 +71,8 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_get_notebook_by_path(self):
     with self.app.app_context():
+      g.user = User.get_mock_user()
+
       # Create directory
       response_1 = Directory.create_directory('work/test_get_notebook_by_path_directory')
       self.assertEqual(response_1.status_code, 201)
@@ -95,6 +97,7 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_create_notebook(self):
     with self.app.app_context():
+      g.user = User.get_mock_user()
 
       # Create directory
       response_1 = Directory.create_directory('work/test_create_notebook_directory')
@@ -116,6 +119,7 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_update_notebook(self):
     with self.app.app_context():
+      g.user = User.get_mock_user()
 
       # Create directory
       response_1 = Directory.create_directory('work/test_update_notebook_directory')
@@ -165,6 +169,7 @@ class NotebookRouteTestCase(unittest.TestCase):
       
   def test_delete_notebook(self):
     with self.app.app_context():
+      g.user = User.get_mock_user()
 
       # Create directory
       response_1 = Directory.create_directory('work/test_delete_notebook_directory')
@@ -192,6 +197,7 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_rename_or_move_notebook(self):
     with self.app.app_context():
+      g.user = User.get_mock_user()
 
       # Create directory
       response_1 = Directory.create_directory('work/test_rename_or_move_notebook_directory')
@@ -233,6 +239,7 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_get_spark_app_by_notebook_path(self):
     with self.app.app_context():
+      g.user = User.get_mock_user()
 
       # Create directory
       response_1 = Directory.create_directory('work/test_get_spark_app_by_notebook_path_directory')
