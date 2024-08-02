@@ -42,5 +42,5 @@ class SparkAppModelTestCase(unittest.TestCase):
             spark_app_dict = spark_app.to_dict()
             self.assertEqual(spark_app_dict, {
                 'spark_app_id': 'Test Spark App',
-                'notebook_id': notebook.notebook_id
+                'notebook_id': notebook.id
             })
