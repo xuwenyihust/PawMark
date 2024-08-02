@@ -255,5 +255,5 @@ class NotebookRouteTestCase(unittest.TestCase):
       db.session.commit()
 
       # Get spark app by notebook path
-      response_3 = self.client.get('work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb', headers=headers)
+      response_3 = self.client.get('/notebook/spark_app/work/test_get_spark_app_by_notebook_path_directory/test_notebook.ipynb', headers=headers)
       self.assertEqual(response_3.status_code, 200)   
