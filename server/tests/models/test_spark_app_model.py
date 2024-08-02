@@ -4,6 +4,7 @@ from run import create_app
 from database import db
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
+from app.models.user import UserModel
 
 class SparkAppModelTestCase(unittest.TestCase):
 
@@ -20,8 +21,15 @@ class SparkAppModelTestCase(unittest.TestCase):
 
     def test_spark_app_model(self):
         with self.app.app_context():
+            # Create user first
+            user = UserModel(name='testuser', email='testuser@example.com')
+            password = 'test_password'
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+
             # Create notebook
-            notebook = NotebookModel(name='Test Notebook', path='Test Path', user_id=1)
+            notebook = NotebookModel(name='Test Notebook', path='Test Path', user_id=user.id)
             db.session.add(notebook)
             db.session.commit()
 
