@@ -16,7 +16,8 @@ function Sidebar({
       currentPath,
       setCurrentPath,
       setRefreshKey,
-      workspaceFiles}) {
+      workspaceFiles,
+      rootPath}) {
 
     const itemHeight = 35;
 
@@ -183,7 +184,8 @@ function Sidebar({
                     currentPath={currentPath}
                     setCurrentPath={setCurrentPath}
                     setRefreshKey={setRefreshKey}
-                    workspaceFiles={workspaceFiles}/>
+                    workspaceFiles={workspaceFiles}
+                    rootPath={rootPath}/>
                 )}
 
                 {/* History Server */}

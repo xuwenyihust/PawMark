@@ -14,13 +14,18 @@ function WorkspaceSidebar({
     currentPath,
     setCurrentPath,
     setRefreshKey,
-    workspaceFiles}) {
+    workspaceFiles,
+    rootPath}) {
 
   const workspaceSidebarWidth = 300; 
 
   const handleBackClick = () => {
     const parentPath = currentPath.split('/').slice(0, -1).join('/');
-    setCurrentPath(parentPath || 'work');  // Navigate to parent directory or root if at top level
+    if (parentPath === 'work') {
+      setCurrentPath(rootPath);
+    } else {
+      setCurrentPath(parentPath);
+    }
   };
 
   return (

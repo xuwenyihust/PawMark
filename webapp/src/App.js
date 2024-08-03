@@ -34,6 +34,8 @@ const theme = createTheme({
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [useremail, setUseremail] = useState('');
   
   const [showHistoryServer, setShowHistoryServer] = useState(false);
   const [showScheduler, setShowScheduler] = useState(false);
@@ -45,6 +47,7 @@ const App = () => {
 
   const [openWorkspaceDrawer, setOpenWorkspaceDrawer] = useState(false);
   const [currentPath, setCurrentPath] = useState('work');
+  const [rootPath, setRootPath] = useState('work');
   const [workspaceFiles, setWorkspaceFiles] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -140,7 +143,13 @@ const App = () => {
   };
 
   if (!isLoggedIn) {
-    return <LoginForm onLogin={() => setIsLoggedIn(true)} />;
+    return <LoginForm onLogin={(username, useremail) => {
+      setUsername(username);
+      setUseremail(useremail);
+      setCurrentPath(`work/${useremail}`);
+      setRootPath(`work/${useremail}`);
+      setIsLoggedIn(true)}
+    } />;
   }
 
   return (
@@ -156,7 +165,8 @@ const App = () => {
           currentPath={currentPath}
           setCurrentPath={setCurrentPath}
           setRefreshKey={setRefreshKey}
-          workspaceFiles={workspaceFiles}/>
+          workspaceFiles={workspaceFiles}
+          rootPath={rootPath}/>
         <Notebook 
           showNotebook={showNotebook}
           notebook={notebook}
