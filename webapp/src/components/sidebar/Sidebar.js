@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
 import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
+import { BsPerson } from "react-icons/bs";
 import WorkspaceSidebar from './workspace/WorkspaceSidebar'; 
 import CreateSidebar from './create/CreateSidebar';
+import AccountSidebar from './account/AccountSidebar';
 import { ReactComponent as Logo } from '../../assets/logo_#222.svg';
 
 function Sidebar({ 
@@ -17,7 +19,9 @@ function Sidebar({
       setCurrentPath,
       setRefreshKey,
       workspaceFiles,
-      rootPath}) {
+      rootPath,
+      username,
+      useremail}) {
 
     const itemHeight = 35;
 
@@ -52,6 +56,12 @@ function Sidebar({
       setOpenCreateDrawer(false);
     }
 
+    const [openAccountDrawer, setOpenAccountDrawer] = useState(false);
+    const accountButtonRef = useRef(null);
+    const handleToggleAccountDrawer = () => {
+      setOpenAccountDrawer(!openAccountDrawer);
+    }
+
     return (
       <div style={{ 
           padding: 0}}>
@@ -83,27 +93,39 @@ function Sidebar({
               </Button>
             </Toolbar>
 
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                fontFamily: 'Roboto, sans-serif', 
-                fontSize: '12px',
-                mt: 4, 
-                color: 'grey',
-                marginLeft: '22px'
-                }}>
-                OVERVIEW
-            </Typography>
-
-            <List 
+            <Box
+              style={{ 
+                width: 200,
+                height: '100%',
+              }}
+              elevation={0}
               sx={{
-                marginLeft: '5px',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRight: '0.5px solid grey',
               }}>
+              <Typography 
+                variant="body1" 
+                sx={{ 
+                  fontFamily: 'Roboto, sans-serif', 
+                  fontSize: '12px',
+                  mt: 4, 
+                  color: 'grey',
+                  marginLeft: '22px'
+                  }}>
+                  OVERVIEW
+              </Typography>
+
+              <List 
+                sx={{
+                  marginLeft: '5px',
+                }}>
 
                 {/* Create */}
                 <ListItem button ref={createButtonRef} onClick={ () => {
                   handleToggleCreateDrawer()
                   setOpenWorkspaceDrawer(false);
+                  setOpenAccountDrawer(false);
                 }} 
                   sx={{
                     backgroundColor: openCreateDrawer ? '#555' : 'transparent',
@@ -146,6 +168,7 @@ function Sidebar({
                 <ListItem button ref={workspaceButtonRef} onClick={() => {
                   handleToggleWorkspaceDrawer();
                   setOpenCreateDrawer(false);
+                  setOpenAccountDrawer(false);
                 }} 
                   sx={{
                     backgroundColor: openWorkspaceDrawer ? '#555' : 'transparent',
@@ -192,6 +215,7 @@ function Sidebar({
                 <ListItem button onClick={() => {
                     onHistoryServerClick(); 
                     setOpenWorkspaceDrawer(false); 
+                    setOpenAccountDrawer(false);
                     setOpenCreateDrawer(false);}}
                   sx={{
                     '&:hover': {
@@ -223,6 +247,7 @@ function Sidebar({
                 <ListItem button onClick={() => {
                     onSchedulerClick();
                     setOpenWorkspaceDrawer(false); 
+                    setOpenAccountDrawer(false);
                     setOpenCreateDrawer(false);}
                   }
                   sx={{
@@ -251,7 +276,56 @@ function Sidebar({
                   </ListItemText>
                 </ListItem>
             </List>
-            
+
+            <Box
+              ref={accountButtonRef}
+              sx={{
+                marginTop: 'auto',
+                p: 0,
+                '&:hover': {
+                  backgroundColor: '#555'
+                },
+                '&:hover .MuiTypography-root': {
+                  color: 'white',
+                },
+                height: `${itemHeight}px`
+              }}>
+              <Box sx={{
+                marginTop: '5px',
+                marginLeft: '20px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+                button onClick={() => {
+                  handleToggleAccountDrawer();
+                }}>
+                <BsPerson 
+                  size={20}
+                  sx={{
+                    marginLeft: '100px',
+                    color: 'white'
+                  }}/>
+                <Typography sx={{ 
+                  marginLeft: '10px' }}>
+                  Account
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {
+            openAccountDrawer && (
+              <AccountSidebar 
+                itemHeight={itemHeight}
+                accountButtonRef={accountButtonRef}
+                openAccountDrawer={openAccountDrawer}
+                handleToggleAccountDrawer={handleToggleAccountDrawer}
+                username={username}
+                useremail={useremail}
+              />
+            )
+          }
+
         </Drawer>
       </div>
     );
