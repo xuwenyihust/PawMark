@@ -148,8 +148,9 @@ const App = () => {
       setUseremail(useremail);
       setCurrentPath(`work/${useremail}`);
       setRootPath(`work/${useremail}`);
-      setIsLoggedIn(true)}
-    } />;
+      setIsLoggedIn(true);
+      console.log('Logged in as:', username, useremail);
+    }} />;
   }
 
   return (
@@ -166,7 +167,9 @@ const App = () => {
           setCurrentPath={setCurrentPath}
           setRefreshKey={setRefreshKey}
           workspaceFiles={workspaceFiles}
-          rootPath={rootPath}/>
+          rootPath={rootPath}
+          username={username}
+          useremail={useremail}/>
         <Notebook 
           showNotebook={showNotebook}
           notebook={notebook}

@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
-import { CgFolderAdd, CgNotes } from "react-icons/cg";
+import React from 'react';
+import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { CgNotes } from "react-icons/cg";
 
 function CreateSidebar({ 
     itemHeight,
