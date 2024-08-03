@@ -21,7 +21,8 @@ CREATE TABLE notebooks (
 CREATE TABLE directories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    path VARCHAR(100) NOT NULL
+    path VARCHAR(100) NOT NULL,
+    user_id INT REFERENCES users(id)
 );
 
 CREATE TABLE spark_apps (
@@ -51,10 +52,10 @@ INSERT INTO notebooks (name, path, user_id) VALUES ('notebook.ipynb', 'work/note
 INSERT INTO notebooks (name, path, user_id) VALUES ('quickstart.ipynb', 'work/quickstart.ipynb', 1);
 INSERT INTO notebooks (name, path, user_id) VALUES ('sg-resale-flat-prices.ipynb', 'work/sg-resale-flat-prices/sg-resale-flat-prices.ipynb', 1);
 
-INSERT INTO directories (name, path) VALUES ('work', '/work');
-INSERT INTO directories (name, path) VALUES ('word-count', '/work/word-count');
-INSERT INTO directories (name, path) VALUES ('sg-resale-flat-prices', '/work/sg-resale-flat-prices');
-INSERT INTO directories (name, path) VALUES ('output', '/work/sg-resale-flat-prices/output');
+INSERT INTO directories (name, path, user_id) VALUES ('work', '/work', 1);
+INSERT INTO directories (name, path, user_id) VALUES ('word-count', '/work/word-count', 1);
+INSERT INTO directories (name, path, user_id) VALUES ('sg-resale-flat-prices', '/work/sg-resale-flat-prices', 1);
+INSERT INTO directories (name, path, user_id) VALUES ('output', '/work/sg-resale-flat-prices/output', 1);
 
 INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES ('app-0000-0000', 1);
 INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES ('app-0000-0001', 1);
