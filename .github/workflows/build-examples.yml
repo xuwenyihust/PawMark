@@ -31,7 +31,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Maven Package
         run: |
-          cd examples/word-count
+          cd examples/user_0@gmail.com/word-count
           mvn clean package
 
           version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
