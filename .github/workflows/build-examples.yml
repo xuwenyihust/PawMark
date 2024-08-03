@@ -31,7 +31,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Maven Package
         run: |
-          cd examples/word-count
+          cd examples/user_0@gmail.com/word-count
           mvn clean package
 
           version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
@@ -50,7 +50,7 @@ jobs:
 
       - name: Docker Build & Push
         run: |
-          cd examples/word-count
+          cd examples/user_0@gmail.com/word-count
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP --build-arg VERSION=$VERSION .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/word-count:$VERSION_WITH_TIMESTAMP
 

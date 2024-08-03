@@ -17,6 +17,8 @@ def login():
     return Response(
         response=json.dumps({
             'message': 'Login successful',
+            'name': g.user.name,
+            'email': g.user.email,
             'access_token': access_token
             }),
         status=200

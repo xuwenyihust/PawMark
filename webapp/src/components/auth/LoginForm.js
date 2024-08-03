@@ -27,8 +27,9 @@ function LoginForm({ onLogin }) {
             console.log('Logged in successfully');
             const data = await response.json();
             const token = data.access_token;
+            const useremail = data.email;
             sessionStorage.setItem('token', token);
-            onLogin(username, password);
+            onLogin(username, useremail, password);
         } else {
             // The login failed
             // You might want to show an error message here
