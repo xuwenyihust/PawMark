@@ -11,6 +11,7 @@ from app.models.user import UserModel
 from app.services.user import User
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
+from flask_jwt_extended import create_access_token, set_access_lifetime
 
 
 class NotebookRouteTestCase(unittest.TestCase):
@@ -68,6 +69,22 @@ class NotebookRouteTestCase(unittest.TestCase):
         }
       )
       self.assertEqual(response.status_code, 422)
+
+  def test_get_all_notebooks_with_expired_auth(self):
+    with self.app.app_context():
+      set_access_lifetime(seconds=10)
+
+      test_user = {"username": "testuser", "password": "testpassword"}
+      token = create_access_token(identity=test_user)
+
+      path = '/notebook/all'
+      response = self.client.get(
+        path,
+        headers={
+          'Authorization': f'Bearer {token}'
+        }
+      )
+      self.assertEqual(response.status_code, 200)
 
   def test_get_notebook_by_path(self):
     with self.app.app_context():
