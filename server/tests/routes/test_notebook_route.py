@@ -1,5 +1,6 @@
 import unittest
 import json
+import time
 from flask_cors import CORS
 from flask import g
 from database import db
@@ -75,13 +76,23 @@ class NotebookRouteTestCase(unittest.TestCase):
       token = self.login_and_get_token()
 
       path = '/notebook/all'
-      response = self.client.get(
+      response_0 = self.client.get(
         path,
         headers={
           'Authorization': f'Bearer {token}'
         }
       )
-      self.assertEqual(response.status_code, 200)
+      self.assertEqual(response_0.status_code, 200)
+
+      time.sleep(4)
+
+      response_1 = self.client.get(
+        path,
+        headers={
+          'Authorization': f'Bearer {token}'
+        }
+      )
+      self.assertEqual(response_0.status_code, 401)
 
   def test_get_notebook_by_path(self):
     with self.app.app_context():
