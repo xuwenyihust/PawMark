@@ -1,4 +1,5 @@
 import { Typography, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { BsPerson, BsEnvelope, BsBoxArrowLeft } from "react-icons/bs";
 
 
 function AccountSidebar({
@@ -7,7 +8,8 @@ function AccountSidebar({
   openAccountDrawer,
   handleToggleAccountDrawer,
   username,
-  useremail
+  useremail,
+  logout
 }) {
   return (
     <Drawer
@@ -16,7 +18,7 @@ function AccountSidebar({
       open={openAccountDrawer}
       onClose={handleToggleAccountDrawer}
       sx={{ 
-        width: 180, 
+        width: 250, 
         zIndex: 1,
         flexShrink: 0,
         height: 'auto',
@@ -30,7 +32,7 @@ function AccountSidebar({
         style: { 
           position: 'absolute',
           height: `${itemHeight * 3}px`,
-          width: 180, 
+          width: 250, 
           paddingLeft: 0
         } }}
           BackdropProps={{ 
@@ -51,11 +53,20 @@ function AccountSidebar({
                 // },
                 marginTop: '-5px',
               }}>
+              <ListItemIcon>
+                <BsPerson 
+                  style={{ color: 'white' }}
+                  sx={{
+                    marginLeft: '100px'
+                  }} />
+              </ListItemIcon>
               <ListItemText>
                   <Typography 
                     variant="body1" 
-                    style={{ color: 'white' }}
-                    >
+                    sx={{
+                      marginLeft: '-30px'
+                    }}
+                    style={{ color: 'white' }}>
                       {username}
                   </Typography>
               </ListItemText>
@@ -67,12 +78,47 @@ function AccountSidebar({
             sx={{
                 marginTop: '-12px',
               }}>
+              <ListItemIcon>
+                <BsEnvelope 
+                  style={{ color: 'white' }}
+                  sx={{
+                    marginLeft: '100px'
+                  }} />
+              </ListItemIcon>
               <ListItemText>
                   <Typography 
                     variant="body1" 
-                    style={{ color: 'white' }}
-                    >
+                    sx={{
+                      marginLeft: '-30px'
+                    }}
+                    style={{ color: 'white' }}>
                       {useremail}
+                  </Typography>
+              </ListItemText>
+          </ListItem>
+
+          <ListItem button 
+            onClick={() => {
+              logout();
+            }} 
+            sx={{
+                marginTop: '-12px',
+              }}>
+              <ListItemIcon>
+                <BsBoxArrowLeft 
+                  style={{ color: 'white' }}
+                  sx={{
+                    marginLeft: '100px'
+                  }} />
+              </ListItemIcon>
+              <ListItemText>
+                  <Typography 
+                    variant="body1" 
+                    sx={{
+                      marginLeft: '-30px'
+                    }}
+                    style={{ color: 'white' }}>
+                      Log out
                   </Typography>
               </ListItemText>
           </ListItem>
