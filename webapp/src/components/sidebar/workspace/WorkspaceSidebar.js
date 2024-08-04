@@ -53,6 +53,7 @@ function WorkspaceSidebar({
           style: { backgroundColor: 'transparent', zIndex: -10 } }}>
 
       <WorkspaceSidebarHeader
+        rootPath={rootPath}
         currentPath={currentPath}
         setCurrentPath={setCurrentPath}
         setRefreshKey={setRefreshKey}

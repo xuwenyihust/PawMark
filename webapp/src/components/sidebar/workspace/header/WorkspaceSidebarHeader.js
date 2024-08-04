@@ -7,6 +7,7 @@ import NotebookModel from '../../../../models/NotebookModel';
 
 
 const WorkspaceSidebarHeader = ({
+  rootPath,
   currentPath,
   setCurrentPath,
   setRefreshKey,
@@ -59,7 +60,8 @@ const WorkspaceSidebarHeader = ({
   }
 
   return (
-    <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div>
+      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography
           variant="h6"
           sx={{
@@ -89,8 +91,18 @@ const WorkspaceSidebarHeader = ({
           folderName={folderName}
           setFolderName={setFolderName}
           handleCreateFolder={handleCreateFolder}/>
-        
       </Box>
+
+      <Box sx={{ 
+        color: 'grey',
+        marginLeft: '20px', 
+        marginTop: '0px', 
+        marginBottom: '10px' }}>
+        <Typography variant="body1">
+          {currentPath.replace(rootPath, '') === '' ? '/' : currentPath.replace(rootPath, '')}
+        </Typography>
+      </Box>
+  </div>
   );
 }
 
