@@ -11,7 +11,6 @@ from app.models.user import UserModel
 from app.services.user import User
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
-from flask_jwt_extended import create_access_token, set_access_lifetime
 
 
 class NotebookRouteTestCase(unittest.TestCase):
@@ -72,10 +71,8 @@ class NotebookRouteTestCase(unittest.TestCase):
 
   def test_get_all_notebooks_with_expired_auth(self):
     with self.app.app_context():
-      set_access_lifetime(seconds=10)
-
-      test_user = {"username": "testuser", "password": "testpassword"}
-      token = create_access_token(identity=test_user)
+      self.app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3
+      token = self.login_and_get_token()
 
       path = '/notebook/all'
       response = self.client.get(
