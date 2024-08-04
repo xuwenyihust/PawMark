@@ -151,6 +151,7 @@ const App = () => {
 
   // History server
   const handleHistoryServerClick = () => {
+    console.log('config.sparkUiBaseUrl:', config.sparkUiBaseUrl);
     if (handleUnsavedChanges()) {
       setShowNotebook(false);
       setShowScheduler(false);

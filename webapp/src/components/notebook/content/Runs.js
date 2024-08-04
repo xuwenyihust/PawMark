@@ -58,6 +58,14 @@ function Runs({
                       <ListItemText primary={app.spark_app_id} />
                     </Link>
                   </Button>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      marginLeft: 10,
+                    }}
+                    color="textSecondary">
+                    Created at: {app.created_at}
+                  </Typography>
                 </ListItem>
               ))}
           </List>
