@@ -27,7 +27,10 @@ CREATE TABLE directories (
 
 CREATE TABLE spark_apps (
     spark_app_id VARCHAR(100) PRIMARY KEY,
-    notebook_id INT REFERENCES notebooks(id)
+    notebook_id INT REFERENCES notebooks(id),
+    user_id INT REFERENCES users(id),
+    status VARCHAR(100),
+    created_at TIMESTAMP
 );
 
 GRANT ALL PRIVILEGES ON TABLE users TO server;
@@ -55,16 +58,9 @@ INSERT INTO notebooks (name, path, user_id) VALUES
 ('sg-resale-flat-prices.ipynb', 'work/user_0@gmail.com/sg-resale-flat-prices/sg-resale-flat-prices.ipynb', 1);
 
 INSERT INTO directories (name, path, user_id) VALUES 
--- ('work', '/work', 1),
 ('user_0@gmail.com', '/work/user_0@gmail.com', 1),
 ('word-count', '/work/user_0@gmail.com/word-count', 1),
 ('sg-resale-flat-prices', '/work/user_0@gmail.com/sg-resale-flat-prices', 1),
 ('output', '/work/user_0@gmail.com/sg-resale-flat-prices/output', 1),
 ('user_1@gmail.com', '/work/user_0@gmail.com', 1);
 
-INSERT INTO spark_apps (spark_app_id, notebook_id) VALUES 
-('app-0000-0000', 1),
-('app-0000-0001', 1),
-('app-0000-0002', 1),
-('app-0000-0003', 2),
-('app-0000-0004', 2);

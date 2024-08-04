@@ -33,11 +33,17 @@ class SparkAppModelTestCase(unittest.TestCase):
             db.session.add(notebook)
             db.session.commit()
 
-            spark_app = SparkAppModel(spark_app_id='spark_app0000', notebook_id=notebook.id)
+            spark_app = SparkAppModel(
+                spark_app_id='spark_app0000', 
+                notebook_id=notebook.id,
+                user_id=user.id,
+                created_at='2021-01-01 00:00:00')
             db.session.add(spark_app)
             db.session.commit()
-
 
             spark_app_dict = spark_app.to_dict()
             self.assertEqual(spark_app_dict['spark_app_id'], 'spark_app0000')
             self.assertEqual(spark_app_dict['notebook_id'], notebook.id)
+            self.assertEqual(spark_app_dict['user_id'], user.id)
+            self.assertEqual(spark_app_dict['status'], None)
+            self.assertEqual(spark_app_dict['created_at'], '2021-01-01 00:00:00')
