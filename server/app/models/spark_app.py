@@ -27,5 +27,5 @@ class SparkAppModel(db.Model):
             'notebook_id': self.notebook_id,
             'user_id': self.user_id,
             'status': self.status,
-            'created_at': self.created_at
+            'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
         }

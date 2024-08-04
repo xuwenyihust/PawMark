@@ -5,6 +5,7 @@ from database import db
 from app.models.spark_app import SparkAppModel
 from app.models.notebook import NotebookModel
 from app.models.user import UserModel
+import datetime
 
 class SparkAppModelTestCase(unittest.TestCase):
 
@@ -46,4 +47,4 @@ class SparkAppModelTestCase(unittest.TestCase):
             self.assertEqual(spark_app_dict['notebook_id'], notebook.id)
             self.assertEqual(spark_app_dict['user_id'], user.id)
             self.assertEqual(spark_app_dict['status'], None)
-            self.assertEqual(spark_app_dict['created_at'], '2021-01-01 00:00:00')
+            self.assertEqual(spark_app_dict['created_at'], datetime.datetime(2021, 1, 1, 0, 0))
