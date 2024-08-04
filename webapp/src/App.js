@@ -123,11 +123,16 @@ const App = () => {
   const handleExistingNotebookClick = (path) => {
     if (handleUnsavedChanges()) {
       NotebookModel.fetchNotebook(`${path}`).then((data) => {
-        console.log('Fetched notebook:', data);
-        setNotebook(data);
-        setShowHistoryServer(false);
-        setShowScheduler(false);
-        setShowNotebook(true);
+        if (data.message == 'Token has expired') {
+          console.error('Token has expired, please log in again');
+          logout();
+        } else {
+          console.log('Fetched notebook:', data);
+          setNotebook(data);
+          setShowHistoryServer(false);
+          setShowScheduler(false);
+          setShowNotebook(true);
+        }
       }).catch((error) => {
         console.error('Failed to fetch notebook:', error);
       });

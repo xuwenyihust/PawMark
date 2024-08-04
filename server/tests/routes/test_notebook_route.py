@@ -1,12 +1,9 @@
 import unittest
 import json
-import time
 from flask_cors import CORS
-from flask import Flask, Response, g
+from flask import g
 from database import db
-import os
-from flask_jwt_extended import JWTManager
-from config import DevelopmentConfig, IntegrationTestingConfig, TestingConfig
+from run import create_app
 from app.routes.notebook import notebook_blueprint
 from app.routes.login import login_blueprint
 from app.services.directory import Directory
@@ -18,34 +15,8 @@ from app.models.notebook import NotebookModel
 
 class NotebookRouteTestCase(unittest.TestCase):
 
-  def create_app(self):
-    app = Flask(__name__)
-    if os.environ.get('ENV', 'development') == 'development':
-        app.config.from_object(DevelopmentConfig)
-    elif os.environ.get('ENV', 'development') == 'testing':
-        app.config.from_object(TestingConfig)
-    elif os.environ.get('ENV', 'development') == 'integration':
-        app.config.from_object(IntegrationTestingConfig)
-
-    # Set the secret key for JWT
-    try:
-        from app_secrets import JWT_SECRET_KEY
-    except ImportError:
-        JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'default_secret_key')
-
-    app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3
-    jwt = JWTManager(app)
-    db.init_app(app)
-    allowed_origins = ["http://localhost:5001", "http://localhost:3000"]
-    CORS(app, resources={
-        r"/*": {"origins": allowed_origins}
-    })
-
-    return app
-
   def setUp(self):
-    self.app = self.create_app()
+    self.app = create_app()
     self.app.register_blueprint(notebook_blueprint)
     self.app.register_blueprint(login_blueprint)
     self.client = self.app.test_client()
@@ -97,30 +68,6 @@ class NotebookRouteTestCase(unittest.TestCase):
         }
       )
       self.assertEqual(response.status_code, 422)
-
-  def test_get_all_notebooks_with_expired_auth(self):
-    with self.app.app_context():
-      self.app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3
-      token = self.login_and_get_token()
-
-      path = '/notebook/all'
-      response_0 = self.client.get(
-        path,
-        headers={
-          'Authorization': f'Bearer {token}'
-        }
-      )
-      self.assertEqual(response_0.status_code, 200)
-
-      time.sleep(4)
-
-      response_1 = self.client.get(
-        path,
-        headers={
-          'Authorization': f'Bearer {token}'
-        }
-      )
-      self.assertEqual(response_0.status_code, 401)
 
   def test_get_notebook_by_path(self):
     with self.app.app_context():

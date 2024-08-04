@@ -51,10 +51,6 @@ class NotebookModel {
         }
     });
 
-    if (!response.ok) {
-        console.error(response.status, response.text);
-        throw new Error('Failed to fetch notebook');
-    }
     const data = await response.json();
     return data;
   }
