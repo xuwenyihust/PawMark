@@ -65,6 +65,8 @@ class SparkApp:
       spark_app = SparkAppModel(
         spark_app_id=spark_app_id,
         notebook_id=notebook_id,
+        user_id=notebook.user_id,
+        created_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
       )
 
       db.session.add(spark_app)

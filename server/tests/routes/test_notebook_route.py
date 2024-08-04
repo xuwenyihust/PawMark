@@ -263,7 +263,9 @@ class NotebookRouteTestCase(unittest.TestCase):
       # Create spark app
       spark_app = SparkAppModel(
         spark_app_id='1234', 
-        notebook_id=notebook.id)
+        notebook_id=notebook.id,
+        user_id=g.user.id,
+        created_at='2021-01-01 00:00:00')
       
       db.session.add(spark_app)
       db.session.commit()
