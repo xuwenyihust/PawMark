@@ -51,6 +51,20 @@ const App = () => {
   const [workspaceFiles, setWorkspaceFiles] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
 
+  // Auth
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    const storedUseremail = localStorage.getItem('useremail');
+    if (storedUsername && storedUseremail) {
+      setUsername(storedUsername);
+      setUseremail(storedUseremail);
+      setCurrentPath(`work/${storedUseremail}`);
+      setRootPath(`work/${storedUseremail}`);
+      setIsLoggedIn(true);
+      console.log('Logged in as:', storedUsername, storedUseremail);
+    }
+  }, []);
+
   // Workspace
   useEffect(() => {
     if (openWorkspaceDrawer) {
@@ -150,38 +164,42 @@ const App = () => {
       setRootPath(`work/${useremail}`);
       setIsLoggedIn(true);
       console.log('Logged in as:', username, useremail);
-    }} />;
-  }
 
-  return (
-      <ThemeProvider theme={theme}>
-        <Sidebar 
-          onNewNotebookClick={handleNewNotebookClick} 
-          onExistinNotebookClick={handleExistingNotebookClick}
-          onHistoryServerClick={handleHistoryServerClick} 
-          onSchedulerClick={handleSchedulerClick}
-          handleDirectoryClick={handleDirectoryClick}
-          openWorkspaceDrawer={openWorkspaceDrawer}
-          setOpenWorkspaceDrawer={setOpenWorkspaceDrawer}
-          currentPath={currentPath}
-          setCurrentPath={setCurrentPath}
-          setRefreshKey={setRefreshKey}
-          workspaceFiles={workspaceFiles}
-          rootPath={rootPath}
-          username={username}
-          useremail={useremail}/>
-        <Notebook 
-          showNotebook={showNotebook}
-          notebook={notebook}
-          notebookState={notebookState}
-          setNotebookState={setNotebookState}
-          isNotebookModified={isNotebookModified}
-          setIsNotebookModified={setIsNotebookModified}
-          handleDeleteNotebook={handleDeleteNotebook} />
-        <HistoryServer showHistoryServer={showHistoryServer} />
-        <Scheduler showScheduler={showScheduler} />
-      </ThemeProvider>
-  );
+      // Store username and useremail in local storage
+      localStorage.setItem('username', username);
+      localStorage.setItem('useremail', useremail);
+    }} />;
+  } else {
+    return (
+        <ThemeProvider theme={theme}>
+          <Sidebar 
+            onNewNotebookClick={handleNewNotebookClick} 
+            onExistinNotebookClick={handleExistingNotebookClick}
+            onHistoryServerClick={handleHistoryServerClick} 
+            onSchedulerClick={handleSchedulerClick}
+            handleDirectoryClick={handleDirectoryClick}
+            openWorkspaceDrawer={openWorkspaceDrawer}
+            setOpenWorkspaceDrawer={setOpenWorkspaceDrawer}
+            currentPath={currentPath}
+            setCurrentPath={setCurrentPath}
+            setRefreshKey={setRefreshKey}
+            workspaceFiles={workspaceFiles}
+            rootPath={rootPath}
+            username={username}
+            useremail={useremail}/>
+          <Notebook 
+            showNotebook={showNotebook}
+            notebook={notebook}
+            notebookState={notebookState}
+            setNotebookState={setNotebookState}
+            isNotebookModified={isNotebookModified}
+            setIsNotebookModified={setIsNotebookModified}
+            handleDeleteNotebook={handleDeleteNotebook} />
+          <HistoryServer showHistoryServer={showHistoryServer} />
+          <Scheduler showScheduler={showScheduler} />
+        </ThemeProvider>
+    );
+  }
 };
 
 export default App;
