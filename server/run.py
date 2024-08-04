@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, Response
 from flask_cors import CORS
 from database import db
 import os
+import json
 from app.routes.notebook import notebook_blueprint
 from app.routes.directory import directory_blueprint
 from app.routes.session import session_blueprint
@@ -28,6 +29,11 @@ def create_app():
 
     app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
     jwt = JWTManager(app)
+    @jwt.expired_token_loader
+    def my_expired_token_callback(jwt_header, jwt_payload):
+        return Response(
+            response=json.dumps({'message': 'Token has expired'}), 
+            status=401)
 
     db.init_app(app)
 
