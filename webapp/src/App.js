@@ -65,6 +65,14 @@ const App = () => {
     }
   }, []);
 
+  const logout = () => {
+    localStorage.removeItem('username');
+    localStorage.removeItem('useremail');
+    setUsername('');
+    setUseremail('');
+    setIsLoggedIn(false);
+  }
+
   // Workspace
   useEffect(() => {
     if (openWorkspaceDrawer) {
@@ -184,6 +192,7 @@ const App = () => {
             setCurrentPath={setCurrentPath}
             setRefreshKey={setRefreshKey}
             workspaceFiles={workspaceFiles}
+            logout={logout} 
             rootPath={rootPath}
             username={username}
             useremail={useremail}/>

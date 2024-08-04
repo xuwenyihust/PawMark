@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Box } from '@mui/material';
 import { CgAdd, CgEye, CgCalendarToday, CgAlbum } from "react-icons/cg";
-import { BsPerson } from "react-icons/bs";
+import { BsPersonCircle } from "react-icons/bs";
 import WorkspaceSidebar from './workspace/WorkspaceSidebar'; 
 import CreateSidebar from './create/CreateSidebar';
 import AccountSidebar from './account/AccountSidebar';
@@ -19,6 +19,7 @@ function Sidebar({
       setCurrentPath,
       setRefreshKey,
       workspaceFiles,
+      logout,
       rootPath,
       username,
       useremail}) {
@@ -299,8 +300,8 @@ function Sidebar({
                 button onClick={() => {
                   handleToggleAccountDrawer();
                 }}>
-                <BsPerson 
-                  size={20}
+                <BsPersonCircle 
+                  size={17}
                   sx={{
                     marginLeft: '100px',
                     color: 'white'
@@ -322,6 +323,7 @@ function Sidebar({
                 handleToggleAccountDrawer={handleToggleAccountDrawer}
                 username={username}
                 useremail={useremail}
+                logout={logout}
               />
             )
           }
