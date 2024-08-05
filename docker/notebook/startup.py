@@ -102,9 +102,10 @@ class PawMarkSparkSession:
         """
 
 def create_spark_dev():
-    response = requests.get("http://localhost:5002/directory/work/user_0@gmail.com/")
-    print(response.json())
-    logging.info("Got response from server: %s", response.json())
+    # response = requests.get("http://localhost:5002/directory/work/user_0@gmail.com/")
+    # print(response.json())
+    # logging.info("Got response from server: %s", response.json())
+    logging.info("Creating Spark session")
 
     spark = PawMarkSparkSession(SparkSession.builder \
         .appName("PySpark Example") \
