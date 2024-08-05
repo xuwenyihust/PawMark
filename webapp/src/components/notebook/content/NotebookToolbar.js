@@ -13,6 +13,9 @@ const NotebookToolbar = ({
 
   return (
     <Card 
+        sx={{
+          position: 'fixed',
+        }}
         style={{
           width: '30px',
           minHeight: '1000px',
