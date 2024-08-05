@@ -6,6 +6,7 @@ from IPython import get_ipython
 from IPython.display import *
 from kubernetes import client, config
 import requests
+import logging
 
 environment = os.getenv('ENVIRONMENT', 'development')  # Default to 'development' if not set
 
@@ -101,8 +102,9 @@ class PawMarkSparkSession:
         """
 
 def create_spark_dev():
-    response = requests.get("http://llocalhost:5002/directory/work/user_0@gmail.com/")
+    response = requests.get("http://localhost:5002/directory/work/user_0@gmail.com/")
     print(response.json())
+    logging.info("Got response from server: %s", response.json())
 
     spark = PawMarkSparkSession(SparkSession.builder \
         .appName("PySpark Example") \
