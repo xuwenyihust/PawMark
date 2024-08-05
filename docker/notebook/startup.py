@@ -5,6 +5,7 @@ from pyspark.sql import SparkSession
 from IPython import get_ipython
 from IPython.display import *
 from kubernetes import client, config
+import requests
 
 environment = os.getenv('ENVIRONMENT', 'development')  # Default to 'development' if not set
 
@@ -27,51 +28,51 @@ def set_env():
 
 # Create a Spark session
 # def create_spark(app_name, master_url):
-    spark = SparkSession.builder \
-        .appName(app_name) \
-        .master(kubernetes_url) \
-        .config("spark.submit.deployMode", "client") \
-        .config("spark.driver.host", driver_host) \
-        .config("spark.driver.cores", "1") \
-        .config("spark.driver.memory", "1g") \
-        .config("spark.executor.instances", "1") \
-        .config("spark.executor.cores", "1") \
-        .config("spark.executor.memory", "1g") \
-        .config("spark.kubernetes.namespace", namespace) \
-        .config("spark.kubernetes.container.image", executor_image) \
-        .config("spark.kubernetes.authenticate.driver.serviceAccountName", service_account) \
-        .config("spark.kubernetes.authenticate.executor.serviceAccountName", service_account) \
-        .config("spark.eventLog.enabled", "true") \
-        .config("spark.eventLog.dir", f"gs://{bucket_name}/event-logs/") \
-        .config("spark.history.fs.logDirectory", f"gs://{bucket_name}/event-logs/") \
-        .config("spark.hadoop.fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem") \
-        .config("spark.hadoop.fs.AbstractFileSystem.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS") \
-        .config("spark.hadoop.fs.gs.auth.service.account.enable", "true") \
-        .getOrCreate()
+    # spark = SparkSession.builder \
+    #     .appName(app_name) \
+    #     .master(kubernetes_url) \
+    #     .config("spark.submit.deployMode", "client") \
+    #     .config("spark.driver.host", driver_host) \
+    #     .config("spark.driver.cores", "1") \
+    #     .config("spark.driver.memory", "1g") \
+    #     .config("spark.executor.instances", "1") \
+    #     .config("spark.executor.cores", "1") \
+    #     .config("spark.executor.memory", "1g") \
+    #     .config("spark.kubernetes.namespace", namespace) \
+    #     .config("spark.kubernetes.container.image", executor_image) \
+    #     .config("spark.kubernetes.authenticate.driver.serviceAccountName", service_account) \
+    #     .config("spark.kubernetes.authenticate.executor.serviceAccountName", service_account) \
+    #     .config("spark.eventLog.enabled", "true") \
+    #     .config("spark.eventLog.dir", f"gs://{bucket_name}/event-logs/") \
+    #     .config("spark.history.fs.logDirectory", f"gs://{bucket_name}/event-logs/") \
+    #     .config("spark.hadoop.fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem") \
+    #     .config("spark.hadoop.fs.AbstractFileSystem.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS") \
+    #     .config("spark.hadoop.fs.gs.auth.service.account.enable", "true") \
+    #     .getOrCreate()
     
-    return spark
+    # return spark
 
 # def start():
-    # Configuring the API client
-    config.load_incluster_config()
+#     # Configuring the API client
+#     config.load_incluster_config()
 
-    # Creating an API instance to interact with the K8s service
-    v1 = client.CoreV1Api()
+#     # Creating an API instance to interact with the K8s service
+#     v1 = client.CoreV1Api()
 
-    # Fetching the service details
-    service_name = os.environ.get("WEBUI_SERVICE_NAME", "notebook-spark-ui")
-    service = v1.read_namespaced_service(service_name, namespace)
+#     # Fetching the service details
+#     service_name = os.environ.get("WEBUI_SERVICE_NAME", "notebook-spark-ui")
+#     service = v1.read_namespaced_service(service_name, namespace)
 
-    webui_host = service.status.load_balancer.ingress[0].ip
-    webui_port = spark.sparkContext.uiWebUrl.split(":")[-1]
-    webui_url = f"http://{webui_host}:{webui_port}"
+#     webui_host = service.status.load_balancer.ingress[0].ip
+#     webui_port = spark.sparkContext.uiWebUrl.split(":")[-1]
+#     webui_url = f"http://{webui_host}:{webui_port}"
 
-    msg = f"**App name**: {app_name}\n\n" + \
-        f"**Master**: {kubernetes_url}\n\n" + \
-        f"**Driver host**: {driver_host}\n\n" + \
-        f"**Spark UI**: {webui_url}"
+#     msg = f"**App name**: {app_name}\n\n" + \
+#         f"**Master**: {kubernetes_url}\n\n" + \
+#         f"**Driver host**: {driver_host}\n\n" + \
+#         f"**Spark UI**: {webui_url}"
 
-    display(Markdown(msg))
+#     display(Markdown(msg))
 
 class PawMarkSparkSession:
 
@@ -100,6 +101,9 @@ class PawMarkSparkSession:
         """
 
 def create_spark_dev():
+    response = requests.get("http://llocalhost:5002/directory/work/user_0@gmail.com/")
+    print(response.json())
+
     spark = PawMarkSparkSession(SparkSession.builder \
         .appName("PySpark Example") \
         .master("spark://spark-master:7077") \
